@@ -1,0 +1,17 @@
+<% title "Teacher Subjects" %>
+
+<table>
+  <tr>
+    <th>Teacher</th>
+    <th>Subject</th>
+    <th>Student Group</th>
+  </tr>
+  <% for teacher_subject in @teacher_subjects %>
+    <tr>
+      <td><%=h teacher_subject.teacher_id %></td>
+      <td><%=h teacher_subject.subject_id %></td>
+      <td><%=h teacher_subject.student_group_id %></td>
+    </tr>
+  <% end %>
+</table>
+

@@ -1,0 +1,9 @@
+one:
+  teacher_id: 1
+  subject_id: 1
+  student_group_id: 1
+
+two:
+  teacher_id: 1
+  subject_id: 1
+  student_group_id: 1
