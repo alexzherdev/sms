@@ -138,6 +138,10 @@ module ExtjsHelper
   #  Renders grid column model constructor
   #
   def extjs_grid_column_model(column_specs)
+    column_specs.each do |col|
+      col[:menuDisabled] ||= true
+      col[:resizable] ||= false
+    end
     columns = strip_hash_keys_for_json(column_specs)
 
     render :partial => "controls/grid_column_model.js.erb",
