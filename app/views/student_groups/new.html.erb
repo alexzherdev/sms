@@ -1,0 +1,15 @@
+<% form_for @student_group do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :year %><br />
+    <%= f.text_field :year %>
+  </p>
+  <p>
+    <%= f.label :letter %><br />
+    <%= f.text_field :letter %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>
+
+
+<p><%= link_to "Back to List", student_groups_path %></p>

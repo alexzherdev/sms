@@ -1,0 +1,20 @@
+<% hidden_name_id = "_slider_#{new_gui_id}"
+   update_span_name = "_slider_#{new_gui_id}_span_updater" %>
+
+t = new Ext.Slider(<%= options.to_json %>);
+
+t.el.insertSibling({tag:'input', type:'hidden', value: t.getValue(), name: t.hiddenName, id: '<%=hidden_name_id%>'},
+        'before', true);
+
+<% if (span) %>
+function <%= update_span_name %>(t, v) {
+  $('<%=hidden_name_id%>').value = v;
+  if (typeof $('<%=span%>').value != "undefined") {
+    $('<%=span%>').value = v;
+  } else {
+    $('<%=span%>').innerHTML = v;
+  }
+}
+
+t.on("change", <%= update_span_name %>);
+<% end %>

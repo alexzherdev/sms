@@ -1,0 +1,9 @@
+<% @class_rooms.each do |class_room| %>
+  <%= class_room.number%><br/>
+  <% form_tag class_room_path(class_room), :method => :delete do %>
+    <%= extjs_button :text => "Delete" %>
+  <% end %>
+<% end %>
+<% form_tag new_class_room_path do %>
+  <%= extjs_button :text => "Add" %>
+<% end %>

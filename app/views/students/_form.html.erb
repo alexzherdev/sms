@@ -1,0 +1,24 @@
+<% form_for @student do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :parent_email %><br />
+    <%= f.text_field :parent_email %>
+  </p>
+  <p>
+    <%= f.label :parent1_id %><br />
+    <%= f.text_field :parent1_id %>
+  </p>
+  <p>
+    <%= f.label :parent2_id %><br />
+    <%= f.text_field :parent2_id %>
+  </p>
+  <p>
+    <%= f.label :home_address %><br />
+    <%= f.text_field :home_address %>
+  </p>
+  <p>
+    <%= f.label :student_group_id %><br />
+    <%= f.text_field :student_group_id %>
+  </p>
+  <p><%= f.submit "Submit" %></p>
+<% end %>

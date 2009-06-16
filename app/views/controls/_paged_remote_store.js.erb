@@ -1,0 +1,5 @@
+new Ext.data.Store($H({
+        proxy: new Ext.data.ScriptTagProxy({url: '<%= options.delete(:url) %>'}),
+        reader: new Ext.data.JsonReader(<%= strip_hash_keys_for_json(options.delete(:reader)).to_json %>, <%= options.delete(:fields).to_json %>),
+        baseParams: ($H({limit: <%= options.delete(:per_page) %>}).merge($H(<%= strip_hash_keys_for_json(options.delete(:custom_params)).to_json %>))).toObject()
+}).merge($H(<%= strip_hash_keys_for_json(options).to_json %>)).toObject())

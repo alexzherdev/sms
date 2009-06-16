@@ -1,0 +1,11 @@
+<% form_for @user do |f| %>
+<%= f.error_messages %>
+  Login <%= extjs_text_field_control :user, :login %>
+  Email <%= extjs_text_field_control :user, :email %>
+  Password <%= extjs_text_field_control :user, :password, :inputType => "password" %>
+  Password confirmation <%= extjs_text_field_control :user, :password_confirmation, :inputType => "password" %>
+  First name <%= extjs_text_field_control :user, :first_name %>
+  Last name <%= extjs_text_field_control :user, :last_name %>
+  Birth date <%= extjs_date_field_control :user, :birth_date %>
+  <%= extjs_button :text => "Save" %>
+<% end %>

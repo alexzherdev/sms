@@ -1,0 +1,3 @@
+new Ext.data.SimpleStore({
+        fields: <%= collection[:fields].to_json %>,
+        data : <%= result_array.to_json %>})

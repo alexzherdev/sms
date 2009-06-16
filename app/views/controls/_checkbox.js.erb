@@ -1,0 +1,3 @@
+new Ext.form.Checkbox(<%= options.to_json %>);
+new Ext.form.Hidden({renderTo: <%= options["renderTo"].inspect %>, value: <%= options["uncheckedValue"].inspect %>, name: <%= options["name"].inspect %>});
+

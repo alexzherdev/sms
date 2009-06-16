@@ -1,0 +1,5 @@
+<% if options.delete("merged") %>
+new Ext.form.MergedTimeField(<%= options.to_json %>)
+<% else %>
+new Ext.form.TimeField(<%= options.to_json %>)
+<% end %>

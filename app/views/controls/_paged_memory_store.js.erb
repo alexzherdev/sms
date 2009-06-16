@@ -1,0 +1,4 @@
+new Ext.data.Store({
+        proxy: new Ext.data.PagedMemoryProxy(<%= result_array.to_json %>),
+        reader: new Ext.data.ArrayReader({fields: <%= collection[:fields].to_json %>})
+})

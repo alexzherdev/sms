@@ -1,0 +1,11 @@
+function(v, p, record) {
+  var id = record.get("<%= options[:record_id_column] %>");
+  var index = <%= options[:store] %>.find("<%= options[:store_id_column] %>", id);
+  var record = <%= options[:store] %>.getAt(index) || <%= options[:store] %>.getAt(0);
+
+  if (record == null) {
+    return "";
+  }
+
+  return record.get("<%= options[:store_display_column] %>");
+}

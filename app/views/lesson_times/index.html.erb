@@ -1,0 +1,21 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.lesson_time_store = <%= extjs_simple_store :data => lesson_time_collection(@lesson_times), :type => :arrays, :fields => ["id", "number", "start_time", "end_time"]  %>;
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "#", :width => 20 },
+      { :header => "Start Time", :width => 150 },
+      { :header => "End Time", :width => 150 }
+    ]) %>;
+    Global.lesson_time_grid = <%= extjs_grid :store => "Global.lesson_time_store".j, :width => 325,
+      :autoHeight => true, :renderTo => "lesson_times", :cm => "cm".j, :title => "Lesson Times", :tbar => [
+        extjs_toolbar_button("Add", { :iconCls => "x-btn-text-icon add" }, { :url => lesson_times_path, :method => "POST" }),
+        extjs_toolbar_button("Delete", { :iconCls => "x-btn-text-icon remove" }, { :handler => "function() {
+          Ext.Ajax.request({
+            method: 'DELETE', 
+            url: '#{lesson_times_path}/' + Global.lesson_time_grid.getSelectionModel().getSelected().get('id')
+          })}".j})
+      ] %>;
+  });
+<% end %>
+<div id="lesson_times"></div>

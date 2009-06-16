@@ -1,0 +1,26 @@
+new Ext.Panel($H({
+    autoScroll:true,
+    search_field:
+      new Ext.app.SearchField($H({
+        store: <%= options[:store] %>
+      }).merge(<%= options[:search].to_json %>).toObject()),
+
+    items: new Ext.DataView($H({
+        <% if options[:item_template].is_a? String -%>
+        tpl: Ext.XTemplate.from($(<%= options[:item_template].to_json %>)),
+        <% else -%>
+        tpl: new Ext.XTemplate(<%= options[:item_template].to_json %>),
+        <% end -%>
+        store: <%= options[:store] %>,
+        itemSelector: 'div.search-item'
+    }).merge(<%= options[:view].to_json %>).toObject()),
+
+    bbar: new Ext.NumberedPagingToolbar($H({
+      store: <%= options[:store] %>,
+      pageSize: <%= options[:page_size] %>,
+      displayInfo: true
+    }).merge($H(<%= options[:pagination].to_json %>)).toObject())
+}).merge(<%= options[:panel].to_json %>).toObject());
+
+<%= options[:store] %>.baseParams.limit = <%= options[:page_size] %>;
+<%= options[:store] %>.load({params: {limit: <%= options[:page_size] %>, start: 0}});

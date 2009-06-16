@@ -1,0 +1,28 @@
+<% title "Student" %>
+
+<p>
+  <strong>Parent Emal:</strong>
+  <%=h @student.parent_emal %>
+</p>
+<p>
+  <strong>Parent1:</strong>
+  <%=h @student.parent1_id %>
+</p>
+<p>
+  <strong>Parent2:</strong>
+  <%=h @student.parent2_id %>
+</p>
+<p>
+  <strong>Home Address:</strong>
+  <%=h @student.home_address %>
+</p>
+<p>
+  <strong>Student Group:</strong>
+  <%=h @student.student_group_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_student_path(@student) %> |
+  <%= link_to "Destroy", @student, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", students_path %>
+</p>

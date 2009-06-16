@@ -1,0 +1,24 @@
+
+<table>
+  <tr>
+    <th>Parent Email</th>
+    <th>Parent1</th>
+    <th>Parent2</th>
+    <th>Home Address</th>
+    <th>Student Group</th>
+  </tr>
+  <% for student in @students %>
+    <tr>
+      <td><%=h student.parent_email %></td>
+      <td><%=h student.parent1_id %></td>
+      <td><%=h student.parent2_id %></td>
+      <td><%=h student.home_address %></td>
+      <td><%=h student.student_group_id %></td>
+      <td><%= link_to "Show", student %></td>
+      <td><%= link_to "Edit", edit_student_path(student) %></td>
+      <td><%= link_to "Destroy", student, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Student", new_student_path %></p>

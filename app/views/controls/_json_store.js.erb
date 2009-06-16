@@ -1,0 +1,15 @@
+new Ext.data.Store({
+  proxy: new Ext.data.ScriptTagProxy({
+    url: '<%= options[:url] %>',
+    extraParams: <%= options[:params].to_json %>
+  }),
+
+  reader: new Ext.data.JsonReader({
+    root: '<%= options[:root] %>',
+    totalProperty: '<%= options[:total_count_property] %>',
+    id: '<%= options[:id_property] %>',
+    fields: <%= options[:fields].to_json %>
+  }),
+  baseParams: <%= options[:base_params].to_json %>,
+  remoteSort: <%= options[:remote_sorting].to_s %>
+})

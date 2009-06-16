@@ -1,0 +1,5 @@
+<script type="text/javascript">
+    Ext.onReady(function() {
+      dropdown(<%= "'#{el}', '#{label}', #{items} #{",'" + link + "'" unless link.nil?}" %>);
+    });
+</script>
