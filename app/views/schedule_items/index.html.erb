@@ -1,0 +1,21 @@
+<% title "Schedule Items" %>
+
+<table>
+  <tr>
+    <th>Week Day</th>
+    <th>Lesson Time</th>
+    <th>Student Group</th>
+    <th>Subject</th>
+    <th>Class Room</th>
+  </tr>
+  <% for schedule_item in @schedule_items %>
+    <tr>
+      <td><%=h schedule_item.week_day %></td>
+      <td><%=h schedule_item.lesson_time_id %></td>
+      <td><%=h schedule_item.student_group_id %></td>
+      <td><%=h schedule_item.subject_id %></td>
+      <td><%=h schedule_item.class_room_id %></td>
+    </tr>
+  <% end %>
+</table>
+

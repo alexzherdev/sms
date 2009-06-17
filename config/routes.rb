@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :schedule_items
+
   map.resources :teacher_subjects
 
   map.resources :subjects
