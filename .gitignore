@@ -2,4 +2,5 @@ log/*.log
 tmp/**/*
 .DS_Store
 ._*
-vendor/rails
+vendor/*
+vendor/*
