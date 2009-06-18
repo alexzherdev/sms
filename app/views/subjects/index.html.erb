@@ -7,7 +7,7 @@
   <% for subject in @subjects %>
     <tr>
       <td><%=h subject.name %></td>
-      <td><%=h subject.school_year %></td>
+      <td><%=h subject.year %></td>
       <td><%=h subject.hours_per_week %></td>
       <td><%= link_to "Destroy", subject, :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>

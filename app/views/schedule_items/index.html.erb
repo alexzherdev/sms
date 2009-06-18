@@ -1,21 +1,51 @@
-<% title "Schedule Items" %>
+<%= javascript_include_tag "schedule" %>
+<%= javascript_include_tag "groupdataview" %>
+<%= javascript_include_tag "groupcombo" %>
 
-<table>
-  <tr>
-    <th>Week Day</th>
-    <th>Lesson Time</th>
-    <th>Student Group</th>
-    <th>Subject</th>
-    <th>Class Room</th>
-  </tr>
-  <% for schedule_item in @schedule_items %>
-    <tr>
-      <td><%=h schedule_item.week_day %></td>
-      <td><%=h schedule_item.lesson_time_id %></td>
-      <td><%=h schedule_item.student_group_id %></td>
-      <td><%=h schedule_item.subject_id %></td>
-      <td><%=h schedule_item.class_room_id %></td>
-    </tr>
-  <% end %>
-</table>
+<% javascript_tag do %>
+  Ext.onReady(function() {
+		Global.yearSubjects = $H();
+		Global.groups = <%= objects_to_collection_array(:data => @student_groups, :fields => ["id", "full_name", "year"] ).to_json %>; 
+		var subjects;<c:forEach items="${studentGroups}" var="group">
+		subjects = [["0", "<fmt:message key="schedule.emptySubject"/>".escapeHTML()], <c:forEach items="${subjectMap[group.year]}" var="subject">			
+		["${subject.id}", "${subject.name}"],
+		</c:forEach>];
+		Global.yearSubjects.set("${group.year}", subjects);
+		</c:forEach>	
+		Global.rooms = [["0", "<fmt:message key="schedule.emptyRoom"/>".escapeHTML(), "false"],<c:forEach items="${rooms}" var="room">
+			["${room.id}", "${room.name}", "false"],</c:forEach>
+		];
+	
+		Global.roomStore = new Ext.data.GroupingStore({
+			reader: new Ext.data.ArrayReader({
+				id: 0,
+			}, [
+				{name: "id"}, {name: "name"}, {name: "occupied"}
+			]),
+			
+			groupField: "occupied"
+		});
+		Global.roomStore.loadData(Global.rooms);
+		
+		Global.subjectStore = new Ext.data.SimpleStore({
+			fields: [{name: "id"}, {name: "name"}],
+			id: 0
+		});
+
+		Global.dayTimes = [<c:forEach items="${dayTimes}" var="dayTime" varStatus="dayTimeStatus">
+			[${dayTimeStatus.index}, "${dayTime.day}", "${dayTime.time.startTime}".substring(0,5)],</c:forEach>];
+			
+		Global.items = [<c:forEach items="${dayTimes}" var="dayTime" varStatus="dayTimeStatus">[<c:forEach items="${studentGroups}" var="group" varStatus="groupStatus">					
+			["${itemTable[dayTimeStatus.index][groupStatus.index].id}", ${dayTimeStatus.index}, ${groupStatus.index}, "${itemTable[dayTimeStatus.index][groupStatus.index].subject.id}",  "${itemTable[dayTimeStatus.index][groupStatus.index].room.id}", "${group.id}"],</c:forEach>],</c:forEach>];	
+		Global.schedule = new Schedule({ 
+			renderTo: "schedule_container",
+			yearSubjects: Global.yearSubjects,
+			groups: Global.groups,
+			rooms: Global.rooms,
+			dayTimes: Global.dayTimes,
+			items: Global.items,
+			locale: "ru_RU"
+		});
+  });
+<% end  %>
 

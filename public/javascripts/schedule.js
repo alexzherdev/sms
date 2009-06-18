@@ -1,3 +1,18 @@
+Ext.override(Ext.data.GroupingStore, {
+    applySort : function(){
+        Ext.data.GroupingStore.superclass.applySort.call(this);
+        if (!this.groupOnSort && !this.remoteGroup) {
+            var gs = this.getGroupState();
+            var si = this.sortInfo || {};
+
+            if (gs && gs != si.field) {
+                this.sortData(this.groupField);
+            }
+        }
+    }
+}); 
+	
+
 var ScheduleItem = Class.create({
 	initialize: function(config) {
 		this.id = config[0];
@@ -181,10 +196,11 @@ var Schedule = Class.create({
 		this.markup.scrollableScheduleContainer = new Element("div", { "class": "scrollable-schedule-container" });
 		
 		this.markup.groupsContainer = new Element("div", { "class": "groups-container" });
+		this.markup.groupsContainer.style.width = (this.model.groupStore.getCount() * 41) + "px";
 		this.markup.scrollableScheduleContainer.appendChild(this.markup.groupsContainer);
 		
 		var scheduleTable = new Element("table", { "class": "schedule-table", "cellspacing": "0" });
-		
+		scheduleTable.style.width = this.markup.groupsContainer.style.width;
 		tr = new Element("tr");
 		
 		this.markup.mainContainer = new Element("td", { "class": "main-container" });
@@ -359,6 +375,7 @@ var Schedule = Class.create({
 			comboRoomRecord.set("name", roomName + " (" + occupiedBy[index] + ")");
 		}.bind(this));
 		store.commitChanges();
+		store.groupBy("occupied", true);
 	},
 	
 	preparePopup: function() {

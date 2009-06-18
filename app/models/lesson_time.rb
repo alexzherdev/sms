@@ -3,6 +3,7 @@ class LessonTime < ActiveRecord::Base
   LESSON_LENGTH = 45.minutes
   BREAK_LENGTH = 10.minutes
   
+  WEEK_DAYS = (1..6).to_a
   validates_presence_of :start_time
   validates_presence_of :end_time
 

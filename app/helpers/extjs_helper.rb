@@ -427,9 +427,6 @@ module ExtjsHelper
                          validation])
   end
 
-  private
-
-
   #  Returns a string containing the intialization of error message on the field
   #
   def add_validation_errors(model_name, model_field, js_variable, options)

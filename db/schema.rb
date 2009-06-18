@@ -9,12 +9,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090614205423) do
+ActiveRecord::Schema.define(:version => 20090618205523) do
 
   create_table "class_rooms", :force => true do |t|
     t.string   "number"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "class_rooms_subjects", :id => false, :force => true do |t|
+    t.integer "class_room_id"
+    t.integer "subject_id"
   end
 
   create_table "lesson_times", :force => true do |t|
@@ -44,6 +49,16 @@ ActiveRecord::Schema.define(:version => 20090614205423) do
     t.integer  "student_group_id"
   end
 
+  create_table "schedule_items", :force => true do |t|
+    t.integer  "week_day"
+    t.integer  "lesson_time_id"
+    t.integer  "student_group_id"
+    t.integer  "subject_id"
+    t.integer  "class_room_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "student_groups", :force => true do |t|
     t.integer  "year"
     t.string   "letter"
@@ -53,8 +68,16 @@ ActiveRecord::Schema.define(:version => 20090614205423) do
 
   create_table "subjects", :force => true do |t|
     t.string   "name"
-    t.integer  "school_year"
+    t.integer  "year"
     t.integer  "hours_per_week"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "teacher_subjects", :force => true do |t|
+    t.integer  "teacher_id"
+    t.integer  "subject_id"
+    t.integer  "student_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
