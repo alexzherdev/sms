@@ -76,7 +76,7 @@
 				text: "Generate",
 			   	icon: '/images/startbutton-icon.gif',
           cls: 'x-btn-text-icon generate-icon',
-          handler: function() { Global.submitForm(this.getEl().dom, "generate"); }
+          handler: function() { document.location.href = "<%= generate_schedule_path %>"; }
   		}]
 		});
 	});
