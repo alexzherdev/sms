@@ -18,8 +18,8 @@ var ScheduleItem = Class.create({
 		this.id = config[0];
 		this.i = config[1];
 		this.j = config[2];
-		this.subjectId = config[3] == "" ? "0" : config[3];
-		this.roomId = config[4] == "" ? "0" : config[4];
+		this.subjectId = config[3];
+		this.roomId = config[4];
 		this.groupId = config[5];
 	},
 	
@@ -61,7 +61,7 @@ var ScheduleItemView = Class.create({
 	},
 	
 	refresh: function() {
-		if (this.item.subjectId != "0") {
+		if (this.item.subjectId != 0) {
 			if (!this.markup.subjectDiv) {
 				this.markup.subjectDiv = document.createElement("div");
 				this.markup.subjectDiv.className = "subject";
@@ -73,7 +73,7 @@ var ScheduleItemView = Class.create({
 				this.markup.subjectDiv.innerHTML = "";
 			}
 		}
-		if (this.item.roomId != "0") {
+		if (this.item.roomId != 0) {
 			if (!this.markup.roomDiv) {
 				this.markup.roomDiv = document.createElement("div");
 				this.markup.roomDiv.className = "room";
@@ -153,7 +153,7 @@ var Schedule = Class.create({
 			this.model.items[i] = [];
 			for (var j = 0; j < this.config.items[i].length; j++) {
 				this.model.items[i][j] = new ScheduleItem(this.config.items[i][j]);
-				if (!this.model.items[i][j].id.empty()) {
+				if (this.model.items[i][j].id != null) {
 					itemIndex[itemIndex.length] = [this.model.items[i][j].id, this.model.items[i][j]];
 				}
 			}
@@ -241,7 +241,7 @@ var Schedule = Class.create({
 			caption.className = "caption";
 			//TODO: shit-shit-shit!
 			var img = document.createElement("img");
-			img.src = "images/" + day + "_" + this.config.locale.toLowerCase() + ".png";
+			img.src = "/images/" + day + "_" + this.config.locale.toLowerCase() + ".png";
 			caption.appendChild(img);
 			dayDiv.appendChild(caption);
 			var timesCount = times.length;
@@ -288,12 +288,13 @@ var Schedule = Class.create({
 	
 	saveItem: function(subjectId, roomId) {
 		this.markup.scrollableScheduleContainer.startWaiting("bigWaiting");
-		ScheduleEditAction.updateItem(this.editItem.id, this.editItem.i, this.editItem.j, subjectId, roomId, 
-			Global.flowExecutionKey, function(result) {
+		
+		this.config.saveCallback(this.editItem.id, this.editItem.i, this.editItem.j, subjectId, roomId, 
+			function(result) {
 				this.model.itemStore.each(function(item) {
 					item.get("item").markValid();					
 				}.bind(this));
-				eval(result);
+				//eval(result);
 				this.editItem.subjectId = subjectId;
 				this.editItem.roomId = roomId;
 				this.editItem.view.refresh();
@@ -310,7 +311,7 @@ var Schedule = Class.create({
 		var oldRec = this.model.itemStore.getById(this.editItem.id);
 		this.model.itemStore.remove(oldRec);
 		
-		this.editItem.id = "";
+		this.editItem.id = null;
 	},
 	
 	initPopup: function() {
@@ -362,7 +363,7 @@ var Schedule = Class.create({
 		var occupiedIds = [];
 		var occupiedBy = [];
 		$A(this.model.items[currentItem.i] || []).each(function(item) {
-			if (item.roomId != "0") {
+			if (item.roomId != 0) {
 				occupiedIds[occupiedIds.length] = item.roomId;
 				occupiedBy[occupiedBy.length] = this.model.groupStore.getById(item.groupId).get("name");
 			}
@@ -387,7 +388,7 @@ var Schedule = Class.create({
 			var subject = this.model.subjectStore.getById(this.editItem.subjectId);
 			subjects.setValue(subject.get("id"));
 		} else {
-			subjects.setValue("0");
+			subjects.setValue(0);
 		}
 		var rooms = Ext.getCmp("popup_rooms");
 		this.groupRooms(rooms.store, this.editItem);
@@ -395,7 +396,7 @@ var Schedule = Class.create({
 			var room = this.model.roomStore.getById(this.editItem.roomId);
 			rooms.setValue(room.get("id"));
 		} else {
-			rooms.setValue("0");
+			rooms.setValue(0);
 		}
 	},
 	

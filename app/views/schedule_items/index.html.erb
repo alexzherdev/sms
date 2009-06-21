@@ -1,26 +1,24 @@
-<%= javascript_include_tag "schedule" %>
 <%= javascript_include_tag "groupdataview" %>
 <%= javascript_include_tag "groupcombo" %>
+<%= javascript_include_tag "schedule" %>
 
 <% javascript_tag do %>
   Ext.onReady(function() {
 		Global.yearSubjects = $H();
 		Global.groups = <%= objects_to_collection_array(:data => @student_groups, :fields => ["id", "full_name", "year"] ).to_json %>; 
-		var subjects;<c:forEach items="${studentGroups}" var="group">
-		subjects = [["0", "<fmt:message key="schedule.emptySubject"/>".escapeHTML()], <c:forEach items="${subjectMap[group.year]}" var="subject">			
-		["${subject.id}", "${subject.name}"],
-		</c:forEach>];
-		Global.yearSubjects.set("${group.year}", subjects);
-		</c:forEach>	
-		Global.rooms = [["0", "<fmt:message key="schedule.emptyRoom"/>".escapeHTML(), "false"],<c:forEach items="${rooms}" var="room">
-			["${room.id}", "${room.name}", "false"],</c:forEach>
-		];
+		var subjects;
+		<% Subject::SCHOOL_YEARS.each do |year| %>
+		  subjects = <%= subject_collection(@year_subjects[year]).to_json %>;
+		  Global.yearSubjects.set("<%= year %>", subjects);
+		<% end %>
+
+		Global.rooms = <%= room_collection(@class_rooms).to_json %>;
 	
 		Global.roomStore = new Ext.data.GroupingStore({
 			reader: new Ext.data.ArrayReader({
 				id: 0,
 			}, [
-				{name: "id"}, {name: "name"}, {name: "occupied"}
+				{id: "id", name: "id"}, {id: "name", name: "name"}, {id: "occupied", name: "occupied"}
 			]),
 			
 			groupField: "occupied"
@@ -32,11 +30,9 @@
 			id: 0
 		});
 
-		Global.dayTimes = [<c:forEach items="${dayTimes}" var="dayTime" varStatus="dayTimeStatus">
-			[${dayTimeStatus.index}, "${dayTime.day}", "${dayTime.time.startTime}".substring(0,5)],</c:forEach>];
+		Global.dayTimes = <%= day_time_collection(@day_times).to_json %>;
 			
-		Global.items = [<c:forEach items="${dayTimes}" var="dayTime" varStatus="dayTimeStatus">[<c:forEach items="${studentGroups}" var="group" varStatus="groupStatus">					
-			["${itemTable[dayTimeStatus.index][groupStatus.index].id}", ${dayTimeStatus.index}, ${groupStatus.index}, "${itemTable[dayTimeStatus.index][groupStatus.index].subject.id}",  "${itemTable[dayTimeStatus.index][groupStatus.index].room.id}", "${group.id}"],</c:forEach>],</c:forEach>];	
+		Global.items = <%= schedule_item_collection(@day_times, @student_groups, @item_table).to_json %>;
 		Global.schedule = new Schedule({ 
 			renderTo: "schedule_container",
 			yearSubjects: Global.yearSubjects,
@@ -44,8 +40,52 @@
 			rooms: Global.rooms,
 			dayTimes: Global.dayTimes,
 			items: Global.items,
-			locale: "ru_RU"
+			locale: "en_us",
+			saveCallback: function(itemId, i, j, subjectId, roomId, f) {
+			  Ext.Ajax.request({
+			    url: "<%= save_schedule_path %>",
+			    params: { id: itemId, i: i, j: j, subject_id: subjectId, room_id: roomId },
+			    success: function(result) {
+			      f(result.responseText);
+			    }
+			  });
+			}
 		});
   });
 <% end  %>
+<div id="toolbar"></div>
+<div id="panel_container" class="schedule-panel-container"></div>
+<div id="schedule_container"></div>
+<div class="clear"></div>
+<% javascript_tag do %>
+	Ext.onReady(function() {
+		var panel = new Ext.Panel({
+			renderTo: "panel_container",
+			width: 682,
+			title: "Edit Schedule",
+			tbar: [{
+    	icon: '/images/page-prev.gif',
+          cls: 'x-btn-icon',
+          handler: function() { Global.schedule.scroll(-41); }
+  		}, {
+  			icon: '/images/page-next.gif',
+          cls: 'x-btn-icon',
+          handler: function() { Global.schedule.scroll(41); }
+			},
+			"-", {
+				text: "Generate",
+			   	icon: '/images/startbutton-icon.gif',
+          cls: 'x-btn-text-icon generate-icon',
+          handler: function() { Global.submitForm(this.getEl().dom, "generate"); }
+  		}]
+		});
+	});
+<% end %>
+<div id="popup" class="x-hidden">
+<div class="x-window-header"></div>
+<div id="popup_main" class="schedule-popup">
+  <%= extjs_combo_box_control nil, nil, :id => "popup_subjects", :store => "Global.subjectStore", :displayField => "name", :valueField => "id" %>
+  <%= extjs_group_combo_box_control nil, nil, :id => "popup_rooms", :store => "Global.roomStore", :displayField => "name", :valueField => "id", :groupTextTpl => "{[values.text == \"true\" ? \"Occupied\" : \"Free\"]}" %>
+</div>
+</div>
 

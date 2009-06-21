@@ -365,7 +365,7 @@ a:link, a:visited, a:active {
 
 .schedule-container .daytime-table-container .upper-left-corner,
 .register-container .student-table-container .upper-left-corner {
-	height: 17px;
+	height: 19px;
 	*height: 16px;
 	border-right: 1px solid #AAAAAA;
 	border-bottom: 1px solid #AAAAAA;
@@ -424,7 +424,7 @@ a:link, a:visited, a:active {
 .schedule-container .daytime-table-container .time {
 	width: 36px;
 	border-bottom: 1px solid #DDDDDD;
-	padding: 4px;
+	padding: 3px;
 	float: right;
 }
 

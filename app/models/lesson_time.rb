@@ -9,4 +9,7 @@ class LessonTime < ActiveRecord::Base
 
   default_scope :order => "start_time"
   
+  def <=>(lesson_time)
+    return self.start_time <=> lesson_time.start_time
+  end
 end

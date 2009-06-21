@@ -3,5 +3,6 @@ class Subject < ActiveRecord::Base
   
   has_and_belongs_to_many :class_rooms
   
+  default_scope :include => [:class_rooms]
   named_scope :by_year, lambda { |year| { :conditions => { :year => year}}}
 end

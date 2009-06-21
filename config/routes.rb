@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :schedule_items
+  map.save_schedule "schedule_items/save", :controller => "schedule_items", :action => "save" 
+  map.generate_schedule "schedule_items/generate", :controller => "schedule_items", :action => "generate"
+   
+  map.resources :schedule_items, :member => { :save => :post }
 
   map.resources :teacher_subjects
 
@@ -55,6 +58,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :lesson_times
   map.resources :class_rooms
   map.resources :users
+  
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing the them or commenting them out if you're using named routes and resources.

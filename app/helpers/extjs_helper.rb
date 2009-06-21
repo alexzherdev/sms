@@ -193,6 +193,29 @@ module ExtjsHelper
     render :partial => "controls/combo_box.js.erb",
            :locals => {:options => strip_hash_keys_for_json(options)}
   end
+  
+  #  Renders Extjs.GroupComboBox
+  #
+  def extjs_group_combo_box(model_name, model_field, options = {})
+    options.symbolize_keys!
+    options.merge({:id_field => "id"})
+
+    options[:typeAhead] ||= true
+    options[:mode] ||= "local"
+    options[:valueField] ||= "id"
+    options[:emptyText] ||= "Choose..."
+    options[:editable] ||= false
+    options[:triggerAction] ||= "all"
+    options[:forceSelection] ||= true
+    options[:startCollapsed] ||= true
+    options[:showGroupName] ||= false
+    options[:store] = strip_in_json(options[:store]) if options[:store]
+
+    populate_options_for_form_field model_name, model_field, options
+
+    render :partial => "controls/group_combo_box.js.erb",
+           :locals => {:options => strip_hash_keys_for_json(options)}
+  end
 
   #  Renders Extjs.HtmlEditor
   #
@@ -312,10 +335,34 @@ module ExtjsHelper
       options[:valueField] = "id"
     end
 
-    options[:valueNotFoundText] ||= "Choose...".t
+    options[:valueNotFoundText] ||= "Choose..."
 
     lines ||= []
     lines << (options.delete(:js_variable) || "var " + id) + " = " + extjs_combo_box(model_name, model_field, options) << validation
+
+    control_wrapper(id, lines)
+  end
+  
+  #  Renders a complete group combo box control.
+  #
+  def extjs_group_combo_box_control(model_name, model_field, options = {})
+    id = "_group_combo_box_#{new_gui_id}"
+    options.delete :applyTo
+    options[:renderTo] = id
+
+    validation = add_validation_errors(model_name, options[:borrow_errors_from] || model_field, options[:js_variable] || id, options)
+
+    if options[:values]
+      lines = ["var " + id + "_store = " + extjs_simple_store({:type => :arrays, :fields => ["id", "title"], :data => options[:values]})]
+      options[:store] = id + "_store"
+      options[:displayField] = "title"
+      options[:valueField] = "id"
+    end
+
+    options[:valueNotFoundText] ||= "Choose..."
+
+    lines ||= []
+    lines << (options.delete(:js_variable) || "var " + id) + " = " + extjs_group_combo_box(model_name, model_field, options) << validation
 
     control_wrapper(id, lines)
   end
