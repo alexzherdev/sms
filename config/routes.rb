@@ -1,8 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
-  map.save_schedule "schedule_items/save", :controller => "schedule_items", :action => "save" 
-  map.generate_schedule "schedule_items/generate", :controller => "schedule_items", :action => "generate"
-   
-  map.resources :schedule_items, :member => { :save => :post }
+  map.save_schedule "schedule/save", :controller => "schedules", :action => "save" 
+ 
+  map.resource :schedule, :member => { :save => :post, :generate => :get }
 
   map.resources :teacher_subjects
 

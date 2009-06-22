@@ -1,5 +1,5 @@
-class ScheduleItemsController < ApplicationController
-  def index
+class SchedulesController < ApplicationController
+  def show
     @schedule_items = ScheduleItem.all
     @student_groups = StudentGroup.all
     @year_subjects = {}
@@ -35,7 +35,7 @@ class ScheduleItemsController < ApplicationController
     item.subject_id = params[:subject_id].to_i
     item.class_room_id = params[:room_id].to_i
     item.save
-    render :template => "schedule_items/save_item.rjs"
+    render :template => "schedule/save.rjs"
   end
   
   def generate
@@ -45,7 +45,7 @@ class ScheduleItemsController < ApplicationController
     for item in items do
       item.save
     end
-    redirect_to schedule_items_path
+    redirect_to schedule_path
   end
   
   protected
