@@ -9,7 +9,9 @@ class SchedulesController < ApplicationController
       subjects.unshift(empty_subject)
       @year_subjects[year] = subjects
     end
-    
+    validator = Schedule::Validator.new(@schedule_items)
+    validator.validate
+    @errors = validator.errors
     @class_rooms = ClassRoom.all
     empty_room = ClassRoom.new { |room| room.id = 0; room.number = "Empty" }
     @class_rooms.unshift(empty_room)
@@ -35,12 +37,16 @@ class SchedulesController < ApplicationController
     item.subject_id = params[:subject_id].to_i
     item.class_room_id = params[:room_id].to_i
     item.save
-    render :template => "schedule/save.rjs"
+    @schedule_items = ScheduleItem.all
+    validator = Schedule::Validator.new(@schedule_items)
+    validator.validate
+    @errors = validator.errors
+    render :template => "schedules/save.rjs"
   end
   
   def generate
     ScheduleItem.delete_all
-    sg = ScheduleGenerator.new ClassRoom.all, StudentGroup.all, Subject.all, LessonTime.all, TeacherSubject.all
+    sg = Schedule::Generator.new ClassRoom.all, StudentGroup.all, Subject.all, LessonTime.all, TeacherSubject.all
     items = sg.generate_schedule
     for item in items do
       item.save

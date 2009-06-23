@@ -1,4 +1,4 @@
-module ScheduleItemsHelper
+module SchedulesHelper
   def student_group_collection(student_groups)
     student_groups.collect do |group|
       [ group.id, group.full_name, group.year ]
@@ -34,6 +34,14 @@ module ScheduleItemsHelper
   def subject_collection(subjects)
     subjects.collect do |subject|
       [subject.id, subject.name]      
+    end
+  end
+  
+  def mark_errors(page)
+    @errors.each do |key, value|
+      value.each do |error|
+        page.call "Global.schedule.markInvalid", key.id, error  
+      end
     end
   end
 end

@@ -79,6 +79,9 @@
           handler: function() { document.location.href = "<%= generate_schedule_path %>"; }
   		}]
 		});
+		<%= update_page do |page| 
+          mark_errors(page)
+        end %>
 	});
 <% end %>
 <div id="popup" class="x-hidden">

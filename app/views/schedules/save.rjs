@@ -1,1 +1,1 @@
-page.call "alert", "achtung"
+mark_errors(page)
