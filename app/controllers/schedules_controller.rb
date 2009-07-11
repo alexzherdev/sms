@@ -48,8 +48,10 @@ class SchedulesController < ApplicationController
     ScheduleItem.delete_all
     sg = Schedule::Generator.new ClassRoom.all, StudentGroup.all, Subject.all, LessonTime.all, TeacherSubject.all
     items = sg.generate_schedule
-    for item in items do
-      item.save
+    ScheduleItem.transaction do
+      for item in items do
+        item.save
+      end
     end
     redirect_to schedule_path
   end

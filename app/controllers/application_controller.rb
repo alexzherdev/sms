@@ -27,8 +27,6 @@ class ApplicationController < ActionController::Base
   
   def action_protected?(controller_class, action_name)
     controller_settings = AclAction.find_by_name controller_class.controller_path
-    p "Controller path: #{controller_class.controller_path}"
-    p "Controller settings: #{controller_settings}"
     return true unless controller_settings.blank?
     return AclAction.find_by_name compose_action_signature(controller_class, action_name)
   end
@@ -64,15 +62,15 @@ class ApplicationController < ActionController::Base
   # to access the requested action.  For example, a popup window might
   # simply close itself.
   def access_denied
-    if request.xhr?
-      render :update do |page|
-        page.redirect_to login_url
-      end
+    if current_user 
+      render :template => "/errors/403" 
     else
-      respond_to do |format|
-        format.html do
-          render :template => "/errors/403"
+      if request.xhr?
+        render :update do |page|
+          page.redirect_to login_url
         end
+      else
+        redirect_to login_url
       end
     end
   end

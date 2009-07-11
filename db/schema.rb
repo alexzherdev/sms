@@ -55,25 +55,13 @@ ActiveRecord::Schema.define(:version => 20090624201223) do
     t.string   "crypted_password"
     t.string   "password_salt"
     t.string   "persistence_token"
-    t.boolean  "blocked"
+    t.boolean  "blocked",           :default => false
     t.string   "parent_email"
     t.integer  "parent1_id"
     t.integer  "parent2_id"
     t.string   "home_address"
     t.integer  "student_group_id"
   end
-
-  create_table "roles", :force => true do |t|
-    t.string "name"
-  end
-
-  create_table "roles_users", :id => false, :force => true do |t|
-    t.integer "role_id"
-    t.integer "user_id"
-  end
-
-  add_index "roles_users", ["role_id"], :name => "index_roles_users_on_role_id"
-  add_index "roles_users", ["user_id"], :name => "index_roles_users_on_user_id"
 
   create_table "schedule_items", :force => true do |t|
     t.integer  "week_day"

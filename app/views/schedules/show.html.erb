@@ -1,6 +1,8 @@
-<%= javascript_include_tag "groupdataview" %>
-<%= javascript_include_tag "groupcombo" %>
-<%= javascript_include_tag "schedule" %>
+<% content_for :bottom do %>
+  <%= javascript_include_tag "groupdataview" %>
+  <%= javascript_include_tag "groupcombo" %>
+  <%= javascript_include_tag "schedule" %>
+<% end %>
 
 <% javascript_tag do %>
   Ext.onReady(function() {

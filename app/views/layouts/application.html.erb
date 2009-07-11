@@ -3,18 +3,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <%= stylesheet_link_tag "ext-all" %>
-    <%= stylesheet_link_tag "xtheme-gray" %>
-    <%= stylesheet_link_tag "protoload" %>
-    <%= stylesheet_link_tag "default-style" %>
-  
+    <%= stylesheet_link_tag "ext-all", "xtheme-gray", "protoload", "default-style", :cache => "sms"  %>
+    <%= javascript_include_tag "prototype", "application", "ext-prototype-adapter", "ext-all-debug", :cache => "sms" %>
+
     <title>School Management System</title>
-    
-    <%= javascript_include_tag :defaults %>
-    <%= javascript_include_tag "ext-prototype-adapter" %>
-    <%= javascript_include_tag "ext-all-debug" %>
-    <%= javascript_include_tag "protoload" %>
-		<%= javascript_include_tag "default" %>
 
 </head>
 <body>
@@ -23,7 +15,7 @@
 <% end %>
 <div id="main_container">
     <div class="top">
-        <% link_to({ :controller => :application }, { :class => "logo" }) do %>
+        <% link_to({ :controller => :welcome }, { :class => "logo" }) do %>
             <span>School Management System</span>
         <% end %>
     </div>
@@ -65,9 +57,16 @@
     </c:forEach>
 </sms:messageBox>
 <% javascript_tag do %>
-  Ext.Ajax.extraParams = {
-    "authenticity_token": window._token
-  };
+  Ext.onReady(function() {
+    Ext.Ajax.extraParams = {
+      "authenticity_token": window._token
+    };
+  });
+  
 <% end %>
+
+<%= javascript_include_tag "protoload" %>
+<%= javascript_include_tag "default" %>
+<%= yield :bottom %>
 </body>
 </html>

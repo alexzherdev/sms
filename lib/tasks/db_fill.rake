@@ -17,6 +17,7 @@ namespace :sms do
       subject_ids = create_subject_ids(room_map)
       teachers = create_teachers
       create_teacher_subjects(teachers)
+      admin = User.create :login => "qwe", :password => "qwe", :password_confirmation => "qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe" 
     end
     
     def create_groups
