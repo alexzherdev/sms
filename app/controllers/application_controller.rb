@@ -35,6 +35,7 @@ class ApplicationController < ActionController::Base
     return false unless current_user
     controller_class = self.class  
     action_name = params[:action]
+    
     return true unless action_protected?(controller_class, action_name)
     
     signature = compose_action_signature(controller_class, action_name)
@@ -50,6 +51,10 @@ class ApplicationController < ActionController::Base
   end
   
   def login_required
+    
+    Dir.glob(File.join(RAILS_ROOT,'app','models','**','*.rb')).each do |file|
+      require_dependency file
+    end
     authorized? || access_denied
   end
   
@@ -76,11 +81,15 @@ class ApplicationController < ActionController::Base
   end
   
   def current_user_session
+    p "CURRENT USER SESSION"
+    p @current_user_session if defined?(@current_user_session)
     return @current_user_session if defined?(@current_user_session)
     @current_user_session = UserSession.find
   end
   
   def current_user
+    p "CURRENT USER"
+    p @current_user if defined?(@current_user)
     return @current_user if defined?(@current_user)
     @current_user = current_user_session && current_user_session.record
   end

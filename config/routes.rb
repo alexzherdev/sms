@@ -12,6 +12,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :students
 
   map.resources :user_sessions
+  
+  map.resources :lesson_times
+  
+  map.resources :class_rooms
+  
+  map.resources :users
+  
+  map.resource :register
 
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -53,10 +61,7 @@ ActionController::Routing::Routes.draw do |map|
   map.logout "logout", :controller => "user_sessions", :action => "destroy"  
   
   map.welcome "welcome", :controller => "welcome", :action => "index" 
-  
-  map.resources :lesson_times
-  map.resources :class_rooms
-  map.resources :users
+
   
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should

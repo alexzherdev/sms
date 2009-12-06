@@ -48,6 +48,7 @@ class SchedulesController < ApplicationController
     ScheduleItem.delete_all
     sg = Schedule::Generator.new ClassRoom.all, StudentGroup.all, Subject.all, LessonTime.all, TeacherSubject.all
     items = sg.generate_schedule
+
     ScheduleItem.transaction do
       for item in items do
         item.save
@@ -74,7 +75,7 @@ class SchedulesController < ApplicationController
       group_index = groups.index(item.student_group)
       item_table[day_time_index][group_index] = item
     end
-    return item_table
+    item_table
   end
   
   def create_day_times

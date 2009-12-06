@@ -324,8 +324,9 @@ module ExtjsHelper
   def extjs_combo_box_control(model_name, model_field, options = {})
     id = "_combo_box_#{new_gui_id}"
     options.delete :applyTo
-    options[:renderTo] = id
-
+    unless options.delete(:render) == false
+      options[:renderTo] = id
+    end
     validation = add_validation_errors(model_name, options[:borrow_errors_from] || model_field, options[:js_variable] || id, options)
 
     if options[:values]

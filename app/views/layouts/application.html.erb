@@ -36,7 +36,8 @@
         <li><%= link_to "Students", students_path %></li>        
         <li><%= link_to "Student Groups", student_groups_path %></li>        
         <li><%= link_to "Subjects", subjects_path %></li>        
-        <li><%= link_to "Schedule", schedule_path %></li>        
+        <li><%= link_to "Schedule", schedule_path %></li> 
+        <li><%= link_to "Registers", register_path %></li>       
         <li class="last"><%= link_to "Log out", logout_path %></li>
         </ul>
         </div></div></div>
@@ -51,11 +52,7 @@
     <div class="clear"></div>
     <div id="footer">&copy; 2007-2009 блаблабла.</div>
 </div>
-<sms:messageBox>
-    <c:forEach items="${messageKeys}" var="messageKey">
-        <fmt:message key="${messageKey}" />
-    </c:forEach>
-</sms:messageBox>
+
 <% javascript_tag do %>
   Ext.onReady(function() {
     Ext.Ajax.extraParams = {

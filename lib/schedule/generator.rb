@@ -69,7 +69,7 @@ module Schedule
             remove_lesson(group_lessons, lesson.lesson)
             free_rooms.delete lesson.room
             teacher = self.group_teacher_subjects[group.id][lesson.lesson]
-            free_teachers.delete teacher
+            free_teachers.delete teacher.id
             time_slice.lesson_count += 1
             self.lessons_to_distribute -= 1
           end
@@ -135,7 +135,7 @@ module Schedule
       available = []
       for lesson in group_lessons do
         teacher = group_teacher_subjects[group.id][lesson.lesson]
-        if !free_teachers.include?(teacher)
+        if !free_teachers.include?(teacher.id)
           next
         end
         possible_lesson = lesson.clone
@@ -255,7 +255,7 @@ module Schedule
       self.teachers = []
       self.group_teacher_subjects = []
       for ts in teacher_subjects do
-        self.teachers << ts.teacher
+        self.teachers << ts.teacher.id
         teacher_subject_map = group_teacher_subjects[ts.student_group_id]
         if teacher_subject_map.nil?
           teacher_subject_map = []

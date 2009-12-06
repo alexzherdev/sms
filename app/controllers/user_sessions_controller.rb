@@ -1,5 +1,5 @@
 class UserSessionsController < ApplicationController  
-  skip_before_filter :login_required
+  skip_before_filter :login_required, :except => :destroy
   
   def new
     if current_user

@@ -1,0 +1,98 @@
+<% content_for :bottom do %>
+  <%= javascript_include_tag "register" %>
+<% end %>
+
+<% unless @student_groups.blank? %>
+  <% javascript_tag do %>
+    Ext.onReady(function() {
+    	Global.groups = <%= student_group_collection(@student_groups).to_json %>
+    	Global.groupStore = new Ext.data.SimpleStore({
+    		fields: [{name: "id"}, {name: "name"}],
+    		id: 0
+    	});
+      	Global.groupStore.loadData(Global.groups);
+  			    	
+      	Global.subjects = <%= subject_collection(@subjects).to_json %>
+    	Global.subjectStore = new Ext.data.SimpleStore({
+    		fields: [{name: "id"}, {name: "name"}],
+    		id: 0
+    	});
+      	Global.subjectStore.loadData(Global.subjects);
+    	Global.markValues = <%= mark_value_collection(@marks).to_json %>
+      	Global.markValueStore = new Ext.data.SimpleStore({
+    		fields: [{name: "mark"}],
+    		id: 0
+    	});
+      	Global.markValueStore.loadData(Global.markValues);
+    });
+  <% end %>  
+  
+  <div id="markBoxContainer" class="x-hide-display">
+    <%= extjs_combo_box_control :id => "markBox", :width => 23, :store => "Global.markValueStore", :displayField => "mark", :valueField => "mark" %>
+	</div>
+	<%= hidden_field_tag "current_group", @current_group, :id => "current_group" %>
+	<%= hidden_field_tag "current_subject", @current_subject, :id => "current_subject" %>
+
+	<%= extjs_combo_box_control :id => "groups", :render => false, :store => "Global.groupStore", :displayField => "name", :valueField => "id" %>
+  <%= extjs_combo_box_control :id => "subjects", :render => false, :store => "Global.subjectStore", :displayField => "name", :valueField => "id" %>
+
+	<div class="clear"></div>
+	<div id="panel_container" class="register-panel-container"></div>
+	<div id="toolbar"></div>
+	<div id="register_container"></div>
+	
+	<% javascript_tag do %>
+		Ext.onReady(function() {
+			
+    	Global.marks = <%= mark_collection(@students, @dates, @mark_table).to_json %>;	
+			Global.dates = [<c:forEach items="${dates}" var="date" varStatus="dateStatus">
+						[${dateStatus.index}, "<fmt:formatDate value="${date.first}" pattern="${pattern}" />"],</c:forEach>];
+			Global.students = <%= student_collection(@students) %>;
+			Global.register = new Register({ 
+						renderTo: "register_container",
+						marks: Global.marks,
+						dates: Global.dates,
+						students: Global.students,
+						readonly: <%= @readonly %>,
+						markBox: Ext.getCmp("markBox")
+					});
+			var groups = Ext.getCmp("groups");
+			groups.on("select", function(combo, record, index) {
+				$('currentGroup').value = record.get("id");
+				Global.submitForm(combo.getId());
+			});				
+			groups.setValue("<%= @current_group %>");					
+			
+			var subjects = Ext.getCmp("subjects");
+			subjects.on("select", function(combo, record, index) {
+				$('currentSubject').value = record.get("id");
+				Global.submitForm(combo.getId());
+			});				
+			subjects.setValue("<%= @current_subject %>");					
+			
+			var panel = new Ext.Panel({
+   			renderTo: "panel_container",
+   			width: 825,
+   			title: "Register",
+   			tbar: []
+   		});
+   		
+   		Global.register.markBox.on("select", function(box, record) {
+   			Global.register.chooseMark(Global.register.editCell, record.get("mark"));
+   		});
+   		Global.register.markBox.on("expand", function() {
+   			Global.register.clearListeners();
+   		});
+   		Global.register.markBox.on("collapse", function() {
+   			Global.register.setListeners();
+   		});
+   		panel.getTopToolbar().addField(Ext.getCmp("groups"));
+   		panel.getTopToolbar().add(new Ext.Toolbar.Separator());
+   		panel.getTopToolbar().addField(Ext.getCmp("subjects"));
+		});
+		
+	<% end %>
+
+<% else %>
+  There are no registers you can view.
+<% end %>
