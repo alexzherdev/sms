@@ -1,6 +1,5 @@
 <% javascript_tag do %>
   var addUser = function(user) {
-    debugger;
     Global.user_store.add(new Global.user_store.recordType(user));
     Global.user_grid.getView().focusRow(Global.user_store.getCount() - 1);
   }
