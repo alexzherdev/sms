@@ -42,7 +42,7 @@
 			rooms: Global.rooms,
 			dayTimes: Global.dayTimes,
 			items: Global.items,
-			locale: "en_us",
+			locale: "ru_ru",
 			saveCallback: function(itemId, i, j, subjectId, roomId, f) {
 			  Ext.Ajax.request({
 			    url: "<%= save_schedule_path %>",
@@ -64,7 +64,7 @@
 		var panel = new Ext.Panel({
 			renderTo: "panel_container",
 			width: 682,
-			title: "Edit Schedule",
+			title: "Расписание занятий",
 			tbar: [{
     	icon: '/images/page-prev.gif',
           cls: 'x-btn-icon',
@@ -75,7 +75,7 @@
           handler: function() { Global.schedule.scroll(41); }
 			},
 			"-", {
-				text: "Generate",
+				text: "Генерировать",
 			   	icon: '/images/startbutton-icon.gif',
           cls: 'x-btn-text-icon generate-icon',
           handler: function() { document.location.href = "<%= generate_schedule_path %>"; }
@@ -90,7 +90,7 @@
 <div class="x-window-header"></div>
 <div id="popup_main" class="schedule-popup">
   <%= extjs_combo_box_control nil, nil, :id => "popup_subjects", :store => "Global.subjectStore", :displayField => "name", :valueField => "id" %>
-  <%= extjs_group_combo_box_control nil, nil, :id => "popup_rooms", :store => "Global.roomStore", :displayField => "name", :valueField => "id", :groupTextTpl => "{[values.text == \"true\" ? \"Occupied\" : \"Free\"]}" %>
+  <%= extjs_group_combo_box_control nil, nil, :id => "popup_rooms", :store => "Global.roomStore", :displayField => "name", :valueField => "id", :groupTextTpl => "{[values.text == \"true\" ? \"Занятые\" : \"Свободные\"]}" %>
 </div>
 </div>
 

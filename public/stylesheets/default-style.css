@@ -602,3 +602,18 @@ a:link, a:visited, a:active {
 .ts-popup .x-panel-bwrap {
 	display: none;
 }
+
+.user-form-container {
+  width: 333px;
+  height: 100%;
+  padding: 10px;
+  background-color: #F1F1F1; 
+}
+
+.user-form-container .x-form-text {
+  width: 170px;
+}
+
+.import {
+    background-image:url("../images/folder_go.png") !important;
+}

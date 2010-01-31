@@ -1,15 +1,15 @@
 <% form_for @student_group do |f| %>
   <%= f.error_messages %>
   <p>
-    <%= f.label :year %><br />
+    <%= f.label :year, "Год" %><br />
     <%= f.text_field :year %>
   </p>
   <p>
-    <%= f.label :letter %><br />
+    <%= f.label :letter, "Буква" %><br />
     <%= f.text_field :letter %>
   </p>
-  <p><%= f.submit "Submit" %></p>
+  <p><%= f.submit "Сохранить" %></p>
 <% end %>
 
 
-<p><%= link_to "Back to List", student_groups_path %></p>
+<p><%= link_to "Назад", student_groups_path %></p>

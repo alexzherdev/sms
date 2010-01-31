@@ -8,16 +8,25 @@ namespace :sms do
       Subject.destroy_all  
       StudentGroup.destroy_all  
       ClassRoom.destroy_all  
-      Teacher.destroy_all  
+      Person.destroy_all  
+      Role.destroy_all
     end
     
     task :populate do
+      roles = create_roles
       groups = create_groups
       class_rooms, room_map = create_rooms_and_map
       subject_ids = create_subject_ids(room_map)
       teachers = create_teachers
       create_teacher_subjects(teachers)
-      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe"
+      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe", :role_id => Role.admin.id
+      admin.save
+    end
+    
+    def create_roles
+      ROLES.each do |role|
+        Role.create :name => role
+      end
     end
     
     def create_groups
@@ -73,7 +82,7 @@ namespace :sms do
     def create_teachers
       teachers = []
       TEACHERS.each_with_index do |teacher_name, index|
-        teacher = Teacher.create :birth_date => DateTime.now, :email => "abc@asdasd.ru", :first_name => teacher_name.first, :last_name => teacher_name.second, :login => "teacher#{index}", :password => "password"
+        teacher = Teacher.create :birth_date => DateTime.now, :email => "abc@asdasd.ru", :first_name => teacher_name.second, :last_name => teacher_name.first, :login => "teacher#{index}", :password => "password", :role_id => Role.teacher.id
         teachers << teacher
       end
       teachers
@@ -103,6 +112,14 @@ namespace :sms do
     				"История", "Английский", "Биология"]
     FLOOR_COUNT = 3
     ROOMS_PER_FLOOR = 15
+    ROLES = [
+      "Администратор",
+      "Учитель",
+      "Родитель",
+      "Методист",
+      "Директор"
+    ]
+    
     TEACHERS = [
       ["Абрамишвили", "Мария Гурамовна"],
     	["Августинович", "Глория Олеговна"],

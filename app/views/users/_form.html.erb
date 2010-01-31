@@ -1,0 +1,47 @@
+<div class="user-form-container">
+    <% remote_form_for @user, :url => url, :method => method, 
+        :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {
+          Global.fire('userUpdated', Form.serialize($('user_form'), { hash: true }));              
+          });",
+        :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "user_form" } do |f| %>
+    <table>
+      <tr>
+        <td><%= f.label :last_name, "Фамилия" %></td>
+        <td><%= extjs_text_field_control :user, :last_name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :first_name, "Имя" %></td>
+        <td><%= extjs_text_field_control :user, :first_name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :login, "Логин" %></td>
+        <td><%= extjs_text_field_control :user, :login %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :password, "Пароль" %></td>
+        <td><%= extjs_text_field_control :user, :password, :inputType => "password" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :password_confirmation, "Подтвердите пароль" %></td>
+        <td><%= extjs_text_field_control :user, :password_confirmation, :inputType => "password" %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :email, "E-mail" %></td>
+        <td><%= extjs_text_field_control :user, :email %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :birth_date, "Дата рождения" %></td>
+        <td><%= extjs_date_field_control :user, :birth_date, :format => "d-m-Y", :width => 178 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :role_id, "Роль" %></td>
+        <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :blocked, "Заблокирован" %></td>
+        <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>
+      </tr>
+      <%= extjs_button "Сохранить" %>
+    </table>
+    <% end %>
+</div>

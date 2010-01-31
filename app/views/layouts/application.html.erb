@@ -4,14 +4,16 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%= stylesheet_link_tag "ext-all", "xtheme-gray", "protoload", "default-style", :cache => "sms"  %>
-    <%= javascript_include_tag "prototype", "application", "ext-prototype-adapter", "ext-all-debug", :cache => "sms" %>
+    <%= javascript_include_tag "prototype", "application", "ext-prototype-adapter-debug", "ext-all-debug", "sms-checkbox", :cache => "sms" %>
 
     <title>School Management System</title>
 
 </head>
 <body>
 <% javascript_tag do %>
-  window._token = '<%= form_authenticity_token %>'; 
+    Ext.Ajax.extraParams = {
+      "authenticity_token": '<%= form_authenticity_token %>'
+    };
 <% end %>
 <div id="main_container">
     <div class="top">
@@ -30,15 +32,15 @@
         <div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>       
         <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
         <ul class="left-menu">
-        <li><%= link_to "Users", users_path %></li>        
-        <li><%= link_to "Lesson Times", lesson_times_path %></li>        
-        <li><%= link_to "Class Rooms", class_rooms_path %></li>        
-        <li><%= link_to "Students", students_path %></li>        
-        <li><%= link_to "Student Groups", student_groups_path %></li>        
-        <li><%= link_to "Subjects", subjects_path %></li>        
-        <li><%= link_to "Schedule", schedule_path %></li> 
-        <li><%= link_to "Registers", register_path %></li>       
-        <li class="last"><%= link_to "Log out", logout_path %></li>
+        <li><%= link_to "Пользователи", users_path %></li>        
+        <li><%= link_to "Расписание звонков", lesson_times_path %></li>        
+        <li><%= link_to "Аудитории", class_rooms_path %></li>        
+        <li><%= link_to "Студенты", students_path %></li>        
+        <li><%= link_to "Классы", student_groups_path %></li>        
+        <li><%= link_to "Предметы", subjects_path %></li>        
+        <li><%= link_to "Расписание занятий", schedule_path %></li> 
+        <li><%= link_to "Журналы", register_path %></li>       
+        <li class="last"><%= link_to "Выход", logout_path %></li>
         </ul>
         </div></div></div>
         <div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>
@@ -50,17 +52,8 @@
       <%= yield %> 
     </div>
     <div class="clear"></div>
-    <div id="footer">&copy; 2007-2009 блаблабла.</div>
+    <div id="footer">&copy; 2007-2010 блаблабла.</div>
 </div>
-
-<% javascript_tag do %>
-  Ext.onReady(function() {
-    Ext.Ajax.extraParams = {
-      "authenticity_token": window._token
-    };
-  });
-  
-<% end %>
 
 <%= javascript_include_tag "protoload" %>
 <%= javascript_include_tag "default" %>

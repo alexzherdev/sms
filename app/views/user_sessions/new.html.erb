@@ -1,15 +1,15 @@
-<h1>Log in</h1>
+<h1>Вход</h1>
 
 <% form_for @user_session do |f| %>
   <%= f.error_messages %>
 
-    <%= f.label :login %><br />
+    <%= f.label :login, "Логин" %><br />
     <%= extjs_text_field_control :user_session, :login %>
 
-    <%= f.label :password %><br />
+    <%= f.label :password, "Пароль" %><br />
     <%= extjs_text_field_control :user_session, :password, :inputType => "password" %>
 
-  <%= extjs_button :text => "Log in" %>
+  <%= extjs_button :text => "Войти" %>
 <% end %>
 
 

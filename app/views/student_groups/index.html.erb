@@ -1,14 +1,14 @@
 <table>
   <tr>
-    <th>Year</th>
-    <th>Letter</th>
+    <th>Год</th>
+    <th>Буква</th>
   </tr>
   <% for student_group in @student_groups %>
     <tr>
-      <td><%=h student_group.year %></td>
-      <td><%=h student_group.letter %></td>
+      <td><%= h student_group.year %></td>
+      <td><%= h student_group.letter %></td>
     </tr>
   <% end %>
 </table>
 
-<p><%= link_to "New Student Group", new_student_group_path %></p>
+<p><%= link_to "Новый класс", new_student_group_path %></p>

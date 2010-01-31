@@ -1,0 +1,6 @@
+if @user.valid?
+  page.replace_html "user_form", :partial => "form", :locals => { :url => user_path(@user), :method => "PUT" }
+  page.call "addUser", strip_in_json(@user.to_json)
+else
+  page.replace_html "user_form", :partial => "form", :locals => { :url => users_path, :method => "POST" }
+end

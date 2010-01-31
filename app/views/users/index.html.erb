@@ -1,3 +1,74 @@
-<% form_tag new_user_path do %>
-  <%= extjs_button "New user" %>
+<% javascript_tag do %>
+  var addUser = function(user) {
+    debugger;
+    Global.user_store.add(new Global.user_store.recordType(user));
+    Global.user_grid.getView().focusRow(Global.user_store.getCount() - 1);
+  }
+  
+  Ext.onReady(function() {
+    Global.role_store = <%= extjs_simple_store :data => role_collection(@roles), :type => :arrays, :fields => ["id", "name" ] %>;
+    Global.user_store = <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => ["id", "last_name", "first_name", "login", "password" ] %>;
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "Фамилия", :width => 150 },
+      { :header => "Имя", :width => 150 }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedUser = r;
+          Global.user_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedUser.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.user_grid = <%= extjs_grid :store => "Global.user_store".j, :width => 325, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+
+    Global.user_data = new Ext.Panel({
+      
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "users",
+			width: 682,
+			height: 500,
+			title: "Пользователи",
+			tbar: [
+			{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Добавить',
+        handler: function() {
+          Global.user_data.load({
+            url: '<%= new_user_url %>'
+          });
+        }
+  		}],
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.user_grid, 
+  		  Global.user_data
+		  ]
+		});
+
+    Global.observe("userUpdated", function(config) {
+      var record = Global.user_grid.getSelectionModel().getSelected();
+      record.set("first_name", config["user[first_name]"]);
+      record.set("last_name", config["user[last_name]"]);
+      record.commit();
+    });
+    
+	});
 <% end %>
+<div class="users-container">
+  <div id="users"></div>
+</div>

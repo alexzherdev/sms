@@ -182,7 +182,7 @@ module ExtjsHelper
     options[:typeAhead] ||= true
     options[:mode] ||= "local"
     options[:valueField] ||= "id"
-    options[:emptyText] ||= "Choose..."
+    options[:emptyText] ||= "Выберите..."
     options[:editable] ||= false
     options[:triggerAction] ||= "all"
 
@@ -336,7 +336,7 @@ module ExtjsHelper
       options[:valueField] = "id"
     end
 
-    options[:valueNotFoundText] ||= "Choose..."
+    options[:valueNotFoundText] ||= "Выберите..."
 
     lines ||= []
     lines << (options.delete(:js_variable) || "var " + id) + " = " + extjs_combo_box(model_name, model_field, options) << validation
@@ -474,6 +474,36 @@ module ExtjsHelper
     control_wrapper(id, [("var #{id} = " + (js_var.blank? ? "" : (js_var + " = "))) + extjs_upload(model_name, model_field, options),
                          validation])
   end
+  
+  #  Renders an array of hashes to use as items collection for a form panel.
+  #
+  def extjs_form_fields(model_name, field_configs)
+    obj = instance_variable_get("@#{model_name}")
+    field_configs.collect do |fc|
+      field_name = fc.delete(:name)
+      raw_value = nil
+      name = "#{model_name}[#{field_name}]"
+      if obj and obj.respond_to?(field_name)      
+        raw_value = obj.send(field_name)
+      end
+      
+      fc[:name] = name 
+      fc[:value] = format_field_value(raw_value) if obj and raw_value
+      fc[:checked] = raw_value if [true, false].include?(raw_value)
+      fc
+    end.to_json
+  end
+  
+  #  Returns +value+ formatted properly for use with ExtJS controls.
+  #
+  def format_field_value(value)
+    case value
+    when Time:
+      return value.date_format
+    else
+      return value
+    end
+  end
 
   #  Returns a string containing the intialization of error message on the field
   #
@@ -495,14 +525,14 @@ module ExtjsHelper
 
   #  Returns a piece of text composed of the div element, script tag with Ext.onReady handler
   #  filled with <tt>control_js_code</tt>. The div is aasigned the given <tt>id</tt> and a class
-  #  vvn-extjs-control.
+  #  sms-extjs-control.
   #
   #  * <tt>id</tt>:: The id to assign to div.
   #  * <tt>lines</tt>:: The js code to place into handler. Can be an array of +String+ or a single +String+.
   #
   def control_wrapper(id, lines)
     lines = lines.to_a
-    "<div class=\"sms-extjs-control-wrapper form-item\">
+    "<div class=\"sms-extjs-control-wrapper form-item x-form-element\">
        <div class=\"sms-extjs-control\" id=\"#{id}\"></div>
      </div>
      <div class=\"clear\"></div>
@@ -528,6 +558,7 @@ module ExtjsHelper
       value = model.send(model_field)
       case value
         when Date: options[:value] ||= date_only_json(value)
+        when Time: options[:value] ||= value.date_format
         when ActiveRecord::Base: options[:value] ||= value.id
       else
         options[:value] ||= value
