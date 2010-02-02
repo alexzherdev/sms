@@ -13,13 +13,17 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :user_sessions
   
-  map.resources :lesson_times
+  map.resources :time_table_items
   
   map.resources :class_rooms
   
   map.resources :users
   
-  map.resource :register
+  map.connect "/register", :controller => "registers", :action => "show"
+  
+  map.resource :register, :member => { :mark => :post }
+  
+  map.resources :roles
 
   # The priority is based upon order of creation: first created -> highest priority.
 

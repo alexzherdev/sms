@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100129204528) do
+ActiveRecord::Schema.define(:version => 20100202101608) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -36,19 +36,12 @@ ActiveRecord::Schema.define(:version => 20100129204528) do
     t.integer "subject_id"
   end
 
-  create_table "lesson_times", :force => true do |t|
-    t.datetime "start_time"
-    t.datetime "end_time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "marks", :force => true do |t|
     t.datetime "date"
     t.integer  "student_id"
     t.integer  "mark"
     t.integer  "schedule_item_id"
-    t.integer  "modified_by_id_id"
+    t.integer  "modified_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -71,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20100129204528) do
     t.integer  "parent2_id"
     t.string   "home_address"
     t.integer  "student_group_id"
-    t.integer  "role_id",                              :null => false
+    t.integer  "role_id"
   end
 
   create_table "roles", :force => true do |t|
@@ -80,10 +73,17 @@ ActiveRecord::Schema.define(:version => 20100129204528) do
 
   create_table "schedule_items", :force => true do |t|
     t.integer  "week_day"
-    t.integer  "lesson_time_id"
+    t.integer  "time_table_item_id"
     t.integer  "student_group_id"
     t.integer  "subject_id"
     t.integer  "class_room_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "settings", :force => true do |t|
+    t.string   "name"
+    t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -109,6 +109,14 @@ ActiveRecord::Schema.define(:version => 20100129204528) do
     t.integer  "student_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "time_table_items", :force => true do |t|
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "item_type"
   end
 
 end

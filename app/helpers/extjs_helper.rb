@@ -165,7 +165,7 @@ module ExtjsHelper
   def extjs_toolbar_button(text, button_options = {}, options = {})
     if options[:handler]
       handler = options[:handler]
-    else
+    elsif not options.blank?
       handler = "function() {
         Ext.Ajax.request(#{strip_hash_keys_for_json(options).to_json});
         }".j

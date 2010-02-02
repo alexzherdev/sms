@@ -1,0 +1,66 @@
+<% javascript_tag do %>
+  var addTimeTableItem = function(item) {
+    Global.time_table_item_store.add(
+      new Global.time_table_item_store.recordType({ id: item[0], number: item[1], start_time: item[2], end_time: item[3] })
+    );
+  }
+  
+  var scheduleAlert = function() {
+    Ext.MessageBox.show({ title: 'SMS', msg: 'Вы не можете удалить этот урок, так как уже составлено расписание.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK })
+  }
+  
+  var deleteItem = function(id) {
+    Global.time_table_item_store.remove(Global.time_table_item_store.getById(id));
+  }
+  
+  Ext.onReady(function() {
+    Global.time_table_item_store = <%= extjs_simple_store :data => time_table_items_collection(@items), :type => :arrays, :fields => ["id", "number", "start_time", "end_time"] %>;
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "№", :width => 30 },
+      { :header => "Начало", :width => 145 },
+      { :header => "Конец", :width => 145 }
+    ]) %>;
+    Global.time_table_grid = <%= extjs_grid :store => "Global.time_table_item_store".j, :width => 325,
+      :autoHeight => true, :cm => "cm".j, :title => "", :tbar => [
+        extjs_toolbar_button("Добавить", { :iconCls => "x-btn-text-icon add", 
+          :menu => {
+            :xtype => "menu",
+            :items => [
+              extjs_toolbar_button("Урок", {}, { :url => time_table_items_path(:item_type => TimeTableItem::LESSON), :method => "POST" }),
+              extjs_toolbar_button("Короткая перемена", {}, { :url => time_table_items_path(:item_type => TimeTableItem::SHORT_BREAK), :method => "POST" }),
+              extjs_toolbar_button("Длинная перемена", {}, { :url => time_table_items_path(:item_type => TimeTableItem::LONG_BREAK), :method => "POST" }) 
+            ]
+          } 
+        }),
+        extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :handler => "function() {
+          Ext.Ajax.request({
+            method: 'DELETE', 
+            url: '#{time_table_items_path}/' + Global.time_table_grid.getSelectionModel().getSelected().get('id')
+          })}".j})
+      ] %>;
+      
+    Global.time_table_settings = new Ext.Panel({
+      autoLoad: {
+        url: '<%= url_for :action => "settings" %>',
+        scripts: true 
+      }    
+    });
+    
+    var panel = new Ext.Panel({
+			renderTo: "time_table",
+			width: 682,
+			height: 500,
+			title: "Расписание звонков",
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.time_table_grid, 
+  		  Global.time_table_settings
+		  ]
+		});
+  });
+<% end %>
+<div id="time_table"></div>

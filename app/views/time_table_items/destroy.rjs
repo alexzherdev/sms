@@ -1,0 +1,5 @@
+if @item
+  page.call "deleteItem", @item.id
+else
+  page.call "scheduleAlert"
+end

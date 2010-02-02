@@ -13,6 +13,8 @@ namespace :sms do
     end
     
     task :populate do
+      create_settings
+      acl_actions = create_acl_actions
       roles = create_roles
       groups = create_groups
       class_rooms, room_map = create_rooms_and_map
@@ -23,10 +25,22 @@ namespace :sms do
       admin.save
     end
     
+    def create_settings
+      Setting["short_break"] = 10
+      Setting["long_break"] = 20
+    end
+    
+    def create_acl_actions
+      AclAction.create :name => "users", :title => "Управление пользователями"
+      AclAction.create :name => "roles", :title => "Управление ролями"
+    end
+    
     def create_roles
       ROLES.each do |role|
         Role.create :name => role
       end
+      Role.admin.acl_actions << AclAction.find_by_name("users")
+      Role.admin.acl_actions << AclAction.find_by_name("roles")
     end
     
     def create_groups

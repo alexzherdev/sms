@@ -29,7 +29,7 @@ class SchedulesController < ApplicationController
       item = ScheduleItem.new
       item.week_day = day_time.first
       item.student_group = group
-      item.lesson_time = day_time.second
+      item.time_table_item = day_time.second
     else
       item = ScheduleItem.find params[:id]
     end
@@ -46,7 +46,7 @@ class SchedulesController < ApplicationController
   
   def generate
     ScheduleItem.delete_all
-    sg = Schedule::Generator.new ClassRoom.all, StudentGroup.all, Subject.all, LessonTime.all, TeacherSubject.all
+    sg = Schedule::Generator.new ClassRoom.all, StudentGroup.all, Subject.all, TimeTableItem.lessons, TeacherSubject.all
     items = sg.generate_schedule
 
     ScheduleItem.transaction do
@@ -66,12 +66,12 @@ class SchedulesController < ApplicationController
     day_times.each_with_index do |day_time, i|
       item_table << []
       groups.each do |group|
-        new_item = ScheduleItem.new(:week_day => day_time.first, :lesson_time => day_time.second, :student_group => group, :subject => empty_subject, :class_room => empty_room) { |item| item.id = 0 }
+        new_item = ScheduleItem.new(:week_day => day_time.first, :time_table_item => day_time.second, :student_group => group, :subject => empty_subject, :class_room => empty_room) { |item| item.id = 0 }
         item_table[i] << new_item
       end  
     end
     schedule_items.each do |item|
-      day_time_index = day_times.index([item.week_day, item.lesson_time])
+      day_time_index = day_times.index([item.week_day, item.time_table_item])
       group_index = groups.index(item.student_group)
       item_table[day_time_index][group_index] = item
     end
@@ -79,8 +79,8 @@ class SchedulesController < ApplicationController
   end
   
   def create_day_times
-    lesson_times = LessonTime.all
-    week_days = LessonTime::WEEK_DAYS
+    lesson_times = TimeTableItem.lessons
+    week_days = TimeTableItem::WEEK_DAYS
     day_times = []
     week_days.each do |week_day|
       lesson_times.each do |lesson_time|

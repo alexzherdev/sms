@@ -354,7 +354,7 @@ a:link, a:visited, a:active {
 }
 
 .register-container {
-	width: 900px;
+	width: 830px;
 }
 
 .schedule-container .daytime-table-container, 
@@ -372,8 +372,8 @@ a:link, a:visited, a:active {
 }
 
 .register-container .student-table-container .upper-left-corner {
-	height: 31px;
-	*height: 30px;
+	height: 35px;
+	*height: 34px;
 	width: 209px;
 }
 
@@ -615,5 +615,15 @@ a:link, a:visited, a:active {
 }
 
 .import {
-    background-image:url("../images/folder_go.png") !important;
+  background-image:url("../images/folder_go.png") !important;
+}
+
+.roles-container .role-data {
+  width: 454px;
+  padding: 10px;
+}
+
+.settings-container {
+  width: 333px;
+  padding: 10px;
 }

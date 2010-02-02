@@ -1,0 +1,1 @@
+page.call "addTimeTableItem", to_time_table_record(@item, @index)

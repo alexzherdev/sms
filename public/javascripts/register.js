@@ -22,13 +22,13 @@ var Register = Class.create({
 		//this.model.markStore.loadData(this.config.marks);
 				
 		this.model.dateStore = new Ext.data.SimpleStore({
-			fields: ["id", "text"],
+			fields: ["id", "text", "itemId", "date"],
 			id: 0
 		});
 		this.model.dateStore.loadData(this.config.dates);
 		
 		this.model.studentStore = new Ext.data.SimpleStore({
-			fields: ["id", "name"],
+			fields: ["id", "i", "name"],
 			id: 0
 		});
 		this.model.studentStore.loadData(this.config.students);
@@ -116,7 +116,7 @@ var Register = Class.create({
 				var mark = this.model.marks[j][i];
 				var cell = document.createElement("div");
 				cell.className = "cell";		
-				cell.id = mark.i + "_" + mark.j + "_cell";		
+				cell.id = "_" + mark.i + "_" + mark.j + "_cell";		
 				if (mark.mark != this.EMPTY_MARK) {
 					this.renderMark(cell, mark.mark);
 				}
@@ -162,7 +162,7 @@ var Register = Class.create({
 		if (e != null) {
 			if (e.explicitOriginalTarget && e.explicitOriginalTarget.className
 				&& e.explicitOriginalTarget.className.match("trigger") != null
-				|| e.explicitOriginalTarget && e.explicitOriginalTarget.className.match("text") != null
+				|| e.explicitOriginalTarget && e.explicitOriginalTarget.className && e.explicitOriginalTarget.className.match("text") != null
 				&& e.target.className.match("trigger") != null) {
 				return;
 			}
@@ -183,13 +183,16 @@ var Register = Class.create({
 		Event.observe(this.markup.mainContainer, "mouseout", this.blurMarkBox.bind(this));
 	},
 	
-	chooseMark: function(cell, mark) {
-		var i = cell.id.substring(0, cell.id.indexOf("_"));
-		var j = cell.id.substring(cell.id.indexOf("_") + 1, cell.id.lastIndexOf("_"));
+	chooseMark: function(cell, mark, handler) {
+	  var id = cell.id.substring(1, cell.id.length - 1);
+		var i = id.substring(0, id.indexOf("_"));
+		var j = id.substring(id.indexOf("_") + 1, id.lastIndexOf("_"));
+		var studentId = this.model.studentStore.getAt(i).get("id");
+		var itemId = this.model.dateStore.getAt(j).get("itemId");
+		var date = this.model.dateStore.getAt(j).get("date");
 		this.blurMarkBox(null);
 		this.markup.scrollableRegisterContainer.startWaiting("bigWaiting");
-		
-		TeacherRegisterAction.putMark(i, j, mark, Global.flowExecutionKey, function(result) {
+		handler(i, j, studentId, date, itemId, mark, function(result) {
 			eval(result);
 			this.markup.scrollableRegisterContainer.stopWaiting();
 		}.bind(this));
@@ -197,7 +200,7 @@ var Register = Class.create({
 	
 	putMark: function(i, j, mark) {
 		this.model.marks[i][j] = mark;
-		var cell = $(i + "_" + j + "_" + "cell");
+		var cell = $("_" + i + "_" + j + "_" + "cell");
 		this.renderMark(cell, mark);
 		this.markBox.setValue(null);
 	}	

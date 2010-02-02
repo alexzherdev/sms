@@ -1,0 +1,42 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.actions_selector = new Ext.ux.form.ItemSelector({
+      renderTo: 'actions_selector',
+      width: 454,
+      imagePath: '/images/ux/',
+      name: 'role[comma_separated_acl_action_ids]',
+      multiselects: [{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => acl_action_collection(@unused_actions), :type => :arrays, :fields => ["id", "title"] %>,
+        displayField: 'title',
+        valueField: 'id',
+        legend: 'Запрещенные действия'
+      },{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => acl_action_collection(@role.acl_actions), :type => :arrays, :fields => ["id", "title"] %>,
+        legend: 'Разрешенные действия',
+        displayField: 'title',
+        valueField: 'id',
+        tbar:[{
+          text: 'Очистить',
+          handler:function(){
+            Global.actions_selector.reset();
+          }
+        }]
+      }]
+      
+    });
+  });
+<% end %>
+<div class="role-form-container">
+  <% remote_form_for @role,  
+    :success => "Ext.MessageBox.alert('SMS', 'Данные роли сохранены.', function() {
+      Global.fire('roleUpdated', Form.serialize($('role_form'), { hash: true }));              
+      });",
+    :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "role_form" } do |f| %>  
+    <div id="actions_selector"></div>
+    <%= extjs_button "Сохранить" %>
+  <% end %>
+</div>

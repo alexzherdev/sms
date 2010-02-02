@@ -23,21 +23,21 @@ module Schedule
       for item in self.items do
         if occupied.has_key?(item.class_room)
           room_occupied_times = occupied[item.class_room]
-          if room_occupied_times.include? [item.week_day, item.lesson_time]
+          if room_occupied_times.include? [item.week_day, item.time_table_item]
             self.errors[item] ||= Set.new
             self.errors[item].add("Classroom is occupied")
-            first_item = first_occupied[[item.class_room, item.week_day, item.lesson_time]]
+            first_item = first_occupied[[item.class_room, item.week_day, item.time_table_item]]
             self.errors[first_item] ||= Set.new
             self.errors[first_item].add("Classroom is occupied")          
           else
-            room_occupied_times.add [item.week_day, item.lesson_time]
-            first_occupied[[item.class_room, item.week_day, item.lesson_time]] = item
+            room_occupied_times.add [item.week_day, item.time_table_item]
+            first_occupied[[item.class_room, item.week_day, item.time_table_item]] = item
           end
         else
           times = Set.new
-          times.add [item.week_day, item.lesson_time]
+          times.add [item.week_day, item.time_table_item]
           occupied[item.class_room] = times
-          first_occupied[[item.class_room, item.week_day, item.lesson_time]] = item
+          first_occupied[[item.class_room, item.week_day, item.time_table_item]] = item
         end
       end
     end

@@ -1,0 +1,53 @@
+<%= javascript_include_tag "MultiSelect" %>
+<%= javascript_include_tag "ItemSelector" %>
+
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.role_store = <%= extjs_simple_store :data => role_collection(@roles), :type => :arrays, :fields => ["id", "name" ] %>;
+
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "Имя", :width => 200 }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedRole = r;
+          Global.role_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedRole.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.role_grid = <%= extjs_grid :store => "Global.role_store".j, :width => 204, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+
+    Global.role_data = new Ext.Panel({
+      bodyCssClass: 'role-data'
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "roles",
+			width: 682,
+			height: 400,
+			title: "Роли",
+
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.role_grid, 
+  		  Global.role_data
+		  ]
+		});
+	});
+<% end %>
+<div class="roles-container">
+  <div id="roles"></div>
+</div>

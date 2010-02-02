@@ -11,14 +11,18 @@ module RegistersHelper
     collection
   end
   
-  def mark_value_collection(marks)
-    marks.collect(&:mark)
+  def date_collection(dates)
+    collection = []
+    dates.each_with_index do |date, i|
+      collection[i] = [ i, date.first.register_date_format, date.second.id, date.first.to_s ]
+    end
+    collection
   end
   
   def student_collection(students)
     index = -1
     students.collect do |student|
-      [ index += 1, student.name ]
+      [ student.id, index += 1, student.full_name ]
     end
   end
 end

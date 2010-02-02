@@ -247,7 +247,7 @@ module Schedule
 
     def init_lesson_times(less_times)
       self.lesson_times = Array.new(less_times).sort
-      self.day_count = LessonTime::WEEK_DAYS.length
+      self.day_count = TimeTableItem::WEEK_DAYS.length
       self.lesson_count = self.lesson_times.length
     end
   
@@ -275,7 +275,7 @@ module Schedule
           if lesson.nil?
             next
           end
-          item = ScheduleItem.new :week_day => LessonTime::WEEK_DAYS[day_no], :lesson_time => self.lesson_times[lesson_no], :class_room => self.class_room_map[lesson.room], :student_group => self.student_groups[i], :subject => self.subject_map[lesson.lesson]
+          item = ScheduleItem.new :week_day => TimeTableItem::WEEK_DAYS[day_no], :time_table_item => self.lesson_times[lesson_no], :class_room => self.class_room_map[lesson.room], :student_group => self.student_groups[i], :subject => self.subject_map[lesson.lesson]
           schedule_items << item
         end
         day_no += 1

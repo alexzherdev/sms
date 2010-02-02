@@ -5,4 +5,8 @@ class Subject < ActiveRecord::Base
   
   default_scope :include => [:class_rooms]
   named_scope :by_year, lambda { |year| { :conditions => { :year => year}}}
+  
+  def <=>(subject)
+    self.name <=> subject.name
+  end
 end
