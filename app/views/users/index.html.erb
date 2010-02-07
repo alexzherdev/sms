@@ -31,7 +31,9 @@
       :cm => "cm".j, :sm => "sm".j, :title => "" %>;
 
     Global.user_data = new Ext.Panel({
-      
+      bodyCfg: {
+        id: 'user_form_container'
+      }
     });
     
 		var panel = new Ext.Panel({
@@ -45,7 +47,8 @@
         text: 'Добавить',
         handler: function() {
           Global.user_data.load({
-            url: '<%= new_user_url %>'
+            url: '<%= new_user_url %>',
+            scripts: true
           });
         }
   		}],

@@ -1,4 +1,4 @@
-<div class="user-form-container">
+<div class="form-container user-form-container">
     <% remote_form_for @user, :url => url, :method => method, 
         :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {
           Global.fire('userUpdated', Form.serialize($('user_form'), { hash: true }));              

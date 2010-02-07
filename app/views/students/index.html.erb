@@ -1,24 +1,81 @@
+<% javascript_tag do %>
+  var addStudent = function(student) {
+    var record = new Global.student_store.recordType(student);
+    record.phantom = false;
+    record.id = student.id;
+    Global.student_store.add(record);
+    var index = Global.student_store.indexOfId(student.id);
+    Global.student_grid.getView().focusRow(index);
+    Global.student_grid.getSelectionModel().selectRow(index);
+  }
+  
+  Ext.onReady(function() {
+    Global.student_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => ["id", "last_name", "first_name", "birth_date", "parent_email", "parent1_id", "parent2_id", "home_address", "student_group_id" ] %>;
+    Global.student_group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "full_name"] %>
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "Фамилия", :width => 150 },
+      { :header => "Имя", :width => 150 }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedStudent = r;
+          Global.student_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedStudent.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.student_grid = <%= extjs_grid :store => "Global.student_store".j, :width => 325, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
 
-<table>
-  <tr>
-    <th>Parent Email</th>
-    <th>Parent1</th>
-    <th>Parent2</th>
-    <th>Home Address</th>
-    <th>Student Group</th>
-  </tr>
-  <% for student in @students %>
-    <tr>
-      <td><%=h student.parent_email %></td>
-      <td><%=h student.parent1_id %></td>
-      <td><%=h student.parent2_id %></td>
-      <td><%=h student.home_address %></td>
-      <td><%=h student.student_group_id %></td>
-      <td><%= link_to "Show", student %></td>
-      <td><%= link_to "Edit", edit_student_path(student) %></td>
-      <td><%= link_to "Destroy", student, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
-  <% end %>
-</table>
+    Global.student_data = new Ext.Panel({
+      bodyCfg: {
+        id: 'student_form_container'
+      }
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "students",
+			width: 682,
+			height: 500,
+			title: "Ученики",
+			tbar: [
+			{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Добавить',
+        handler: function() {
+          Global.student_data.load({
+            url: '<%= new_student_url %>',
+            scripts: true
+          });
+        }
+  		}],
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.student_grid, 
+  		  Global.student_data
+		  ]
+		});
 
-<p><%= link_to "New Student", new_student_path %></p>
+    Global.observe("studentUpdated", function(config) {
+      var record = Global.selectedStudent;
+      record.set("first_name", config["student[first_name]"]);
+      record.set("last_name", config["student[last_name]"]);
+      record.commit();
+    });
+    
+	});
+<% end %>
+<div class="students-container">
+  <div id="students"></div>
+</div>

@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <%= stylesheet_link_tag "ext-all", "xtheme-gray", "protoload", "default-style", :cache => "sms"  %>
-    <%= javascript_include_tag "prototype", "application", "ext-prototype-adapter-debug", "ext-all-debug", "sms-checkbox", :cache => "sms" %>
+    <%= javascript_include_tag "prototype", "application", "ext-prototype-adapter-debug", "ext-all-debug", "ext-lang-ru", "sms-checkbox", :cache => "sms" %>
 
     <title>School Management System</title>
 
@@ -36,7 +36,7 @@
         <li><%= link_to "Роли", roles_path %></li>      
         <li><%= link_to "Расписание звонков", time_table_items_path %></li>        
         <li><%= link_to "Аудитории", class_rooms_path %></li>        
-        <li><%= link_to "Студенты", students_path %></li>        
+        <li><%= link_to "Ученики", students_path %></li>        
         <li><%= link_to "Классы", student_groups_path %></li>        
         <li><%= link_to "Предметы", subjects_path %></li>        
         <li><%= link_to "Расписание занятий", schedule_path %></li> 

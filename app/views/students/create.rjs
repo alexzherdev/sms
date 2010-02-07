@@ -1,0 +1,6 @@
+if @student.valid?
+  page.replace_html "student_form_container", :partial => "form", :locals => { :url => student_path(@student), :method => "PUT" }
+  page.call "addStudent", strip_in_json(@student.to_json)
+else
+  page.replace_html "student_form_container", :partial => "form", :locals => { :url => students_path, :method => "POST" }
+end

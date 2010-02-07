@@ -1,9 +1,79 @@
-<% @class_rooms.each do |class_room| %>
-  <%= class_room.number%><br/>
-  <% form_tag class_room_path(class_room), :method => :delete do %>
-    <%= extjs_button :text => "Удалить" %>
-  <% end %>
+<% javascript_tag do %>
+  var addClassRoom = function(class_room) {
+    var record = new Global.class_room_store.recordType(class_room);
+    record.phantom = false;
+    record.id = class_room.id;
+    Global.class_room_store.add(record);
+    var index = Global.class_room_store.indexOfId(class_room.id);
+    Global.class_room_grid.getView().focusRow(index);
+    Global.class_room_grid.getSelectionModel().selectRow(index);
+  }
+  
+  Ext.onReady(function() {
+    Global.class_room_store = <%= extjs_simple_store :data => class_room_collection(@class_rooms), :type => :arrays, :fields => [ "id", "number", "subject_ids" ] %>;
+    Global.subject_store = <%= extjs_simple_store :data => subject_with_class_rooms_collection(@subjects), :type => :arrays, :fields => ["id", "name", "class_room_ids" ] %>;
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "Аудитория", :width => 150 }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedClassRoom = r;
+          Global.class_room_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedClassRoom.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.class_room_grid = <%= extjs_grid :store => "Global.class_room_store".j, :width => 325, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+
+    Global.class_room_data = new Ext.Panel({
+      bodyCfg: {
+        id: 'class_room_form_container'
+      }
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "class_rooms",
+			width: 682,
+			height: 500,
+			title: "Аудитории",
+			tbar: [
+			{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Добавить',
+        handler: function() {
+          Global.class_room_data.load({
+            url: '<%= new_class_room_url %>',
+            scripts: true
+          });
+        }
+  		}],
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.class_room_grid, 
+  		  Global.class_room_data
+		  ]
+		});
+
+    Global.observe("classRoomUpdated", function(config) {
+      var record = Global.class_room_grid.getSelectionModel().getSelected();
+      record.set("number", config["class_room[number]"]);
+      record.commit();
+    });
+    
+	});
 <% end %>
-<% form_tag new_class_room_path do %>
-  <%= extjs_button :text => "Добавить" %>
-<% end %>
+<div class="class-room-container">
+  <div id="class_rooms"></div>
+</div>

@@ -22,10 +22,7 @@ class UsersController < ApplicationController
   
   def update
     @user = User.find params[:id]
-    if @user.update_attributes params[:user]
-      render :text => ""
-    else
-      render :text => "", :status => 403
-    end
+    @user.update_attributes params[:user]
+    render :action => "update.rjs", :status => @user.valid? ? 200 : 403
   end
 end

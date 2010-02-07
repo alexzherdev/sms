@@ -1,24 +1,36 @@
-<% form_for @student do |f| %>
-  <%= f.error_messages %>
-  <p>
-    <%= f.label :parent_email %><br />
-    <%= f.text_field :parent_email %>
-  </p>
-  <p>
-    <%= f.label :parent1_id %><br />
-    <%= f.text_field :parent1_id %>
-  </p>
-  <p>
-    <%= f.label :parent2_id %><br />
-    <%= f.text_field :parent2_id %>
-  </p>
-  <p>
-    <%= f.label :home_address %><br />
-    <%= f.text_field :home_address %>
-  </p>
-  <p>
-    <%= f.label :student_group_id %><br />
-    <%= f.text_field :student_group_id %>
-  </p>
-  <p><%= f.submit "Submit" %></p>
-<% end %>
+<div class="form-container student-form-container">
+    <% remote_form_for @student, :url => url, :method => method, 
+        :success => "Ext.MessageBox.alert('SMS', 'Данные ученика сохранены.', function() {
+          Global.fire('studentUpdated', Form.serialize($('student_form'), { hash: true }));              
+          });",
+        :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "student_form" } do |f| %>
+    <table>
+      <tr>
+        <td><%= f.label :last_name, "Фамилия" %></td>
+        <td><%= extjs_text_field_control :student, :last_name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :first_name, "Имя" %></td>
+        <td><%= extjs_text_field_control :student, :first_name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :student_group_id, "Класс" %></td>
+        <td><%= extjs_combo_box_control :student, :student_group_id, :store => "Global.student_group_store", :displayField => "full_name", :valueField => "id", :hiddenName => "student[student_group_id]", :width => 50 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :birth_date, "Дата рождения" %></td>
+        <td><%= extjs_date_field_control :student, :birth_date, :format => "d-m-Y", :width => 178 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :home_address, "Домашний адрес" %></td>
+        <td><%= extjs_text_area_control :student, :home_address, :width => 178 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :parent_email, "E-mail родителей" %></td>
+        <td><%= extjs_text_field_control :student, :parent_email, :vtype => "email" %></td>
+      </tr>
+      
+      <%= extjs_button "Сохранить" %>
+    </table>
+    <% end %>
+</div>

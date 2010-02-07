@@ -1,0 +1,1 @@
+page.replace_html "user_form_container", :partial => "form", :locals => { :url => user_path(@user), :method => "PUT" }

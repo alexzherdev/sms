@@ -1,38 +1,29 @@
 class StudentsController < ApplicationController
   def index
     @students = Student.all
+    @student_groups = StudentGroup.all
   end
-  
-  def show
-    @student = Student.find(params[:id])
-  end
-  
+
   def new
     @student = Student.new
+    render :partial => "form", :locals => { :url => students_path, :method => "POST" }
   end
   
   def create
-    @student = Student.new(params[:student])
-    if @student.save
-      flash[:notice] = "Successfully created student."
-      redirect_to @student
-    else
-      render :action => 'new'
-    end
+    @student = Student.new params[:student]
+    @student.save
+    render :action => "create.rjs", :status => @student.valid? ? 200 : 403
   end
   
   def edit
-    @student = Student.find(params[:id])
+    @student = Student.find params[:id]
+    render :partial => "form", :locals => { :url => student_path(@student), :method => "PUT" }
   end
   
   def update
-    @student = Student.find(params[:id])
-    if @student.update_attributes(params[:student])
-      flash[:notice] = "Successfully updated student."
-      redirect_to @student
-    else
-      render :action => 'edit'
-    end
+    @student = Student.find params[:id]
+    @student.update_attributes params[:student]
+    render :action => "update.rjs", :status => @student.valid? ? 200 : 403
   end
   
   def destroy
