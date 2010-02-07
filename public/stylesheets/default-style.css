@@ -603,15 +603,17 @@ a:link, a:visited, a:active {
 	display: none;
 }
 
+.form-container {
+  padding: 10px;
+}
+
+.form-container .x-form-text {
+  width: 170px;
+}
+
 .user-form-container {
   width: 333px;
   height: 100%;
-  padding: 10px;
-  background-color: #F1F1F1; 
-}
-
-.user-form-container .x-form-text {
-  width: 170px;
 }
 
 .import {
@@ -620,10 +622,12 @@ a:link, a:visited, a:active {
 
 .roles-container .role-data {
   width: 454px;
-  padding: 10px;
 }
 
-.settings-container {
+.settings-form-container {
   width: 333px;
-  padding: 10px;
+}
+
+.student-form-container {
+  width: 333px;
 }
