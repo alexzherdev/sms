@@ -26,8 +26,10 @@ namespace :sms do
     end
     
     def create_settings
-      Setting["short_break"] = 10
-      Setting["long_break"] = 20
+      Settings["short_break"] = 10
+      Settings["long_break"] = 20
+	  Settings["lessons_start"] = Time.utc(2010,02,02,8,0,0)
+	  Settings["lesson_length"] = 45
     end
     
     def create_acl_actions
