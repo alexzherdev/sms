@@ -1,0 +1,6 @@
+if @class_room.valid?
+  page.replace_html "class_room_form_container", :partial => "form", :locals => { :url => class_room_path(@class_room), :method => "PUT" }
+  page.call "addClassRoom", strip_in_json(@class_room.to_json)
+else
+  page.replace_html "class_room_form_container", :partial => "form", :locals => { :url => class_rooms_path, :method => "POST" }
+end

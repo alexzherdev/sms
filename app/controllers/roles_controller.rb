@@ -10,8 +10,7 @@ class RolesController < ApplicationController
   end
   
   def create
-    @role = Role.new params[:role]
-    @role.save
+    @role = Role.create params[:role]
     @unused_actions = AclAction.all - @role.acl_actions
     render :action => "create.rjs", :status => @role.valid? ? 200 : 403
   end

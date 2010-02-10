@@ -1,5 +1,5 @@
 <div class="form-container user-form-container">
-    <% remote_form_for @user, :url => url, :method => method, 
+  <% remote_form_for @user, :url => url, :method => method, 
         :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {
           Global.fire('userUpdated', Form.serialize($('user_form'), { hash: true }));              
           });",
@@ -41,7 +41,7 @@
         <td><%= f.label :blocked, "Заблокирован" %></td>
         <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>
       </tr>
-      <%= extjs_button "Сохранить" %>
     </table>
-    <% end %>
+    <%= extjs_button "Сохранить" %>
+  <% end %>
 </div>

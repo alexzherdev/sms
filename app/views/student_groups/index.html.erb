@@ -1,14 +1,117 @@
-<table>
-  <tr>
-    <th>Год</th>
-    <th>Буква</th>
-  </tr>
-  <% for student_group in @student_groups %>
-    <tr>
-      <td><%= h student_group.year %></td>
-      <td><%= h student_group.letter %></td>
-    </tr>
-  <% end %>
-</table>
+<%= javascript_include_tag "MultiSelect" %>
+<%= javascript_include_tag "ItemSelector" %>
 
-<p><%= link_to "Новый класс", new_student_group_path %></p>
+<% javascript_tag do %>
+
+  var addGroup = function(group) {
+    var record = new Global.group_store.recordType(group);
+    record.phantom = false;
+    record.id = group.id;
+    Global.group_store.add(record);
+    Global.group_store.sort("year", "ASC");
+    var index = Global.group_store.indexOfId(group.id);
+    Global.group_grid.getView().focusRow(index);
+    Global.group_grid.getSelectionModel().selectRow(index);
+  }
+  
+  var scheduleAlert = function() {
+    Ext.MessageBox.show({ title: 'SMS', msg: 'Вы не можете удалить этот класс, так как уже составлено расписание.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK })
+  }
+  
+  var deleteGroup = function(id) {
+    Global.group_store.remove(Global.group_store.getById(id));
+  }
+  
+  Ext.onReady(function() {
+    
+    Global.year_values = <%= Subject::SCHOOL_YEARS.collect { |y| [y] }.to_json %>
+      Global.year_store = new Ext.data.SimpleStore({
+      fields: [{name: "year"}]
+    });
+    Global.year_store.loadData(Global.year_values);
+    
+    Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" } %>;
+
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true },
+      { :header => "Класс", :width => 200 }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedGroup = r;
+          Global.group_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedGroup.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.group_grid = <%= extjs_grid :store => "Global.group_store".j, :width => 204, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+
+    Global.group_data = new Ext.Panel({
+      bodyCfg: {
+        id: 'group_form_container'
+      }
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "groups",
+			width: 682,
+			height: 400,
+			title: "Классы",
+      
+      tbar: [
+			{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Добавить',
+        handler: function() {
+          Global.group_data.load({
+            url: '<%= new_student_group_url %>',
+            scripts: true
+          });
+        }
+  		},
+  		<%= extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :handler => "function() {
+  		  
+        Ext.Msg.show({
+          title: 'SMS',
+          msg: 'Удалить этот класс?',
+          buttons: Ext.Msg.YESNO,
+          fn: function(button, text) {
+            if (button == 'yes') {
+              Ext.Ajax.request({
+                method: 'DELETE', 
+                url: '#{student_groups_path}/' + Global.group_grid.getSelectionModel().getSelected().get('id')
+              });
+            }
+          },
+          icon: Ext.MessageBox.QUESTION
+        });
+      } ".j}).to_json %>
+      ],
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.group_grid, 
+  		  Global.group_data
+		  ]
+		});
+		
+		Global.observe("groupUpdated", function(config) {
+      var record = Global.group_grid.getSelectionModel().getSelected();
+      record.set("full_name", config["student_group[year]"] + " " + config["student_group[letter]"]);
+      record.commit();
+    });
+	});
+<% end %>
+<div class="groups-container">
+  <div id="groups"></div>
+</div>

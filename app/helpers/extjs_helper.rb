@@ -183,7 +183,8 @@ module ExtjsHelper
     options[:mode] ||= "local"
     options[:valueField] ||= "id"
     options[:emptyText] ||= "Выберите..."
-    options[:editable] ||= false
+    options[:editable] = options[:editable].nil? ? false : options[:editable]
+    #options[:forceSelection] = options[:forceSelection].nil? ? true : options[:forceSelection]
     options[:triggerAction] ||= "all"
 
     options[:store] = strip_in_json(options[:store]) if options[:store]

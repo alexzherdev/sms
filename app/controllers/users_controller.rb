@@ -10,8 +10,7 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.new params[:user]
-    @user.save
+    @user = User.create params[:user]
     render :action => "create.rjs", :status => @user.valid? ? 200 : 403
   end
 

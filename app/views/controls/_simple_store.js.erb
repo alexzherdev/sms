@@ -1,4 +1,6 @@
 new Ext.data.SimpleStore({
         fields: <%= collection[:fields].to_json %>,
         data : <%= result_array.to_json %>,
-        idIndex: 0})
+        idIndex: 0<% if collection[:sortInfo] %>,
+        sortInfo: <%= collection[:sortInfo].to_json %>
+        <% end %>})

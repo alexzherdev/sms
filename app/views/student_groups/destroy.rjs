@@ -1,0 +1,6 @@
+if @student_group
+  page.call "deleteGroup", @student_group.id
+  page.replace_html "group_form_container", :text => ""
+else
+  page.call "scheduleAlert"
+end

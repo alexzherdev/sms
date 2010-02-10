@@ -1,6 +1,5 @@
 class RegistersController < ApplicationController
   REGISTER_TIMESPAN = 2.months
-  MARK_VALUES = (0..10).to_a
   
   def show
     session[:register_current_group_id] = params[:current_group]

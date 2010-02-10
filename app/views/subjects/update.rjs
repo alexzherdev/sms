@@ -1,0 +1,2 @@
+page.replace_html "subject_form_container", :partial => "form", :locals => { :url => subject_path(@subject), :method => "PUT" }
+page << "Global.fire('subjectUpdated', Form.serialize($('subject_form'), { hash: true }));"

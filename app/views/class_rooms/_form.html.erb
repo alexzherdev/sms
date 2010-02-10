@@ -1,1 +1,51 @@
-<%= @class_room.number %>
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.subjects_selector = new Ext.ux.form.ItemSelector({
+      renderTo: 'subjects_selector',
+      width: 454,
+      imagePath: '/images/ux/',
+      name: 'class_room[comma_separated_subject_ids]',
+      multiselects: [{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => subject_with_class_rooms_collection(@unused_subjects), :type => :arrays, :fields => ["id", "name"] %>,
+        displayField: 'name',
+        valueField: 'id',
+        legend: 'Неиспользуемые предметы'
+      },{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => subject_with_class_rooms_collection(@class_room.subjects), :type => :arrays, :fields => ["id", "name"] %>,
+        legend: 'Предметы этой аудитории',
+        displayField: 'name',
+        valueField: 'id',
+        tbar:[{
+          text: 'Очистить',
+          handler:function(){
+            Global.subjects_selector.reset();
+          }
+        }]
+      }]
+      
+    });
+  });
+<% end %>
+
+<div class="form-container class-room-form-container">
+  <% remote_form_for @class_room, :url => url, :method => method, 
+      :success => "Ext.MessageBox.alert('SMS', 'Данные аудитории сохранены.', function() {
+        Global.fire('classRoomUpdated', Form.serialize($('class_room_form'), { hash: true }));              
+        });",
+      :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "class_room_form" } do |f| %>
+    <table>
+      <tr>
+        <td><%= f.label :number, "Номер" %></td>
+        <td><%= extjs_text_field_control :class_room, :number %></td>
+      </tr>
+    </table>
+    
+    <div id="subjects_selector"></div>
+    <%= extjs_button "Сохранить" %>
+    
+  <% end %>
+</div>

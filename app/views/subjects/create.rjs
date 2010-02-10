@@ -1,0 +1,6 @@
+if @subject.valid?
+  page.replace_html "subject_form_container", :partial => "form", :locals => { :url => subject_path(@subject), :method => "PUT" }
+  page.call "addSubject", strip_in_json(@subject.to_json)
+else
+  page.replace_html "subject_form_container", :partial => "form", :locals => { :url => subjects_path, :method => "POST" }
+end

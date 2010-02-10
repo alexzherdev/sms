@@ -4,6 +4,8 @@ module ClassRoomsHelper
   end
   
   def subject_with_class_rooms_collection(subjects)
-    collect_values(subjects, [ :id, :name, :class_room_ids ])
+    subjects.collect do |subject|
+      [ subject.id, "#{subject.name} #{subject.year}", subject.class_room_ids ]
+    end
   end
 end

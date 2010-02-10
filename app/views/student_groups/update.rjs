@@ -1,0 +1,4 @@
+page.replace_html "group_form_container", :partial => "form", :locals => { :url => student_group_path(@student_group), :method => "PUT" }
+if @student_group.valid?
+  page << "Global.fire('groupUpdated', Form.serialize($('group_form'), { hash: true }));"
+end

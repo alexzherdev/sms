@@ -603,11 +603,13 @@ a:link, a:visited, a:active {
 	display: none;
 }
 
-.user-form-container {
-  width: 333px;
-  height: 100%;
+.form-container {
+  width: 335px;
   padding: 10px;
-  background-color: #F1F1F1; 
+}
+
+.user-form-container {
+  height: 100%;
 }
 
 .user-form-container .x-form-text {
@@ -623,7 +625,10 @@ a:link, a:visited, a:active {
   padding: 10px;
 }
 
-.settings-container {
-  width: 333px;
-  padding: 10px;
+.class-room-form-container {
+  width: 485px;
+}
+
+.group-form-container {
+  width: 454px;
 }

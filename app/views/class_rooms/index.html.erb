@@ -1,3 +1,6 @@
+<%= javascript_include_tag "MultiSelect" %>
+<%= javascript_include_tag "ItemSelector" %>
+
 <% javascript_tag do %>
   var addClassRoom = function(class_room) {
     var record = new Global.class_room_store.recordType(class_room);
@@ -14,7 +17,7 @@
     Global.subject_store = <%= extjs_simple_store :data => subject_with_class_rooms_collection(@subjects), :type => :arrays, :fields => ["id", "name", "class_room_ids" ] %>;
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
-      { :header => "Аудитория", :width => 150 }
+      { :header => "Аудитория", :width => 160 }
     ]) %>;
     
     var sm = new Ext.grid.RowSelectionModel({
@@ -31,7 +34,7 @@
       }
     });
     
-    Global.class_room_grid = <%= extjs_grid :store => "Global.class_room_store".j, :width => 325, :height => 400,
+    Global.class_room_grid = <%= extjs_grid :store => "Global.class_room_store".j, :width => 175, :height => 400,
       :cm => "cm".j, :sm => "sm".j, :title => "" %>;
 
     Global.class_room_data = new Ext.Panel({

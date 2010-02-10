@@ -1,0 +1,6 @@
+if @subject
+  page.call "deleteSubject", @subject.id
+  page.replace_html "subject_form_container", :text => ""
+else
+  page.call "scheduleAlert"
+end

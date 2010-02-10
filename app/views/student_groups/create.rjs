@@ -1,0 +1,6 @@
+if @student_group.valid?
+  page.replace_html "group_form_container", :partial => "form", :locals => { :url => student_group_path(@student_group), :method => "PUT" }
+  page.call "addGroup", strip_in_json(@student_group.to_json(:methods => :full_name))
+else
+  page.replace_html "group_form_container", :partial => "form", :locals => { :url => student_groups_path, :method => "POST" }
+end

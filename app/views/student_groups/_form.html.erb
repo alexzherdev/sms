@@ -1,0 +1,50 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.students_selector = new Ext.ux.form.ItemSelector({
+      renderTo: 'students_selector',
+      width: 454,
+      imagePath: '/images/ux/',
+      name: 'student_group[comma_separated_student_ids]',
+      multiselects: [{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => small_student_collection(Student.unassigned), :type => :arrays, :fields => ["id", "full_name"] %>,
+        displayField: 'full_name',
+        valueField: 'id',
+        legend: 'Ученики без класса'
+      },{
+        width: 200,
+        height: 200,
+        store: <%= extjs_simple_store :data => small_student_collection(@student_group.students), :type => :arrays, :fields => ["id", "full_name"] %>,
+        legend: 'Ученики в этом классе',
+        displayField: 'full_name',
+        valueField: 'id',
+        tbar:[{
+          text: 'Очистить',
+          handler:function(){
+            Global.students_selector.reset();
+          }
+        }]
+      }]
+      
+    });
+  });
+<% end %>
+<div class="form-container group-form-container">
+  <% remote_form_for @student_group,  
+    :success => "Ext.MessageBox.alert('SMS', 'Данные класса сохранены.');",
+    :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "group_form" } do |f| %>
+    <table>
+      <tr>
+        <td><%= f.label :year, "Год обучения" %></td>
+        <td><%= extjs_combo_box_control :student_group, :year, :store => "Global.year_store", :displayField => "year", :valueField => "year", :hiddenName => "student_group[year]", :width => 80 %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :letter, "Буква" %></td>
+        <td><%= extjs_text_field_control :student_group, :letter, :width => 80 %></td>
+      </tr>
+    </table>  
+    <div id="students_selector"></div>
+    <%= extjs_button "Сохранить" %>
+  <% end %>
+</div>

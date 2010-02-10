@@ -1,0 +1,1 @@
+page.replace_html "class_room_form_container", :partial => "form", :locals => { :url => class_room_path(@class_room), :method => "PUT" }

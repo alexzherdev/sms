@@ -1,16 +1,115 @@
-<table>
-  <tr>
-    <th>Name</th>
-    <th>School Year</th>
-    <th>Hours Per Week</th>
-  </tr>
-  <% for subject in @subjects %>
-    <tr>
-      <td><%=h subject.name %></td>
-      <td><%=h subject.year %></td>
-      <td><%=h subject.hours_per_week %></td>
-      <td><%= link_to "Destroy", subject, :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
-  <% end %>
-</table>
+<% javascript_tag do %>
+  var addSubject = function(subject) {
+    var record = new Global.subject_store.recordType(subject);
+    record.phantom = false;
+    record.id = subject.id;
+    Global.subject_store.add(record);
+    Global.subject_store.groupBy("year", true);
+    Global.subject_grid.getView().refresh();
+  }
+  
+  var scheduleAlert = function() {
+    Ext.MessageBox.show({ title: 'SMS', msg: 'Вы не можете удалить этот предмет, так как уже составлено расписание.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK })
+  }
+  
+  var deleteSubject = function(id) {
+    Global.subject_store.remove(Global.subject_store.getById(id));
+  }
+  
+  Ext.onReady(function() {
+    Global.years = <%= Subject::SCHOOL_YEARS.collect { |y| [y] }.to_json %>
+      Global.year_store = new Ext.data.SimpleStore({
+      fields: [{name: "year"}]
+    });
+    Global.year_store.loadData(Global.years);
+    
+    var reader = new Ext.data.ArrayReader({}, [
+       { name: 'id' },
+       { name: 'name' },
+       { name: 'year' }
+    ]);
+    
+    
+    Global.subject_store = new Ext.data.GroupingStore({
+      reader: reader,
+      data: <%= full_subject_collection(@subjects).to_json %>,
+      sortInfo: { field: 'name', direction: "ASC" },
+      groupField: 'year'
+    });
+    
+    var cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true, :dataIndex => "id" },
+      { :header => "Название", :width => 200, :dataIndex => "name" },
+      { :header => "Класс", :hidden => true, :dataIndex => "year" }
+    ]) %>;
+    
+    var sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.selectedSubject = r;
+          Global.subject_data.load({
+            url: '<%= url_for :action => "edit" %>',
+            params: { id: Global.selectedSubject.get("id") },
+            scripts: true
+          });
+        }
+      }
+    });
+    
+    Global.subject_grid = <%= extjs_grid :store => "Global.subject_store".j, :width => 335, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "", :view => "new Ext.grid.GroupingView({
+                  forceFit: true,
+                  startCollapsed: true,
+                  groupTextTpl: '{text}'
+              })".j   %>;
 
+    Global.subject_data = new Ext.Panel({
+      bodyCfg: {
+        id: 'subject_form_container'
+      }
+    });
+    
+		var panel = new Ext.Panel({
+			renderTo: "subjects",
+			width: 682,
+			height: 500,
+			title: "Предметы",
+			tbar: [
+			{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Добавить',
+        handler: function() {
+          Global.subject_data.load({
+            url: '<%= new_subject_url %>',
+            scripts: true
+          });
+        }
+  		},
+  		<%= extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :handler => "function() {
+        Ext.Ajax.request({
+          method: 'DELETE', 
+          url: '#{subjects_path}/' + Global.subject_grid.getSelectionModel().getSelected().get('id')
+        })}".j}).to_json %>
+      ],
+  		layout: {
+  		  type: 'hbox',
+  		  align: 'stretch' 
+  		},
+  		items: [
+  		  Global.subject_grid, 
+  		  Global.subject_data
+		  ]
+		});
+
+    Global.observe("subjectUpdated", function(config) {
+      var record = Global.subject_grid.getSelectionModel().getSelected();
+      record.set("name", config["subject[name]"]);
+      record.commit();
+    });
+    
+	});
+<% end %>
+<div class="subject-container">
+  <div id="subjects"></div>
+</div>

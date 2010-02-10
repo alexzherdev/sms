@@ -1,0 +1,24 @@
+<div class="form-container subject-form-container">
+  <% remote_form_for @subject, :url => url, :method => method, 
+      :success => "Ext.MessageBox.alert('SMS', 'Данные предмета сохранены.');",
+      :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "subject_form" } do |f| %>
+    <table>
+      <% if @subject.new_record? %>
+      <tr>
+        <td><%= f.label :year, "Год обучения" %></td>
+        <td><%= extjs_combo_box_control :subject, :year, :width => 80, :store => "Global.year_store".j, :displayField => "year", :valueField => "year" %></td>
+      </tr>
+      <% end %>
+      <tr>
+        <td><%= f.label :name, "Название" %></td>
+        <td><%= extjs_text_field_control :subject, :name %></td>
+      </tr>
+      <tr>
+        <td><%= f.label :hours_per_week, "Количество часов в неделю" %></td>
+        <td><%= extjs_text_field_control :subject, :hours_per_week %></td>
+      </tr>
+    </table>
+    <%= extjs_button "Сохранить" %>
+    
+  <% end %>
+</div>
