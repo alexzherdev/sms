@@ -1,0 +1,38 @@
+<div id="popup" class="x-hidden">
+  <div class="x-window-header"></div>
+  <div id="popup_main" class="ts-popup">
+    <% form_remote_tag :url => teacher_subjects_url, :method => "POST", :html => { :id => "teacher_subject_form" } do %>
+      <%= extjs_combo_box_control "", "", :id => "popup_years", :store => "Global.year_store".j, :displayField => "year", :valueField => "year", :lastQuery => "" %>
+      <%= extjs_combo_box_control :teacher_subject, :student_group_id, :id => "popup_letters", :store => "Global.group_store".j, :displayField => "letter", :valueField => "id", :lastQuery => "" %>
+      <%= extjs_combo_box_control :teacher_subject, :subject_id, :id => "popup_subjects", :store => "Global.subject_store".j, :displayField => "name", :valueField => "id", :lastQuery => "" %>
+    <% end %>
+  </div>
+</div>
+
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.yearSelect = function(box, record) {
+      Global.group_store.clearFilter();
+      Global.subject_store.clearFilter();
+      Global.group_store.filter("year", new RegExp("^" + record.get("year") + "$"));
+      Global.subject_store.filter("year", new RegExp("^" + record.get("year") + "$"));
+      Ext.getCmp("popup_letters").setValue("");
+      Ext.getCmp("popup_subjects").setValue("");
+    };
+    Ext.getCmp("popup_years").on("select", Global.yearSelect);
+    
+    Global.filterSubjects = function(letter) {
+      Global.teacher_subjects_store.clearFilter();
+      var teacher_id = Global.teacher_grid.getSelectionModel().getSelected().get("id");
+      Global.subject_store.filterBy(function(rec, id) {
+        return rec.get("year") == letter.get("year");
+      });
+      Global.teacher_subjects_store.filter("teacher_id", teacher_id);
+    };
+    Global.letterSelect = function(box, record) {
+      Global.filterSubjects(record);
+      Ext.getCmp("popup_subjects").setValue("");
+    };
+    Ext.getCmp("popup_letters").on("select", Global.letterSelect);
+  });
+<% end %>

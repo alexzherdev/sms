@@ -34,7 +34,7 @@ class Register
     students.each do |student|
       row = []
       dates.each do |date_and_item|
-        new_mark = Mark.new :mark => -1, :student_id => student.id, :date => date_and_item.first, :schedule_item_id => date_and_item.second.id
+        new_mark = Mark.new :mark => -2, :student_id => student.id, :date => date_and_item.first, :schedule_item_id => date_and_item.second.id
         row << new_mark
       end
       mark_table << row

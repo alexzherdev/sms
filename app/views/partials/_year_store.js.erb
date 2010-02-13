@@ -1,0 +1,5 @@
+Global.year_values = <%= Subject::SCHOOL_YEARS.collect { |y| [y] }.to_json %>
+  Global['<%= name %>'] = new Ext.data.SimpleStore({
+  fields: [{name: "year"}]
+});
+Global['<%= name %>'].loadData(Global.year_values);

@@ -1,17 +1,154 @@
-<% title "Teacher Subjects" %>
+<%= javascript_include_tag "MultiSelect" %>
+<%= javascript_include_tag "ItemSelector" %>
 
-<table>
-  <tr>
-    <th>Teacher</th>
-    <th>Subject</th>
-    <th>Student Group</th>
-  </tr>
-  <% for teacher_subject in @teacher_subjects %>
-    <tr>
-      <td><%=h teacher_subject.teacher_id %></td>
-      <td><%=h teacher_subject.subject_id %></td>
-      <td><%=h teacher_subject.student_group_id %></td>
-    </tr>
-  <% end %>
-</table>
+<% javascript_tag do %>
 
+  var addTeacherSubject = function(ts) {
+    var record = new Global.teacher_subjects_store.recordType(ts);
+    record.phantom = false;
+    record.id = ts.id;
+    Global.teacher_subjects_store.add(record);
+  }
+  
+  Ext.onReady(function() {
+    Global.subject_store = <%= extjs_simple_store :data => subject_collection(@subjects), :type => :arrays, :fields => [ "id", "name", "year"] %>;
+    
+    <%= year_store %>
+    
+    Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "name", "year", "letter"] %>;
+    
+    Global.teacher_store = <%= extjs_simple_store :data => teacher_collection(@teachers), :type => :arrays, :fields => ["id", "full_name"] %>;
+    
+    var t_cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true, :dataIndex => "id" },
+      { :header => "Учитель", :width => 200, :dataIndex => "full_name" }
+    ]) %>;
+    
+    var t_sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.teacher_subjects_store.filter("teacher_id", r.get("id"));
+        }
+      }
+    });
+    
+    Global.teacher_grid = <%= extjs_grid :store => "Global.teacher_store".j, :height => 350, :width => 350, :cm => "t_cm".j, :sm => "t_sm".j %>
+    
+    Global.teacher_subjects_store = <%= extjs_simple_store :data => teacher_subjects_collection(@teacher_subjects), :type => :arrays, :fields => ["id", "teacher_id", "subject_id", "subject_name", "student_group_id", "student_group_name"] %>;
+    
+    Global.teacher_subjects_store.filter("teacher_id", -1);
+    
+    
+    var ts_cm = <%= extjs_grid_column_model([
+      { :header => "Предмет", :width => 160, :dataIndex => "subject_name" },
+      { :header => "Класс", :width => 75, :dataIndex => "student_group_name" }
+    ]) %>;
+    
+    Global.deleteSubjects = function() {
+      var ids = [];
+      var sel = Global.teacher_subjects_grid.getSelectionModel().getSelections();
+      if (sel.length == 0) {
+        return;
+      }
+      var ids = "ids[]=" + sel[0].get("id");
+      for (var i = 1; i < sel.length; i++) {
+        ids += "&ids[]=" + sel[i].get("id");
+      }
+      Ext.Ajax.request({
+        url: '<%= url_for :action => "destroy" %>',
+        params: ids,
+        success: function() {
+          Global.teacher_subjects_store.remove(sel);
+        }
+      });
+      
+    };
+      
+    Global.showPopup = function() {
+      if (Global.teacher_grid.getSelectionModel().getSelected() != null) {
+        Global.ts_popup.show();
+      }
+    };
+    
+    Global.preparePopup = function() {
+      Global.group_store.filter("year", "-1");
+      Global.subject_store.filter("year", "-1");
+      Ext.getCmp("popup_years").setValue("");
+      Ext.getCmp("popup_letters").setValue("");
+      Ext.getCmp("popup_subjects").setValue("");
+    };
+
+    Global.initPopup = function() {
+      Global.ts_popup = new Ext.Window({
+          el: 'popup',
+          layout: 'fit',
+          width: 200,
+          height: 150,
+          closeAction: 'hide',
+          animateTarget: null,
+          plain: true,
+          modal: true,
+      
+          items: new Ext.Panel({
+            el: 'popup_main',
+            deferredRender: true,
+            border: false
+          }),
+      
+          buttons: [
+            { text: "Добавить",
+              handler: function() {
+                Global.ts_popup.hide();
+                Ext.Ajax.request({
+                  form: 'teacher_subject_form',
+                  params: { 'teacher_subject[teacher_id]': Global.teacher_grid.getSelectionModel().getSelected().get("id") }
+                });
+                
+            //TeacherSubjectsEditAction.assignSubject(
+            //    parseInt(Ext.getCmp("popup_subjects").getValue()), 
+            //    parseInt(Global.teacherGrid.getSelectionModel().getSelected().get("Id")),
+            //    parseInt(Ext.getCmp("popup_letters").getValue()),
+            //    Global.flowExecutionKey, function(result) {
+            //      eval(result);
+            //      $('teachersubjectsdiv').stopWaiting();
+            //});
+    
+              }.bind(this)},
+            { text: "Отмена",
+              handler: function() {
+                Global.ts_popup.hide();  
+              }.bind(this)
+            }]
+        });
+        Global.ts_popup.on("beforeshow", Global.preparePopup.bind(this));
+    } 
+    
+    Global.initPopup();   
+    
+    Global.teacher_subjects_grid = <%= extjs_grid :store => "Global.teacher_subjects_store".j, :cm => "ts_cm".j, 
+      :bbar => [
+        { :text => "Добавить", :iconCls => "add", :handler => "Global.showPopup".j }, 
+        "-",
+        { :text => "Удалить", :iconCls => "remove", :handler => "Global.deleteSubjects".j }
+      ],
+      :sm => "new Ext.grid.RowSelectionModel({singleSelect: false})".j %>;
+    
+    var panel = new Ext.Panel({
+      renderTo: "teacher_subjects",
+      width: 682,
+      height: 500,
+      title: "Предметы учителей",
+      layout: {
+        type: 'hbox',
+        align: 'stretch' 
+      },
+      items: [ 
+        Global.teacher_grid, 
+        Global.teacher_subjects_grid 
+      ]
+    });
+  });
+<% end %>
+<div id="teacher_subjects"></div>
+<%= render :partial => "popup" %>

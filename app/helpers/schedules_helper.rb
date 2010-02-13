@@ -1,8 +1,6 @@
 module SchedulesHelper
   def student_group_collection(student_groups)
-    student_groups.collect do |group|
-      [ group.id, group.full_name, group.year ]
-    end
+    collect_values(student_groups, [:id, :full_name, :year, :letter])
   end
 
   def day_time_collection(day_times)
@@ -32,9 +30,7 @@ module SchedulesHelper
   end
   
   def subject_collection(subjects)
-    subjects.collect do |subject|
-      [subject.id, subject.name]      
-    end
+    collect_values(subjects, [:id, :name, :year])
   end
   
   def mark_errors(page)

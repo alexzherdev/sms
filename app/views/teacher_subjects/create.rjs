@@ -1,0 +1,1 @@
+page.call "addTeacherSubject", strip_in_json(@teacher_subject.to_json(:methods => [ :student_group_name, :subject_name ]))

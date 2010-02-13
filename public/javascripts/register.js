@@ -1,5 +1,5 @@
 var Register = Class.create({
-	EMPTY_MARK: -1,
+	EMPTY_MARK: -2,
 	
 	initialize: function(config) {
 		this.config = config;
@@ -33,6 +33,10 @@ var Register = Class.create({
 		});
 		this.model.studentStore.loadData(this.config.students);
 		
+	},
+	
+	formatMark: function(mark) {
+	  return mark == -1 ? "н" : mark;
 	},
 	
 	renderMarkup: function() {
@@ -132,7 +136,7 @@ var Register = Class.create({
 	renderMark: function(cell, mark) {
 		var markDiv = document.createElement("div");
 		markDiv.className = "mark";
-		markDiv.innerHTML = mark;
+		markDiv.innerHTML = this.formatMark(mark);
 		cell.appendChild(markDiv);
 	},
 	

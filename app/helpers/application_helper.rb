@@ -7,4 +7,8 @@ module ApplicationHelper
     @gui_id ||= Time.now.hash.abs
     @gui_id += 1
   end
+  
+  def year_store(name = "year_store")
+    render :partial => "partials/year_store.js.erb", :locals => { :name => name }
+  end
 end

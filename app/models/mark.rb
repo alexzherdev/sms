@@ -1,5 +1,5 @@
 class Mark < ActiveRecord::Base
-  MARK_VALUES = (0..10).to_a
+  MARK_VALUES = (-1..10).to_a
   
   belongs_to :student
   belongs_to :schedule_item

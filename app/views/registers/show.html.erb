@@ -8,9 +8,9 @@
       Global.group_store = <%= extjs_simple_store({ :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "name", "year"] }) %>;
       Global.subject_store = <%= extjs_simple_store({ :data => subject_collection(@subjects), :type => :arrays, :fields => ["id", "name"] }) %>;
       
-      Global.mark_values = <%= RegistersController::MARK_VALUES.collect { |v| [v] }.to_json %>
+      Global.mark_values = <%= mark_value_collection %>;
         Global.mark_value_store = new Ext.data.SimpleStore({
-        fields: [{name: "mark"}]
+        fields: [{name: "id"}, {name: "mark"}]
       });
       Global.mark_value_store.loadData(Global.mark_values);
       
@@ -25,6 +25,7 @@
         tbar: [{
           xtype: 'combo',
           store: Global.group_store,
+          hiddenName: 'current_group',
           displayField: 'name',
           valueField: 'id',
           value: <%= @current_group_id %>,
@@ -43,6 +44,7 @@
         {
           xtype: 'combo',
           store: Global.subject_store,
+          hiddenName: 'current_subject',
           displayField: 'name',
           valueField: 'id',
           value: <%= @current_subject_id %>,
@@ -56,6 +58,29 @@
               Global.submitForm(combo.getId());
             }
           }
+        },
+        '-',
+        {
+          xtype: 'datefield',
+          name: 'start_date',
+          maxValue: new Date('<%= @end_date.date_format_for_js %>'),
+          value: new Date('<%= @start_date.date_format_for_js %>'),
+          listeners: {
+            select: function(field) {
+              Global.submitForm(field.getId());
+            }
+          }
+        },
+        {
+          xtype: 'datefield',
+          name: 'end_date',
+          minValue: new Date('<%= @start_date.date_format_for_js %>'),
+          value: new Date('<%= @end_date.date_format_for_js %>'),
+          listeners: {
+            select: function(field) {
+              Global.submitForm(field.getId());
+            }
+          }
         }  
         ]
       });
@@ -63,10 +88,8 @@
   <% end %>  
   
   <div id="markBoxContainer" class="x-hide-display">
-    <%= extjs_combo_box_control "", "", :id => "markBox", :width => 40, :store => "Global.mark_value_store", :displayField => "mark", :valueField => "mark" %>
+    <%= extjs_combo_box_control "", "", :id => "markBox", :width => 40, :store => "Global.mark_value_store", :displayField => "mark", :valueField => "id" %>
   </div>
-  <%= hidden_field_tag "current_group", @current_group_id, :id => "current_group" %>
-  <%= hidden_field_tag "current_subject", @current_subject_id, :id => "current_subject" %>
 
   <div class="clear"></div>
   <div id="panel_container" class="register-panel-container"></div>
@@ -85,7 +108,7 @@
       });
             
       Global.register.markBox.on("select", function(box, record) {
-        Global.register.chooseMark(Global.register.editCell, record.get("mark"), function(i, j, studentId, date, itemId, mark, callback) {
+        Global.register.chooseMark(Global.register.editCell, record.get("id"), function(i, j, studentId, date, itemId, mark, callback) {
           Ext.Ajax.request({
             url: '<%= mark_register_path %>',
             params: { i: i, j: j, mark: mark, student_id: studentId, date: date, item_id: itemId },

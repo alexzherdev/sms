@@ -408,7 +408,7 @@ a:link, a:visited, a:active {
 .register-container .student-table-container .student {
 	width: 200px;
 	border-bottom: 1px solid #DDDDDD;
-	padding: 4px;
+	padding: 3px 4px;
 	float: right;
 }
 

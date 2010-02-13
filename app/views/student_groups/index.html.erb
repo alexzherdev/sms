@@ -24,11 +24,7 @@
   
   Ext.onReady(function() {
     
-    Global.year_values = <%= Subject::SCHOOL_YEARS.collect { |y| [y] }.to_json %>
-      Global.year_store = new Ext.data.SimpleStore({
-      fields: [{name: "year"}]
-    });
-    Global.year_store.loadData(Global.year_values);
+    <%= year_store %>
     
     Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" } %>;
 

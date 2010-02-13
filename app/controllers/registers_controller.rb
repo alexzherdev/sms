@@ -4,6 +4,9 @@ class RegistersController < ApplicationController
   def show
     session[:register_current_group_id] = params[:current_group]
     session[:register_current_subject_id] = params[:current_subject]
+    session[:register_start_date] = params[:start_date].blank? ? nil : DateTime.strptime(params[:start_date], "%d.%m.%Y").to_time
+    session[:register_end_date] = params[:end_date].blank? ? nil : DateTime.strptime(params[:end_date], "%d.%m.%Y").to_time
+    
     @student_groups = current_user.student_groups_for_register
     return if @student_groups.blank?
     group = @student_groups[0]
@@ -31,15 +34,15 @@ class RegistersController < ApplicationController
       session[:register_start_date] = REGISTER_TIMESPAN.ago session[:register_end_date]
     end
     
-    start_date = session[:register_start_date]
-    end_date = session[:register_end_date]
+    @start_date = session[:register_start_date]
+    @end_date = session[:register_end_date]
     
     current_group = StudentGroup.find @current_group_id
     current_subject = Subject.find @current_subject_id
     
-    marks = Mark.for_register(current_group, current_subject, start_date, end_date)
+    marks = Mark.for_register(current_group, current_subject, @start_date, @end_date)
     @students = current_group.students
-    @dates = Register.create_dates(current_group, current_subject, start_date, end_date)
+    @dates = Register.create_dates(current_group, current_subject, @start_date, @end_date)
     register = Register.new(marks)
     @mark_table = register.create_mark_table(@students, @dates)
   end

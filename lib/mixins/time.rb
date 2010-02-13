@@ -10,4 +10,8 @@ Time.class_eval do
   def register_date_format
     self.strftime("%a<br/>%d.%m")
   end
+  
+  def date_format_for_js
+    self.strftime("%m/%d/%Y")
+  end
 end
