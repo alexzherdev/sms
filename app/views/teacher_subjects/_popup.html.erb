@@ -2,7 +2,7 @@
   <div class="x-window-header"></div>
   <div id="popup_main" class="ts-popup">
     <% form_remote_tag :url => teacher_subjects_url, :method => "POST", :html => { :id => "teacher_subject_form" } do %>
-      <%= extjs_combo_box_control "", "", :id => "popup_years", :store => "Global.year_store".j, :displayField => "year", :valueField => "year", :lastQuery => "" %>
+      <%= extjs_combo_box_control "", "", :id => "popup_years", :store => "Global.school_year_store".j, :displayField => "year", :valueField => "year", :lastQuery => "" %>
       <%= extjs_combo_box_control :teacher_subject, :student_group_id, :id => "popup_letters", :store => "Global.group_store".j, :displayField => "letter", :valueField => "id", :lastQuery => "" %>
       <%= extjs_combo_box_control :teacher_subject, :subject_id, :id => "popup_subjects", :store => "Global.subject_store".j, :displayField => "name", :valueField => "id", :lastQuery => "" %>
     <% end %>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100202101608) do
+ActiveRecord::Schema.define(:version => 20100214084252) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -44,6 +44,9 @@ ActiveRecord::Schema.define(:version => 20100202101608) do
     t.integer  "modified_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.integer  "term_id"
+    t.integer  "year_id"
   end
 
   create_table "people", :force => true do |t|
@@ -111,12 +114,27 @@ ActiveRecord::Schema.define(:version => 20100202101608) do
     t.datetime "updated_at"
   end
 
+  create_table "terms", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer  "year_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "time_table_items", :force => true do |t|
     t.datetime "start_time"
     t.datetime "end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "item_type"
+  end
+
+  create_table "years", :force => true do |t|
+    t.integer  "start_year"
+    t.integer  "end_year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

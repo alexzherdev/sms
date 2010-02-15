@@ -21,10 +21,13 @@ ActionController::Routing::Routes.draw do |map|
   
   map.connect "/register", :controller => "registers", :action => "show"
   
+  map.final_register "register/final", :controller => "registers", :action => "final"
   map.resource :register, :member => { :mark => :post }
   
   map.resources :roles
 
+  map.resources :years
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:

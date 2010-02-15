@@ -10,8 +10,8 @@ body a {
 }
 
 #main_container {
-	min-width: 1000px;	
-	position: relative;
+  min-width: 1000px;  
+  position: relative;
 }
 
 .top {
@@ -119,7 +119,7 @@ body a {
 }
 
 .left-menu-container .x-box-mc {
-	font-family: verdana;
+  font-family: verdana;
 }
 
 .content-container {
@@ -179,9 +179,9 @@ body a {
 }
 
 #footer {
-	font-size: 10px;
-	text-align: center;
-	padding-top: 30px;
+  font-size: 10px;
+  text-align: center;
+  padding-top: 30px;
 }
 
 
@@ -189,418 +189,435 @@ body a {
 /* our styles */
 
 .error {
-	border: solid 1px #999999; 
-	background-color: #FF8080;
-	clear: both;
-	font-weight: bold;
-	padding: 3px;
+  border: solid 1px #999999; 
+  background-color: #FF8080;
+  clear: both;
+  font-weight: bold;
+  padding: 3px;
 }
 
 .message {
-	border: solid 1px #999999; 
-	background-color: #FACE8D;
-	font-weight: bold;
-	padding: 3px;
+  border: solid 1px #999999; 
+  background-color: #FACE8D;
+  font-weight: bold;
+  padding: 3px;
 }
 
 .form-item {
-	float: left;
-	padding: 3px;
-	margin-top: 1px;
-	margin-bottom: 1px;
+  float: left;
+  padding: 3px;
+  margin-top: 1px;
+  margin-bottom: 1px;
 }
 
 .form-item .label {
-	border: none;
-	float: left;
-	padding: none;
-	margin-bottom: 2px;
-	width: 200px;
+  border: none;
+  float: left;
+  padding: none;
+  margin-bottom: 2px;
+  width: 200px;
 }
 
 .form-item .field {
-	border: none;
-	float: left;
-	padding: none;
-	margin: none;
-	width: 200px;
+  border: none;
+  float: left;
+  padding: none;
+  margin: none;
+  width: 200px;
 }
 
 .form-item .field input {
-	width: 195px;
+  width: 195px;
 }
 
 .form-item .select-field input {
-	width: 178px;
+  width: 178px;
 }
 
 .form-item .date-field input {
-	width: 178px;
+  width: 178px;
 }
 
 .form-item .field select {
-	width: 200px;
+  width: 200px;
 }
 
 .form-item .fullWidth {
-	border: none;
-	float: left;
-	padding: none;
-	margin: none;
-	width: 400px;
+  border: none;
+  float: left;
+  padding: none;
+  margin: none;
+  width: 400px;
 }
 
 .buttonGroup {
-	border-top: 1px solid #CCCCCC;
-	padding-top: 10px;
-	margin-top: 10px;
-	float: left;
-	width: 400px;
+  border-top: 1px solid #CCCCCC;
+  padding-top: 10px;
+  margin-top: 10px;
+  float: left;
+  width: 400px;
 }
 
 .buttonGroup div {
-	float: right;
-	margin: 0;
-	padding: 0;
+  float: right;
+  margin: 0;
+  padding: 0;
 }
 
 .buttonGroup input {
-	background-color: #FCFCFF;
-	float: left;
-	margin: 5px 2px;
+  background-color: #FCFCFF;
+  float: left;
+  margin: 5px 2px;
 }
 
 .box {
-	background-color: #FFFFFF;
-	border: 1px solid #CAD6E8;
-	float: left;
-	padding: 10px;
-	margin: 2px;
+  background-color: #FFFFFF;
+  border: 1px solid #CAD6E8;
+  float: left;
+  padding: 10px;
+  margin: 2px;
 }
 
 #menu.box {
-	min-height: 150px;
-	padding-left: 5px;
-	padding-right: 5px;
-	text-align: center;
-	text-indent: 0;
-	width: 120px;
-	font-size: 75%;
-	font-weight: bold;
+  min-height: 150px;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-align: center;
+  text-indent: 0;
+  width: 120px;
+  font-size: 75%;
+  font-weight: bold;
 }
 
 #menu.box div.button {
-	background-color: #FCFCFF;
-	border: 1px solid #CAD6E8;
-	margin-bottom: 2px;
-	padding: 5px;
+  background-color: #FCFCFF;
+  border: 1px solid #CAD6E8;
+  margin-bottom: 2px;
+  padding: 5px;
 }
 
 #menu.box div.button:hover {
-	background-color: #CAD6E8;
-	cursor: pointer;
+  background-color: #CAD6E8;
+  cursor: pointer;
 }
 
 #menu.box a {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 #menu.box div a {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 a:link, a:visited, a:active {
-	color: #555555;
+  color: #555555;
 }
 
 #main.box {
-	min-height: 150px;
-	width: 450px;
+  min-height: 150px;
+  width: 450px;
 }
 
 #main.box h2 {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 #header.box {
-	background-image: url(../images/header.png);
-	background-repeat: no-repeat;
-	height: 50px;
-	width: 586px;
+  background-image: url(../images/header.png);
+  background-repeat: no-repeat;
+  height: 50px;
+  width: 586px;
 }
 
 #footer.box {
-	height: 25px;
-	width: 586px;
-	text-align: center;
+  height: 25px;
+  width: 586px;
+  text-align: center;
 }
 
 .container {
-	margin: 0 auto;
-	width: 612px;
+  margin: 0 auto;
+  width: 612px;
 }
 
 .tooltip {
-	font-size: 75%;
+  font-size: 75%;
 }
 
 .schedule-panel-container .x-panel-header {
-	font-family: verdana;
-	font-size: 14px;
+  font-family: verdana;
+  font-size: 14px;
 }
 
 .schedule-container {
-	width: 800px;
+  width: 800px;
 }
 
 .register-container {
-	width: 830px;
+  width: 830px;
 }
 
 .schedule-container .daytime-table-container, 
 .register-container .student-table-container {
-	float: left;
-	border-left: 1px solid #D0D0D0;
+  float: left;
+  border-left: 1px solid #D0D0D0;
 }
 
 .schedule-container .daytime-table-container .upper-left-corner,
 .register-container .student-table-container .upper-left-corner {
-	height: 19px;
-	*height: 16px;
-	border-right: 1px solid #AAAAAA;
-	border-bottom: 1px solid #AAAAAA;
+  height: 19px;
+  *height: 16px;
+  border-right: 1px solid #AAAAAA;
+  border-bottom: 1px solid #AAAAAA;
 }
 
 .register-container .student-table-container .upper-left-corner {
-	height: 35px;
-	*height: 34px;
-	width: 209px;
+  height: 35px;
+  *height: 34px;
+  width: 209px;
 }
 
 .schedule-container .daytime-table-container .days-container,
 .register-container .student-table-container .days-container {
-	width: 20px;
+  width: 20px;
 }
 
 .schedule-container .daytime-table-container .daytimes-container {
-	width: 59px;
+  width: 59px;
 }
 
 .register-container .student-table-container .students-container {
-	width: 200px;
+  width: 200px;
 }
 
 .register-container .student-table-container {
-	width: 209px;
+  width: 209px;
 }
 
 .schedule-container .daytime-table-container .day,
 .register-container .student-table-container .student {
-	width: 60px;
-	border-bottom: 1px solid #AAAAAA;
-	border-right: 1px solid #AAAAAA;
-	float: left;
-	position: relative;
-	padding-left: 5px;
-	display: table;
+  width: 60px;
+  border-bottom: 1px solid #AAAAAA;
+  border-right: 1px solid #AAAAAA;
+  float: left;
+  position: relative;
+  padding-left: 5px;
+  display: table;
 }
 
 .register-container .student-table-container .student {
-	width: 200px;
-	border-bottom: 1px solid #DDDDDD;
-	padding: 3px 4px;
-	float: right;
+  width: 200px;
+  border-bottom: 1px solid #DDDDDD;
+  padding: 3px 4px;
+  float: right;
 }
 
 .schedule-container .daytime-table-container .day .caption {
-	display: table-cell;
-	vertical-align: middle;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .schedule-container .daytime-table-container .times-container {
-	width: 30px;
+  width: 30px;
 }
 
 .schedule-container .daytime-table-container .time {
-	width: 36px;
-	border-bottom: 1px solid #DDDDDD;
-	padding: 3px;
-	float: right;
+  width: 36px;
+  border-bottom: 1px solid #DDDDDD;
+  padding: 3px;
+  float: right;
 }
 
 .schedule-container .daytime-table-container .last {
-	border-bottom: none !important;
+  border-bottom: none !important;
 }
 
 .schedule-container .scrollable-schedule-container,
 .register-container .scrollable-register-container {
-	overflow-x: scroll;
-	float: left;
-	width: 614px;
-	border-right: 1px solid #D0D0D0;
+  overflow-x: scroll;
+  float: left;
+  width: 614px;
+  border-right: 1px solid #D0D0D0;
+}
+
+.final-register .register-container .scrollable-register-container {
+  overflow-x: auto;
+  border-right: none;
 }
 
 .schedule-container .groups-container {
-	width: 1360px;
-	height: 17px;
+  width: 1360px;
+  height: 17px;
 }
 
 .register-container .dates-container {
-	width: 1540px;
-	height: 31px;
+  width: 1540px;
+  height: 31px;
+}
+
+.final-register .register-container .dates-container {
+  height: 35px;
 }
 
 .schedule-container .groups-container .group,
 .register-container .dates-container .date {
-	width: 40px;
-	float: left;
-	text-align: center;
-	padding-bottom: 2px;
-	border-right: 1px solid #DDDDDD;
-	border-bottom: 1px solid #AAAAAA;
+  width: 40px;
+  float: left;
+  text-align: center;
+  padding-bottom: 2px;
+  border-right: 1px solid #DDDDDD;
+  border-bottom: 1px solid #AAAAAA;
 }
 
 .schedule-container .groups-container .last,
 .register-container .dates-container .last {
-	border-right-color: #AAAAAA !important;
+  border-right-color: #AAAAAA !important;
 }
 
 .schedule-container .schedule-table {
-	width: 1360px;
+  width: 1360px;
 }
 
 .register-container .register-table {
-	width: 1540px;
+  width: 1540px;
 }
 
 .schedule-container .schedule-table .main-container {
-	width: 1360px;
+  width: 1360px;
 }
 
 .register-container .register-table .main-container {
-	width: 1540px;
+  width: 1540px;
 }
 
 .schedule-container .schedule-table .main-container .group-column,
 .register-container .register-table .main-container .date-column {
-	float: left;
-	width: 40px;
-	border-right: 1px solid #DDDDDD;
+  float: left;
+  width: 40px;
+  border-right: 1px solid #DDDDDD;
 }
 
 .schedule-container .schedule-table .main-container .even,
 .register-container .register-table .main-container .even {
-	background-color: #EEEEEE;
+  background-color: #EEEEEE;
 }
 
 .schedule-container .schedule-table .main-container .last,
 .register-container .register-table .main-container .last {
-	border-right-color: #AAAAAA !important;
+  border-right-color: #AAAAAA !important;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell,
 .register-container .register-table .main-container .date-column .cell {
-	height: 22px;
-	border-bottom: 1px solid #DDDDDD;
-	overflow: hidden;
-	position: relative;
+  height: 22px;
+  border-bottom: 1px solid #DDDDDD;
+  overflow: hidden;
+  position: relative;
 }
 
 .register-container .register-table .main-container .date-column .cell {
-	line-height: 21px;
+  line-height: 21px;
+}
+
+.register-container .register-table .main-container .date-column .term-mark {
+  font-weight: bold;
 }
 
 .register-container .register-table .main-container .date-column .cell .mark {
-	width: 40px;
-	text-align: center;
+  width: 40px;
+  text-align: center;
 }
 
 .schedule-container .schedule-table .main-container .group-column .last-in-day {
-	border-bottom: 1px solid #AAAAAA !important;
+  border-bottom: 1px solid #AAAAAA !important;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell .validationTarget {
-	position: absolute;
-	left: 0px;
-	top: 0px; 
-	width: 38px;
-	height: 21px;
-	z-index: 1000;
-	cursor: pointer;
+  position: absolute;
+  left: 0px;
+  top: 0px; 
+  width: 38px;
+  height: 21px;
+  z-index: 1000;
+  cursor: pointer;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell:hover { 
-	/*background-color: #FFFFCC;*/
+  /*background-color: #FFFFCC;*/
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell .x-form-invalid {
-	background: transparent url(../images/default/grid/invalid_line.gif) repeat-x scroll center bottom !important;
+  background: transparent url(../images/default/grid/invalid_line.gif) repeat-x scroll center bottom !important;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell .subject {
-	font-size: 8px;
+  font-size: 8px;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell .room {
-	font-size: 8px;
+  font-size: 8px;
 }
 
 .schedule-popup .x-panel-bwrap {
-	display: none;
+  display: none;
 }
 
 .schedule-panel-container .generate-icon {
-	position: absolute;
-	top: 3px;
-	right: 0px;
+  position: absolute;
+  top: 3px;
+  right: 0px;
 }
 
 #message_container {
-	position: absolute;
-	z-index: 10000;
+  position: absolute;
+  z-index: 10000;
 }
 
 .msg {
-	width: 300px;
+  width: 300px;
 }
 
 .msg .x-box-mc {
-	font-family: Verdana;
-	padding-bottom: 5px;
+  font-family: Verdana;
+  padding-bottom: 5px;
 }
 
 .msg .close-button {
-	position: absolute;
-	right: 10px;
-	top: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
 .msg .close-button div {
-	background: transparent url("../images/gray/tabs/tab-close.gif") no-repeat;
-	width: 11px;
-	height: 11px;
+  background: transparent url("../images/gray/tabs/tab-close.gif") no-repeat;
+  width: 11px;
+  height: 11px;
 }
 
 .add {
-    background-image:url("../images/add.gif") !important;
+  background-image:url("../images/add.gif") !important;
 }
 .option {
-    background-image:url("../images/plugin.gif") !important;
+  background-image:url("../images/plugin.gif") !important;
 }
 .remove {
-    background-image:url("../images/delete.gif") !important;
+  background-image:url("../images/delete.gif") !important;
 }
 .save {
-    background-image:url("../images/save.gif") !important;
+  background-image:url("../images/save.gif") !important;
+}
+
+.accept {
+  background-image:url("../images/accept.png") !important;
 }
 
 #markBoxContainer .form-item {
-	margin: 0px;
-	padding: 0px;
+  margin: 0px;
+  padding: 0px;
 }
 
 .ts-popup .x-panel-bwrap {
-	display: none;
+  display: none;
 }
 
 .form-container {
@@ -631,4 +648,12 @@ a:link, a:visited, a:active {
 
 .group-form-container {
   width: 454px;
+}
+
+.x-grid3-row .current-term {
+  font-weight: bold;
+}
+
+.term-popup .x-panel-bwrap .x-panel-body {
+  background-color: #E4E4E4;
 }

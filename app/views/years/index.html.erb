@@ -1,0 +1,141 @@
+<% javascript_tag do %>
+
+  var addYear = function(y) {
+    var record = new Global.year_store.recordType(y);
+    record.phantom = false;
+    record.id = y.id;
+    Global.year_store.add(record);
+  }
+  
+  var makeCurrentTerm = function(id) {
+    Global.term_store.each(function(rec) {
+      rec.set("current", rec.get("id") == id);
+    });
+  }
+
+  var addTerm = function(t) {
+    var record = new Global.term_store.recordType(t);
+    record.phantom = false;
+    record.id = t.id;
+    Global.term_store.add(record);
+  }
+  
+  var registerAlert = function() {
+    Ext.MessageBox.show({ title: 'SMS', msg: 'Вы не можете удалить эту четверть, так как уже были выставлены оценки.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK })
+  }
+  
+  var deleteTerm = function(id) {
+    Global.term_store.remove(Global.term_store.getById(id));
+  }
+  
+  
+  Ext.onReady(function() {
+    
+    Global.year_store = <%= extjs_simple_store :data => year_collection(@years), :type => :arrays, :fields => ["id", "start_year", "end_year"], :sortInfo => { :field => "start_year", :direction => "DESC" } %>;
+    
+    Global.term_store = <%= extjs_simple_store :data => term_collection(@terms), :type => :arrays, :fields => ["id", "start_date", "end_date", "year_id", "current"], :sortInfo => { :field => "start_date", :direction => "ASC" } %>;
+    
+    Global.term_store.filter("year_id", -1);
+    
+    var term_renderer = function(value, metadata, record) {
+      if (record.get("current")) {
+        metadata.css = "current-term";
+      }
+      return value;
+    };
+    
+    var y_cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true, :dataIndex => "id" },
+      { :header => "Начало", :width => 120, :dataIndex => "start_year" },
+      { :header => "Конец", :width => 120, :dataIndex => "end_year" }
+    ]) %>;
+    
+    var y_sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true,
+      listeners: {
+        rowselect: function(sm, index, r) {
+          Global.term_store.filter("year_id", r.get("id"));
+        }
+      }
+    });
+    
+    var t_cm = <%= extjs_grid_column_model([
+      { :header => "id", :hidden => true, :dataIndex => "id" },
+      { :header => "Начало", :width => 120, :dataIndex => "start_date", :renderer => "term_renderer".j },
+      { :header => "Конец", :width => 120, :dataIndex => "end_date", :renderer => "term_renderer".j }
+    ]) %>;
+    
+    var t_sm = new Ext.grid.RowSelectionModel({
+      singleSelect: true
+    });
+    
+    Global.term_popup = new Ext.Window({
+      el: 'popup',
+      layout: 'fit',
+      width: 200,
+      height: 150,
+      closeAction: 'hide',
+      animateTarget: null,
+      plain: true,
+      modal: true,
+  
+      items: new Ext.Panel({
+        el: 'popup_main',
+        deferredRender: true,
+        border: false
+      }),
+  
+      buttons: [
+        { text: "Добавить",
+          handler: function() {
+            Global.term_popup.hide();
+            Ext.Ajax.request({
+              form: 'term_form',
+              params: { 'term[year_id]': Global.year_grid.getSelectionModel().getSelected().get("id") }
+            });
+
+          }.bind(this)},
+        { text: "Отмена",
+          handler: function() {
+            Global.term_popup.hide();  
+          }
+        }]
+    });
+   
+    
+    Global.showPopup = function() {
+      if (Global.year_grid.getSelectionModel().getSelected() != null) {
+        Global.term_popup.show();
+      }
+    };
+    
+    Global.year_grid = <%= extjs_grid :store => "Global.year_store".j, :height => 350, :width => 350, :cm => "y_cm".j, :sm => "y_sm".j, :tbar => [
+      extjs_toolbar_button("Добавить", { :iconCls => "x-btn-text-icon add" }, { :url => years_url, :method => "POST" }),
+
+    ] %>;
+    
+    Global.term_grid = <%= extjs_grid :store => "Global.term_store".j, :height => 350, :width => 350, :cm => "t_cm".j, :sm => "t_sm".j, :tbar => [
+      { :text => "Добавить", :iconCls => "add", :handler => "Global.showPopup".j },
+      extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :url => url_for(:action => "destroy_term"), :method => "POST", :params => { :id => "Global.term_grid.getSelectionModel().getSelected().get('id')".j } }),
+      "-",
+      extjs_toolbar_button("Начать эту четверть", { :iconCls => "x-btn-text-icon accept" }, { :url => url_for(:action => "make_current"), :method => "POST", :params => { :id => "Global.term_grid.getSelectionModel().getSelected().get('id')".j } })
+    ] %>;
+      
+    var panel = new Ext.Panel({
+      renderTo: "years",
+      width: 682,
+      height: 500,
+      title: "Учебные годы и четверти",
+      layout: {
+        type: 'hbox',
+        align: 'stretch' 
+      },
+      items: [ 
+        Global.year_grid,
+        Global.term_grid
+      ]
+    });
+  });
+<% end %>
+<div id="years"></div>
+<%= render :partial => "popup" %>

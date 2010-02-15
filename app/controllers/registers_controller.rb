@@ -1,11 +1,45 @@
 class RegistersController < ApplicationController
-  REGISTER_TIMESPAN = 2.months
+  before_filter :load_models, :except => :mark
+
+  def show    
+    @start_date = @term.start_date
+    @end_date = @term.end_date
+    marks = Mark.for_register(@current_group, @current_subject, @term)
+    register = Register.new(marks)
+    @dates = register.create_dates(@current_group, @current_subject, @start_date, @end_date)
+
+    @mark_table = register.create_mark_table(@students, @dates)
+
+  end
   
-  def show
+  def mark
+    @i = params[:i].to_i
+    @j = params[:j].to_i
+    @mark = params[:mark].to_i
+    unless params[:date].blank?
+      mark = Mark.create :mark => @mark, :student_id => params[:student_id].to_i, :date => Time.parse(params[:date]), :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
+    else
+      mark = TermMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
+    end
+    
+    render :action => "mark.rjs"
+  end
+
+  def final
+    year = Year.find params[:current_year]
+    marks = Mark.for_register_finals @current_group, @current_subject, year
+    register = Register.new(marks)
+    @terms_and_year = register.create_terms_and_year(year)
+    @mark_table = register.create_final_mark_table(@students, @terms_and_year)
+  end
+  
+  protected
+  
+  def load_models
     session[:register_current_group_id] = params[:current_group]
     session[:register_current_subject_id] = params[:current_subject]
-    session[:register_start_date] = params[:start_date].blank? ? nil : DateTime.strptime(params[:start_date], "%d.%m.%Y").to_time
-    session[:register_end_date] = params[:end_date].blank? ? nil : DateTime.strptime(params[:end_date], "%d.%m.%Y").to_time
+    session[:register_current_year_id] = params[:current_year]
+    session[:register_current_term_id] = params[:current_term]
     
     @student_groups = current_user.student_groups_for_register
     return if @student_groups.blank?
@@ -28,32 +62,28 @@ class RegistersController < ApplicationController
     @current_group_id = session[:register_current_group_id]
     @current_subject_id = session[:register_current_subject_id]
     
-    if session[:register_start_date].blank?
-      now = Time.now
-      session[:register_end_date] = Time.utc(now.year, now.month, now.day)
-      session[:register_start_date] = REGISTER_TIMESPAN.ago session[:register_end_date]
+    year = Year.with_terms[0]
+    session[:register_current_year_id] ||= year.id
+    if session[:register_current_term_id].nil?
+      session[:register_current_term_id] = year.terms[0].id
+    elsif not session[:register_current_year_id].blank?
+      tmp_year = Year.find session[:register_current_year_id] 
+      p "%" * 100
+      p session[:register_current_term_id]
+      if (session[:register_current_term_id] != "" and not tmp_year.term_ids.include?(session[:register_current_term_id].to_i))
+        session[:register_current_term_id] = tmp_year.terms[0].id 
+      end
     end
     
-    @start_date = session[:register_start_date]
-    @end_date = session[:register_end_date]
+    @term = Term.find session[:register_current_term_id] rescue nil
     
-    current_group = StudentGroup.find @current_group_id
-    current_subject = Subject.find @current_subject_id
+    @current_year_id = session[:register_current_year_id]
+    @current_term_id = session[:register_current_term_id]
+    @years = Year.with_terms
+    @terms = Term.find_all_by_year_id(@current_year_id)
     
-    marks = Mark.for_register(current_group, current_subject, @start_date, @end_date)
-    @students = current_group.students
-    @dates = Register.create_dates(current_group, current_subject, @start_date, @end_date)
-    register = Register.new(marks)
-    @mark_table = register.create_mark_table(@students, @dates)
+    @current_group = StudentGroup.find @current_group_id
+    @current_subject = Subject.find @current_subject_id
+    @students = @current_group.students
   end
-  
-  def mark
-    @i = params[:i].to_i
-    @j = params[:j].to_i
-    @mark = params[:mark].to_i
-    mark = Mark.create :mark => @mark, :student_id => params[:student_id].to_i, :date => Time.parse(params[:date]), :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id
-
-    render :action => "mark.rjs"
-  end
-
 end

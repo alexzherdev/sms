@@ -24,7 +24,7 @@
   
   Ext.onReady(function() {
     
-    <%= year_store %>
+    <%= school_year_store %>
     
     Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" } %>;
 

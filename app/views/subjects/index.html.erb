@@ -18,10 +18,10 @@
   
   Ext.onReady(function() {
     Global.years = <%= Subject::SCHOOL_YEARS.collect { |y| [y] }.to_json %>
-      Global.year_store = new Ext.data.SimpleStore({
+      Global.school_year_store = new Ext.data.SimpleStore({
       fields: [{name: "year"}]
     });
-    Global.year_store.loadData(Global.years);
+    Global.school_year_store.loadData(Global.years);
     
     var reader = new Ext.data.ArrayReader({}, [
        { name: 'id' },

@@ -3,11 +3,16 @@ class Mark < ActiveRecord::Base
   
   belongs_to :student
   belongs_to :schedule_item
+  belongs_to :term
   belongs_to :modified_by, :class_name => "Teacher"
   
-  validates_presence_of :student, :schedule_item, :modified_by
+  validates_presence_of :student, :modified_by
   
-  def self.for_register(group, subject, start_date, end_date)
-    self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and date between ? and ?", group.id, subject.id, start_date, end_date ])
+  def self.for_register(group, subject, term)
+    self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and term_id = ?", group.id, subject.id, term.id ])
+  end
+  
+  def self.for_register_finals(group, subject, year)
+    self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
   end
 end

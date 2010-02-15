@@ -1,33 +1,21 @@
-<% unless @student_groups.blank? %>
-<% content_for :bottom do %>
-  <%= javascript_include_tag "register" %>
-<% end %>
+<%= javascript_include_tag "register" %>
+
 <% form_tag :action => "show" do %>
-  <% javascript_tag do %>
-    Ext.onReady(function() {    
-      <%= render :partial => "panel.js.erb" %>
-    });
-  <% end %>  
-  
   <div id="markBoxContainer" class="x-hide-display">
     <%= extjs_combo_box_control "", "", :id => "markBox", :width => 40, :store => "Global.mark_value_store", :displayField => "mark", :valueField => "id" %>
   </div>
-
-  <div class="clear"></div>
-  <div id="panel_container" class="register-panel-container"></div>
-  <div id="toolbar"></div>
-  <div id="register_container"></div>
   
   <% javascript_tag do %>
     Ext.onReady(function() {
+      <%= render :partial => "panel.js.erb" %>
       
-      Global.marks = <%= mark_collection(@students, @dates, @mark_table).to_json %>;
-      Global.dates = <%= date_collection(@dates).to_json %>;
+      Global.marks = <%= mark_collection(@students, @terms_and_year, @mark_table).to_json %>;
+      Global.columns = <%= final_column_collection(@terms_and_year).to_json %>;
       
       Global.register = new Register({ 
         renderTo: "register_container",
         marks: Global.marks,
-        dates: Global.dates,
+        dates: Global.columns,
         students: Global.students,
         readonly: <%= @read_only %>,
         markBox: Ext.getCmp("markBox")
@@ -50,10 +38,10 @@
       Global.register.markBox.on("collapse", function() {
         Global.register.setListeners();
       });
+
     });
-    
   <% end %>
-<% end %>
-<% else %>
-  Вы не можете просмотреть ни один журнал.
+
+  <div id="panel_container" class="register-panel-container"></div>
+  <div id="register_container" class="final-register"></div>
 <% end %>

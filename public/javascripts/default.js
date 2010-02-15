@@ -80,7 +80,7 @@ Observable.mixin(GlobalClass);
 
 var Global = new GlobalClass();
 
-Global.submitForm = function(element) {
+Global.submitForm = function(element, action) {
     element = $(element);
 
     while (element != null) {
@@ -92,6 +92,9 @@ Global.submitForm = function(element) {
 	if (element.onsubmit) {
 		element.onsubmit();
 	} else {
+	  if (action) {
+	    element.action = action;
+	  }
 		element.submit();
 	}
 } 

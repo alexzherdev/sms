@@ -1,0 +1,1 @@
+page.call "addYear", strip_in_json(@year.to_json)

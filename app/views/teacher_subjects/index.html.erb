@@ -13,7 +13,7 @@
   Ext.onReady(function() {
     Global.subject_store = <%= extjs_simple_store :data => subject_collection(@subjects), :type => :arrays, :fields => [ "id", "name", "year"] %>;
     
-    <%= year_store %>
+    <%= school_year_store %>
     
     Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "name", "year", "letter"] %>;
     

@@ -4,7 +4,7 @@ Time.class_eval do
   end
   
   def date_format
-    self.strftime("%Y-%m-%d")
+    self.strftime("%d-%m-%Y")
   end
   
   def register_date_format

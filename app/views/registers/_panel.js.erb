@@ -1,0 +1,98 @@
+Global.term_store = <%= extjs_simple_store :data => register_term_collection(@terms), :type => :arrays, :fields => ["id", "ordinal_name"] %>;
+Global.year_store = <%= extjs_simple_store :data => year_collection(@years), :type => :arrays, :fields => ["id", "start_year", "end_year", "full_name"] %>;
+Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "name", "year"] %>;
+Global.subject_store = <%= extjs_simple_store :data => subject_collection(@subjects), :type => :arrays, :fields => ["id", "name"] %>;
+
+Global.mark_values = <%= mark_value_collection %>;
+  Global.mark_value_store = new Ext.data.SimpleStore({
+  fields: [{name: "id"}, {name: "mark"}]
+});
+Global.mark_value_store.loadData(Global.mark_values);
+
+Global.students = <%= student_collection(@students).to_json %>;
+
+var panel = new Ext.Panel({
+  renderTo: "panel_container",
+  width: 825,
+  title: "Журнал",
+  tbar: [{
+    xtype: 'combo',
+    width: 100,
+    store: Global.group_store,
+    hiddenName: 'current_group',
+    displayField: 'name',
+    valueField: 'id',
+    value: <%= @current_group_id %>,
+    triggerAction: 'all',
+    mode: 'local',
+    forceSelection: true,
+    editable: false,
+    listeners: {
+      select: function(combo, record, index) {
+        $('current_group').value = record.get("id");
+        Global.submitForm(combo.getId()<% if @current_term_id.blank? %>, '<%= final_register_url %>'<% end %>);
+      }
+    }
+  },
+  '-',
+  {
+    xtype: 'combo',
+    store: Global.subject_store,
+    hiddenName: 'current_subject',
+    displayField: 'name',
+    valueField: 'id',
+    value: <%= @current_subject_id %>,
+    triggerAction: 'all',
+    mode: 'local',
+    forceSelection: true,
+    editable: false,
+    listeners: {
+      select: function(combo) {
+        Global.submitForm(combo.getId()<% if @current_term_id.blank? %>, '<%= final_register_url %>'<% end %>);
+      }
+    }
+  },
+  '-',
+  {
+    xtype: 'combo',
+    width: 110,
+    hiddenName: 'current_year',
+    store: Global.year_store,
+    displayField: 'full_name',
+    valueField: 'id',
+    value: <%= @current_year_id %>,
+    triggerAction: 'all',
+    mode: 'local',
+    forceSelection: true,
+    editable: false,
+    listeners: {
+      select: function(field) {
+        Global.submitForm(field.getId()<% if @current_term_id.blank? %>, '<%= final_register_url %>'<% end %>);
+      }
+    }
+  },
+  ' ',
+  {
+    xtype: 'combo',
+    width: 110,
+    hiddenName: 'current_term',
+    store: Global.term_store,
+    displayField: 'ordinal_name',
+    valueField: 'id',
+    value: <%= @current_term_id.blank? ? "\"\"" : @current_term_id %>,
+    triggerAction: 'all',
+    mode: 'local',
+    forceSelection: true,
+    editable: false,
+    listeners: {
+      select: function(field, record) {
+        if (record.get("id") == "") {
+          Global.submitForm(field.getId(), '<%= final_register_url %>');
+        } else {
+          Global.submitForm(field.getId());
+        }
+      }
+    }
+  }  
+  ]
+});

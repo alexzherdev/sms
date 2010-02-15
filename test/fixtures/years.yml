@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  start_year: 1
+  end_year: 1
+
+two:
+  start_year: 1
+  end_year: 1

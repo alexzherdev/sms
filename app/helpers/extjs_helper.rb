@@ -237,7 +237,7 @@ module ExtjsHelper
     options.symbolize_keys!
     populate_options_for_form_field model_name, model_field, options
     options[:name] ||= options[:hiddenName] unless options[:merged]
-
+    options[:format] ||= "d-m-Y"
     render :partial => "controls/date_field.js.erb",
             :locals => {:options => strip_hash_keys_for_json(options)}
   end

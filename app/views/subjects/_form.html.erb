@@ -6,7 +6,7 @@
       <% if @subject.new_record? %>
       <tr>
         <td><%= f.label :year, "Год обучения" %></td>
-        <td><%= extjs_combo_box_control :subject, :year, :width => 80, :store => "Global.year_store".j, :displayField => "year", :valueField => "year" %></td>
+        <td><%= extjs_combo_box_control :subject, :year, :width => 80, :store => "Global.school_year_store".j, :displayField => "year", :valueField => "year" %></td>
       </tr>
       <% end %>
       <tr>
