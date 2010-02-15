@@ -1,4 +1,5 @@
 <% javascript_tag do %>
+  <%= render :partial => "import.js.erb" %>
   var addSubject = function(subject) {
     var record = new Global.subject_store.recordType(subject);
     record.phantom = false;
@@ -86,12 +87,24 @@
           });
         }
   		},
-  		<%= extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :handler => "function() {
-        Ext.Ajax.request({
-          method: 'DELETE', 
-          url: '#{subjects_path}/' + Global.subject_grid.getSelectionModel().getSelected().get('id')
-        })}".j}).to_json %>
-      ],
+  		{
+        iconCls: 'x-btn-text-icon remove',
+        text: 'Удалить',
+        handler: function() {
+          Ext.Ajax.request({
+            method: 'DELETE', 
+            url: '#{subjects_path}/' + Global.subject_grid.getSelectionModel().getSelected().get('id')
+          })
+        }
+      },
+      '-',
+      {
+        iconCls: 'x-btn-text-icon add',
+        text: 'Импорт',
+        handler: function() {
+          (new SMS.SubjectImportWindow()).show();
+        }
+      }],
   		layout: {
   		  type: 'hbox',
   		  align: 'stretch' 

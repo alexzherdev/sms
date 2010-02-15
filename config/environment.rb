@@ -76,7 +76,5 @@ Rails::Initializer.run do |config|
   
 end
 
-require "#{RAILS_ROOT}/lib/date_time_zone_fix"
-require "#{RAILS_ROOT}/lib/mixins/time"
-require "#{RAILS_ROOT}/lib/comma_separated_ids"
+Dir.glob("#{RAILS_ROOT}/lib/**/*.rb").each { |file| require file }
 

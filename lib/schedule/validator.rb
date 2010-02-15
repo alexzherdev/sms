@@ -25,10 +25,10 @@ module Schedule
           room_occupied_times = occupied[item.class_room]
           if room_occupied_times.include? [item.week_day, item.time_table_item]
             self.errors[item] ||= Set.new
-            self.errors[item].add("Classroom is occupied")
+            self.errors[item].add("Аудитория занята")
             first_item = first_occupied[[item.class_room, item.week_day, item.time_table_item]]
             self.errors[first_item] ||= Set.new
-            self.errors[first_item].add("Classroom is occupied")          
+            self.errors[first_item].add("Аудитория занята")          
           else
             room_occupied_times.add [item.week_day, item.time_table_item]
             first_occupied[[item.class_room, item.week_day, item.time_table_item]] = item
@@ -69,13 +69,13 @@ module Schedule
       for pair in not_enough do
         for item in group_subject_items[pair] do
           self.errors[item] ||= Set.new
-          self.errors[item].add("Not enough hours")
+          self.errors[item].add("Недостаточно часов для этого предмета")
         end
       end
       for pair in too_many do
         for item in group_subject_items[pair] do
           self.errors[item] ||= Set.new
-          self.errors[item].add("Too many hours")
+          self.errors[item].add("Слишком много часов для этого предмета")
         end
       end
     end

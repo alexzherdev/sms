@@ -2,6 +2,14 @@
   <%= javascript_include_tag "groupdataview" %>
   <%= javascript_include_tag "groupcombo" %>
   <%= javascript_include_tag "schedule" %>
+  <% javascript_tag do %>
+    Ext.onReady(function() {
+      <%= 
+        update_page do |page| 
+          mark_errors(page)
+        end %>
+    });
+  <% end %>
 <% end %>
 
 <% javascript_tag do %>
@@ -81,10 +89,6 @@
           handler: function() { document.location.href = "<%= generate_schedule_path %>"; }
       }]
     });
-    <%= 
-      update_page do |page| 
-        mark_errors(page)
-      end %>
   });
 <% end %>
 <div id="popup" class="x-hidden">

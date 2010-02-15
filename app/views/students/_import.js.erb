@@ -1,0 +1,85 @@
+Ext.ns('SMS');
+SMS.StudentImportWindow = Ext.extend(Ext.Window, {
+	// >> Constants
+	DOWNLOAD : 0,
+	UPLOAD : 1,
+	PREVIOUS : 0,
+	NEXT : 2,
+	// << Constants
+	bodyCssClass: 'import-popup',
+  draggable : true,
+	closable : true,
+	modal : true,
+	minimizable : false,
+	resizable : false,
+	closeAction : 'hide',
+	title : 'Импорт',
+	width : 300,
+	height : 200,		
+	layout : 'card',
+	activeItem : 0,
+	
+	initComponent : function(){
+	  this.uploadForm = new Ext.FormPanel({			
+	    fileUpload: true,
+      bodyStyle: 'padding: 10px',		
+      standardSubmit: true,
+      url: '<%= import_students_url %>',
+  		items: [{
+  			border : false,
+  			html : 'Теперь загрузите файл с данными об учениках'
+  		},{
+  			xtype : 'field',
+  			inputType: 'file',
+  			name: 'file',
+  			hideLabel: true
+  		},{
+  		  xtype: 'hidden',
+  		  name: 'authenticity_token',
+  		  value: '<%= form_authenticity_token %>'
+  		},{
+  			xtype : 'button',
+  			type: 'submit',
+  			text : 'Импортировать',
+  			handler: function() {
+  			  this.uploadForm.getForm().submit();
+  			}.bind(this)
+  		}]					
+  	});
+    
+		this.items = [
+			new Ext.Panel({
+		    bodyStyle: 'padding: 10px',
+				layout:'anchor',
+				items : [{
+					border : false,
+					html : 'Пожалуйста, скачайте файл-шаблон и заполните его данными об учениках. На следующем шаге вам будет предложено загрузить заполненный файл в систему.'
+				},{
+					xtype : 'button',
+					text : 'Скачать',
+					handler : function(){
+						window.open('/templates/students.csv');
+					}
+				}]
+			}),
+			this.uploadForm
+		];
+		this.bbar = [ {
+			text : '<< Назад',
+			hidden : true,
+			handler : function(){
+				this.getLayout().setActiveItem(this.DOWNLOAD);	
+				this.getBottomToolbar().items.items[this.PREVIOUS].setVisible(false);
+				this.getBottomToolbar().items.items[this.NEXT].setVisible(true);
+			}, scope : this
+		},'->', {
+			text : 'Далее >>',
+			handler : function(){
+				this.getLayout().setActiveItem(this.UPLOAD);
+				this.getBottomToolbar().items.items[this.PREVIOUS].setVisible(true);
+				this.getBottomToolbar().items.items[this.NEXT].setVisible(false);
+			}, scope : this
+		}];
+		SMS.StudentImportWindow.superclass.initComponent.call(this);
+	}
+});

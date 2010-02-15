@@ -32,4 +32,12 @@ class StudentsController < ApplicationController
     flash[:notice] = "Successfully destroyed student."
     redirect_to students_url
   end
+  
+  def import
+    importer = StudentsImporter.new(params[:file].read)
+    students = importer.parse
+    p students
+    Student.create students
+    redirect_to students_url
+  end
 end

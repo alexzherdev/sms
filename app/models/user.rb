@@ -6,6 +6,7 @@ class User < Person
   acts_as_authentic
   
   def can_access?(signature)
+    signature = signature[1..-1] if signature.index("/") == 0
     role.acl_actions.any? { |act| act.name == signature }    
   end
   

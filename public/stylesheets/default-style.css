@@ -657,3 +657,11 @@ a:link, a:visited, a:active {
 .term-popup .x-panel-bwrap .x-panel-body {
   background-color: #E4E4E4;
 }
+
+.import-popup .x-form-element {
+  padding-left: 0px;
+}
+
+.ext-gecko .import-popup .x-form-item {
+  overflow: hidden;
+}

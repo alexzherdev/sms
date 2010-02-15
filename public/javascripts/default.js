@@ -129,6 +129,4 @@ Global.markInvalid = function(element, message) {
     }  
 }
 	
-Ext.onReady(function() {
-	Ext.QuickTips.init(false);
-});
+Ext.QuickTips.init(false);

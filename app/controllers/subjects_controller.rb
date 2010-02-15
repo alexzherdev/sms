@@ -32,4 +32,11 @@ class SubjectsController < ApplicationController
     @subject.update_attributes params[:subject]
     render :action => "update.rjs", :status => @subject.valid? ? 200 : 403
   end
+  
+  def import
+    importer = SubjectsImporter.new(params[:file].read)
+    subjects = importer.parse
+    Subject.create subjects
+    redirect_to subjects_url
+  end
 end

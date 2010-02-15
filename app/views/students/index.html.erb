@@ -1,4 +1,5 @@
 <% javascript_tag do %>
+  <%= render :partial => "import.js.erb" %>
   var addStudent = function(student) {
     var record = new Global.student_store.recordType(student);
     record.phantom = false;
@@ -55,6 +56,14 @@
             url: '<%= new_student_url %>',
             scripts: true
           });
+        }
+  		},
+  		'-',
+  		{
+        iconCls: 'x-btn-text-icon add',
+        text: 'Импорт',
+        handler: function() {
+          (new SMS.StudentImportWindow()).show();
         }
   		}],
   		layout: {

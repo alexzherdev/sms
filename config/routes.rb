@@ -5,11 +5,11 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :teacher_subjects
 
-  map.resources :subjects
+  map.resources :subjects, :collection => { :import => :post }
 
   map.resources :student_groups
 
-  map.resources :students
+  map.resources :students, :collection => { :import => :post }
 
   map.resources :user_sessions
   
