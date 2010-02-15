@@ -24,7 +24,7 @@ module RegistersHelper
       collection[i] = []
       dates.each_with_index do |date, j|
         collection[i] << 
-          {:id => mark_table[i][j].id, :i => i, :j => j, :mark => format_mark(mark_table[i][j].mark), :type => mark_table[i][j].type }
+          {:id => mark_table[i][j].id, :i => i, :j => j, :mark => format_mark(mark_table[i][j].mark), :type => mark_table[i][j].type, :term_id => mark_table[i][j].term_id, :year_id => mark_table[i][j].year_id }
       end
     end
     collection
@@ -45,7 +45,7 @@ module RegistersHelper
     end
   end
   
-  def final_column_collection(terms_and_year)
+  def final_column_collection(terms_and_year, group, subject)
     collection = []
     terms_and_year.each_with_index do |ty, i|
       if ty.first.blank?

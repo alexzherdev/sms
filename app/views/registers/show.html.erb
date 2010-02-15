@@ -34,10 +34,10 @@
       });
             
       Global.register.markBox.on("select", function(box, record) {
-        Global.register.chooseMark(Global.register.editCell, record.get("id"), function(i, j, studentId, date, itemId, mark, callback) {
+        Global.register.chooseMark(Global.register.editCell, record.get("id"), function(i, j, studentId, date, itemId, mark, mark_model, callback) {
           Ext.Ajax.request({
             url: '<%= mark_register_path %>',
-            params: { i: i, j: j, mark: mark, student_id: studentId, date: date, item_id: itemId },
+            params: { i: i, j: j, type: mark_model.type, mark: mark, student_id: studentId, date: date, item_id: itemId },
             success: function(response) {
               callback(response.responseText);
             }

@@ -16,10 +16,13 @@ class RegistersController < ApplicationController
     @i = params[:i].to_i
     @j = params[:j].to_i
     @mark = params[:mark].to_i
-    unless params[:date].blank?
-      mark = Mark.create :mark => @mark, :student_id => params[:student_id].to_i, :date => Time.parse(params[:date]), :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
+    if params[:type] == "TermMark"
+      mark = TermMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => (params[:term_id] || session[:register_current_term_id])
+    elsif params[:type] == "YearMark"
+      mark = YearMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :year_id => session[:register_current_year_id]
     else
-      mark = TermMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
+      mark = Mark.create :mark => @mark, :student_id => params[:student_id].to_i, :date => Time.parse(params[:date]), :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
+      
     end
     
     render :action => "mark.rjs"
@@ -31,6 +34,7 @@ class RegistersController < ApplicationController
     register = Register.new(marks)
     @terms_and_year = register.create_terms_and_year(year)
     @mark_table = register.create_final_mark_table(@students, @terms_and_year)
+    @item = ScheduleItem.find_by_student_group_id_and_subject_id(@current_group, @current_subject)
   end
   
   protected
@@ -68,8 +72,7 @@ class RegistersController < ApplicationController
       session[:register_current_term_id] = year.terms[0].id
     elsif not session[:register_current_year_id].blank?
       tmp_year = Year.find session[:register_current_year_id] 
-      p "%" * 100
-      p session[:register_current_term_id]
+
       if (session[:register_current_term_id] != "" and not tmp_year.term_ids.include?(session[:register_current_term_id].to_i))
         session[:register_current_term_id] = tmp_year.terms[0].id 
       end

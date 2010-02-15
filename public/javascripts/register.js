@@ -19,7 +19,6 @@ var Register = Class.create({
     });
     
     this.model.marks = this.config.marks;
-    //this.model.markStore.loadData(this.config.marks);
         
     this.model.dateStore = new Ext.data.SimpleStore({
       fields: ["id", "text", "itemId", "date"],
@@ -120,7 +119,7 @@ var Register = Class.create({
         var mark = this.model.marks[j][i];
         var cell = document.createElement("div");
         cell.className = "cell";    
-        if (mark.type == "TermMark") {
+        if (mark.type == "TermMark" || mark.type == "YearMark") {
           cell.className += " term-mark";
         }
         cell.id = "_" + mark.i + "_" + mark.j + "_cell";    
@@ -199,7 +198,8 @@ var Register = Class.create({
     var date = this.model.dateStore.getAt(j).get("date");
     this.blurMarkBox(null);
     this.markup.scrollableRegisterContainer.startWaiting("bigWaiting");
-    handler(i, j, studentId, date, itemId, mark, function(result) {
+    var mark_model = this.model.marks[i][j];
+    handler(i, j, studentId, date, itemId, mark, mark_model, function(result) {
       eval(result);
       this.markup.scrollableRegisterContainer.stopWaiting();
     }.bind(this));

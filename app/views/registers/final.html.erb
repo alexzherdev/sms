@@ -1,16 +1,22 @@
 <%= javascript_include_tag "register" %>
 
 <% form_tag :action => "show" do %>
+
+  <% javascript_tag do %>
+    Ext.onReady(function() {
+      <%= render :partial => "panel.js.erb" %>
+    });
+  <% end %>  
+  
   <div id="markBoxContainer" class="x-hide-display">
     <%= extjs_combo_box_control "", "", :id => "markBox", :width => 40, :store => "Global.mark_value_store", :displayField => "mark", :valueField => "id" %>
   </div>
   
+  
   <% javascript_tag do %>
     Ext.onReady(function() {
-      <%= render :partial => "panel.js.erb" %>
-      
       Global.marks = <%= mark_collection(@students, @terms_and_year, @mark_table).to_json %>;
-      Global.columns = <%= final_column_collection(@terms_and_year).to_json %>;
+      Global.columns = <%= final_column_collection(@terms_and_year, @current_group, @current_subject).to_json %>;
       
       Global.register = new Register({ 
         renderTo: "register_container",
@@ -22,10 +28,16 @@
       });
             
       Global.register.markBox.on("select", function(box, record) {
-        Global.register.chooseMark(Global.register.editCell, record.get("id"), function(i, j, studentId, date, itemId, mark, callback) {
+        Global.register.chooseMark(Global.register.editCell, record.get("id"), function(i, j, studentId, date, itemId, mark, mark_model, callback) {
+          var p = $H({ i: i, j: j, type: mark_model.type, mark: mark, student_id: studentId, item_id: <%= @item.id %> });
+          if (mark_model.type == "TermMark") {
+            p.set("term_id", mark_model.term_id);
+          } else if (mark_model.type == "YearMark") {
+            p.set("year_id", mark_model.year_id);
+          }
           Ext.Ajax.request({
             url: '<%= mark_register_path %>',
-            params: { i: i, j: j, mark: mark, student_id: studentId, date: date, item_id: itemId },
+            params: p.toObject(),
             success: function(response) {
               callback(response.responseText);
             }
