@@ -22,41 +22,15 @@
             <span>School Management System</span>
         <% end %>
     </div>
-    
-    <div class="languages">
-        <a class="russian" href="?localeId=ru_RU"><span></span></a>
-        <a class="english active" href="?localeId=en_US"><span></span></a>
-    </div>
     <div class="clear"></div>
-    <div class="left-menu-container">
-      <% if current_user %>
-        <div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>       
-        <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
-        <ul class="left-menu">
-        <% if current_user.can_access?(users_path) %><li><%= link_to "Пользователи", users_path %></li><% end %>  
-        <% if current_user.can_access?(roles_path) %><li><%= link_to "Роли", roles_path %></li><% end %>      
-        <% if current_user.can_access?(years_path) %><li><%= link_to "Учебный год и четверти", years_path %></li><% end %>      
-        <% if current_user.can_access?(time_table_items_path) %><li><%= link_to "Расписание звонков", time_table_items_path %></li><% end %>        
-        <% if current_user.can_access?(class_rooms_path) %><li><%= link_to "Аудитории", class_rooms_path %></li><% end %>        
-        <% if current_user.can_access?(students_path) %><li><%= link_to "Ученики", students_path %></li><% end %>  
-        <% if current_user.can_access?(student_groups_path) %><li><%= link_to "Классы", student_groups_path %></li><% end %>        
-        <% if current_user.can_access?(subjects_path) %><li><%= link_to "Предметы", subjects_path %></li><% end %>        
-        <% if current_user.can_access?(teacher_subjects_path) %><li><%= link_to "Предметы учителей", teacher_subjects_path %></li><% end %>
-        <% if current_user.can_access?(schedule_path) %><li><%= link_to "Расписание занятий", schedule_path %></li><% end %> 
-        <% if current_user.can_access?(register_path) %><li><%= link_to "Журналы", register_path %></li><% end %>
-        <li class="last"><%= link_to "Выход", logout_path %></li>
-        </ul>
-        </div></div></div>
-        <div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>
-      <% end %>
-    </div>
-
+    
+    <%= render :partial => "layouts/menu" %>
+    
     <div class="content-container">
-
       <%= yield %> 
     </div>
     <div class="clear"></div>
-    <div id="footer">&copy; 2009-2010 Алексей Жердев, Алексей Шпаков.</div>
+    <div id="footer">&copy; Алексей Жердев, Алексей Шпаков, 2009-2010</div>
 </div>
 
 <%= javascript_include_tag "protoload" %>

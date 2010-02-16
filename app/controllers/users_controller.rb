@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.create params[:user]
+    @user = (params[:user][:role_id].to_i == Role.teacher.id ? Teacher : User).create params[:user]
     render :action => "create.rjs", :status => @user.valid? ? 200 : 403
   end
 

@@ -33,10 +33,12 @@
         <td><%= f.label :birth_date, "Дата рождения" %></td>
         <td><%= extjs_date_field_control :user, :birth_date, :format => "d-m-Y", :width => 178 %></td>
       </tr>
-      <tr>
-        <td><%= f.label :role_id, "Роль" %></td>
-        <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>
-      </tr>
+      <% if @user.new_record? %>
+        <tr>
+          <td><%= f.label :role_id, "Роль" %></td>
+          <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>
+        </tr>
+      <% end %>
       <tr>
         <td><%= f.label :blocked, "Заблокирован" %></td>
         <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>

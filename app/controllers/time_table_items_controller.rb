@@ -12,7 +12,7 @@ class TimeTableItemsController < ApplicationController
   def destroy
     if not ScheduleItem.find_by_time_table_item_id params[:id]
       @item = TimeTableItem.find params[:id]
-      @item.destroy
+      @item.destroy_and_shift
     end
     render :action => "destroy.rjs"
   end

@@ -12,22 +12,6 @@ class TimeTableItem < ActiveRecord::Base
   
   named_scope :lessons, :conditions => { :item_type => LESSON }
   
-  def <=>(time_table_item)
-    return self.start_time <=> time_table_item.start_time
-  end
-  
-  def lesson?
-    self.item_type == LESSON
-  end
-  
-  def short_break?
-    self.item_type == SHORT_BREAK
-  end
-  
-  def long_break?
-    self.item_type == LONG_BREAK
-  end
-  
   def self.lengths
     { LESSON => Settings["lesson_length"].to_i.minutes, SHORT_BREAK => Settings["short_break"].to_i.minutes, LONG_BREAK => Settings["long_break"].to_i.minutes }
   end
@@ -54,6 +38,33 @@ class TimeTableItem < ActiveRecord::Base
       item.start_time = current_time  
       item.end_time = lengths[item.item_type].since item.start_time
       current_time = item.end_time
+      item.save
+    end
+  end
+  
+  def <=>(time_table_item)
+    return self.start_time <=> time_table_item.start_time
+  end
+  
+  def lesson?
+    self.item_type == LESSON
+  end
+  
+  def short_break?
+    self.item_type == SHORT_BREAK
+  end
+  
+  def long_break?
+    self.item_type == LONG_BREAK
+  end
+  
+  def destroy_and_shift
+    later_items = self.class.find(:all, :conditions => [ "start_time > ?", self.start_time ])
+    delta = self.end_time - self.start_time
+    self.destroy
+    later_items.each do |item|
+      item.start_time -= delta
+      item.end_time -= delta
       item.save
     end
   end

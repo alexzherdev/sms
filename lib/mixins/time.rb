@@ -8,7 +8,14 @@ Time.class_eval do
   end
   
   def register_date_format
-    self.strftime("%a<br/>%d.%m")
+    s = self.strftime("%a<br/>%d.%m")
+    s.gsub!("Mon", "Пн")
+    s.gsub!("Tue", "Вт")
+    s.gsub!("Wed", "Ср")
+    s.gsub!("Thu", "Чт")
+    s.gsub!("Fri", "Пт")
+    s.gsub!("Sat", "Сб")
+    s
   end
   
   def date_format_for_js

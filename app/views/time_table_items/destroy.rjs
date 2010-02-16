@@ -1,5 +1,5 @@
 if @item
-  page.call "deleteItem", @item.id
+  page.redirect_to time_table_items_url
 else
   page.call "scheduleAlert"
 end
