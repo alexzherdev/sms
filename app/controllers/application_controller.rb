@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
 
-  helper_method :current_user
+  helper_method :current_user, :authorized?
   
   prepend_before_filter :require_dependencies
   before_filter :login_required
@@ -26,29 +26,27 @@ class ApplicationController < ActionController::Base
   
   protected
   
-  def action_protected?(controller_class, action_name)
-    controller_settings = AclAction.find_by_name controller_class.controller_path
+  def action_protected?(controller_path, action_name)
+    controller_settings = AclAction.find_by_name controller_path
     return true unless controller_settings.blank?
-    return AclAction.find_by_name compose_action_signature(controller_class, action_name)
+    return AclAction.find_by_name compose_action_signature(controller_path, action_name)
   end
   
-  def authorized? 
+  def authorized?(controller_path = self.class.controller_path, action_name = params[:action])
     return false unless current_user
-    controller_class = self.class  
-    action_name = params[:action]
-    
-    return true unless action_protected?(controller_class, action_name)
-    
-    signature = compose_action_signature(controller_class, action_name)
+     
+    return true unless action_protected?(controller_path, action_name)
 
-    return true if current_user.can_access?(controller_class.controller_path)
+    signature = compose_action_signature(controller_path, action_name)
+
+    return true if current_user.can_access?(controller_path)
     return current_user.can_access?(signature)
   end
   
   #  Composes a key for the given controller and action to use a storage key. This key
   #  uniquely defines the actions we are to deal with.
-  def compose_action_signature(controller_class, action_name)
-    "#{controller_class.controller_path}/#{action_name}"
+  def compose_action_signature(controller_path, action_name)
+    "#{controller_path}/#{action_name}"
   end
   
   def login_required

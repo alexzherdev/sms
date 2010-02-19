@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100214084252) do
+ActiveRecord::Schema.define(:version => 20100218080052) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -23,6 +23,16 @@ ActiveRecord::Schema.define(:version => 20100214084252) do
     t.datetime "updated_at"
     t.integer  "role_id"
     t.integer  "acl_action_id"
+  end
+
+  create_table "attachments", :force => true do |t|
+    t.string   "data_file_name"
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.integer  "parent_id"
+    t.string   "parent_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "class_rooms", :force => true do |t|
@@ -47,6 +57,14 @@ ActiveRecord::Schema.define(:version => 20100214084252) do
     t.string   "type"
     t.integer  "term_id"
     t.integer  "year_id"
+  end
+
+  create_table "news", :force => true do |t|
+    t.string   "title"
+    t.text     "content"
+    t.integer  "author_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "people", :force => true do |t|

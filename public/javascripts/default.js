@@ -130,3 +130,7 @@ Global.markInvalid = function(element, message) {
 }
 	
 Ext.QuickTips.init(false);
+
+var redirectTo = function(href) {
+  window.location.href = href;
+}

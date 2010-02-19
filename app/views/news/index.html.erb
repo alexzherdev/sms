@@ -1,0 +1,13 @@
+<h1 class="news-page-header">Новости школы</h1>
+
+<% acl_block(new_news_item_path) do %>
+  <%= link_to "Добавить", new_news_item_url %>
+<% end %>
+<br/>
+<br/>
+
+<div class="news-list-container">
+  <%= render @news %>
+</div>
+
+<%= will_paginate(@news, :class => "news-pagination") %>

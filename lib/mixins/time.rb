@@ -21,4 +21,5 @@ Time.class_eval do
   def date_format_for_js
     self.strftime("%m/%d/%Y")
   end
+  
 end

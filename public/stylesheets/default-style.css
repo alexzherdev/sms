@@ -128,7 +128,6 @@ body a {
 }
 
 .content-container h1 {
-  font-size: 14px !important;
   margin: 0px;
   padding: 0px;
 }
@@ -182,10 +181,8 @@ body a {
 #footer {
   font-size: 10px;
   text-align: center;
-  padding-top: 30px;
+  padding: 30px 0px 20px;
 }
-
-
 
 /* our styles */
 
@@ -612,6 +609,10 @@ a:link, a:visited, a:active {
   background-image:url("../images/accept.png") !important;
 }
 
+.edit {
+  background-image:url("../images/edit.png") !important;
+}
+
 #markBoxContainer .form-item {
   margin: 0px;
   padding: 0px;
@@ -665,4 +666,44 @@ a:link, a:visited, a:active {
 
 .ext-gecko .import-popup .x-form-item {
   overflow: hidden;
+}
+
+.news-container .button-container {
+  float: left;
+  margin-right: 10px;
+}
+
+.news-item {
+  margin-bottom: 30px;
+  width: 500px;
+}
+
+.x-panel .news-item {
+  margin-bottom: 0px;
+}
+
+.news-item .header {
+  font-size: 14px;
+}
+
+.news-item .created-at {
+  color: #888;
+}
+
+.news-item .content {
+  margin-top: 10px;
+  padding: 0px;
+}
+
+.news-page-header {
+  font-size: 16px;
+}
+
+.news-pagination {
+  margin-top: 20px;
+}
+
+.news-list-container {
+  position: relative;
+  left: -12px;
 }

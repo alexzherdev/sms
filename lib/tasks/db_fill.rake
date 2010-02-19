@@ -10,12 +10,14 @@ namespace :sms do
       ClassRoom.destroy_all  
       Person.destroy_all  
       Role.destroy_all
+      AclAction.destroy_all
     end
     
     task :populate do
       create_settings
       acl_actions = create_acl_actions
       roles = create_roles
+      assign_acl_actions
       groups = create_groups
       class_rooms, room_map = create_rooms_and_map
       subject_ids = create_subject_ids(room_map)
@@ -26,7 +28,9 @@ namespace :sms do
     end
     
     task :fill_acl_actions => :environment do
+      AclAction.destroy_all
       create_acl_actions
+      assign_acl_actions
     end
     
     def create_settings
@@ -44,8 +48,6 @@ namespace :sms do
       ROLES.each do |role|
         Role.create :name => role
       end
-      Role.admin.acl_actions << AclAction.find_by_name("users")
-      Role.admin.acl_actions << AclAction.find_by_name("roles")
     end
     
     def create_groups
@@ -57,6 +59,11 @@ namespace :sms do
         end
       end
       groups
+    end
+    
+    def assign_acl_actions
+      Role.admin.acl_actions << AclAction.find_by_name("users")
+      Role.admin.acl_actions << AclAction.find_by_name("roles")
     end
     
     def create_rooms_and_map
@@ -128,6 +135,7 @@ namespace :sms do
     ACL_ACTIONS = [
       { :name => "users", :title => "Пользователи" },
       { :name => "roles", :title => "Роли" },
+      { :name => "news/new", :title => "Управление новостями" },
       { :name => "years", :title => "Учебные годы и четверти" },
       { :name => "time_table_items", :title => "Расписание звонков" },
       { :name => "class_rooms", :title => "Аудитории" },

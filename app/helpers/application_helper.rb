@@ -13,9 +13,13 @@ module ApplicationHelper
   end
   
   def acl_block(path, &block)
-    if current_user.can_access? path
+    path = path[1..-1] if path.index("/") == 0
+    controller_path = path.split("/")[0]
+    action_name = path.split("/")[1] || "index"
+
+    if authorized?(controller_path, action_name)
       html = capture(&block)
-      concat html, block.binding
+      concat html
     end
   end
 end

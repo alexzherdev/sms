@@ -1,0 +1,48 @@
+<% uid = news.id || uid! %>
+<div id="news_item_<%= uid %>" class="news-item" style="visibility:visible">
+  <h2 class="header"><%= h news.title %></h2>
+  <div class="created-at"><%= news.created_at.to_s(:long) %> | <%= news.author.full_name %></div>
+  <div class="content"><%= sanitize(news.content) %></div>
+</div>
+<div id="news_wrapper_<%= uid %>">
+  <div id="news_panel_<%= uid %>"></div>
+</div>
+<% acl_block new_news_item_path do %>
+  <% javascript_tag do %>
+    Ext.onReady(function() {
+      var panel = new Ext.Panel({
+        bodyStyle: 'padding: 10px',
+        bbar: [{
+          text: 'Редактировать',
+          iconCls: 'x-btn-text-icon edit',
+          handler: function() {
+            redirectTo('<%= edit_news_item_url(news) %>');
+          }
+        },{
+          text: 'Удалить',
+          iconCls: 'x-btn-text-icon remove',
+          handler: function() {
+            Ext.Ajax.request({
+              method: 'DELETE',
+              url: '<%= news_item_url(news) %>'
+            });
+          }
+        }],
+        contentEl: 'news_item_<%= uid %>',
+        renderTo: 'news_panel_<%= uid %>',
+        listeners: {
+          afterrender: function() {
+            this.getEl().setVisible(false);
+            $('news_wrapper_<%= uid %>').observe("mouseover", function() {
+              this.getEl().setVisible(true);
+            }.bind(this));
+            $('news_wrapper_<%= uid %>').observe("mouseout", function() {
+              this.getEl().setVisible(false);
+            }.bind(this));
+          
+          }
+        }
+      });
+    });
+  <% end %>
+<% end %>

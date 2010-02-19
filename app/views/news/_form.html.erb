@@ -1,0 +1,21 @@
+<table>
+  <tr>
+    <td width="100">Заголовок</td>
+    <td><%= extjs_text_field_control :news, :title, :width => 300 %></td>
+  </tr>
+  <tr>
+    <td colspan="2"><%= extjs_html_editor_control :news, :content %></td>
+  </tr>
+  <tr>
+    <td>Прикрепить файл</td>
+    <td>
+      <input id="newfile_data" type="file" />
+      <div id="attachment_list"><ul id="pending_files"></ul></div>      
+    </td>
+  </tr>
+</table>
+<% javascript_tag do %>
+  MultiSelector('attachment_list');
+<% end %>
+<%= extjs_button "Сохранить" %>
+<%= extjs_button :text => "Назад", :handler => { :action => "index" } %>
