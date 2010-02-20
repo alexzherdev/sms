@@ -2,6 +2,9 @@ class RegistersController < ApplicationController
   before_filter :load_models, :except => :mark
 
   def show    
+    if @student_groups.blank?
+      return
+    end
     @start_date = @term.start_date
     @end_date = @term.end_date
     marks = Mark.for_register(@current_group, @current_subject, @term)
@@ -68,23 +71,16 @@ class RegistersController < ApplicationController
     
     year = Year.with_terms[0]
     session[:register_current_year_id] ||= year.id
-    Rails.logger.error "*" * 100
-    Rails.logger.error session[:register_current_year_id]
+
     if session[:register_current_term_id].nil?
       session[:register_current_term_id] = year.terms[0].id
-      Rails.logger.error "-" * 100
-      Rails.logger.error session[:register_current_term_id]
     elsif not session[:register_current_year_id].blank?
       tmp_year = Year.find session[:register_current_year_id] 
 
       if (session[:register_current_term_id] != "" and not tmp_year.term_ids.include?(session[:register_current_term_id].to_i))
-        Rails.logger.error "%" * 100
-        Rails.logger.error session[:register_current_term_id]
         session[:register_current_term_id] = tmp_year.terms[0].id 
-        Rails.logger.error session[:register_current_term_id]
       end
     end
-    Rails.logger.flush
     
     @term = Term.find session[:register_current_term_id] rescue nil
     
