@@ -2,6 +2,7 @@ class RegistersController < ApplicationController
   before_filter :load_models, :except => :mark
 
   def show    
+    throw
     @start_date = @term.start_date
     @end_date = @term.end_date
     marks = Mark.for_register(@current_group, @current_subject, @term)
