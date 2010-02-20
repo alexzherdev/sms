@@ -108,7 +108,9 @@ namespace :sms do
     def create_teachers
       teachers = []
       TEACHERS.each_with_index do |teacher_name, index|
-        teacher = Teacher.create :birth_date => DateTime.now, :email => "abc@asdasd.ru", :first_name => teacher_name.second, :last_name => teacher_name.first, :login => "teacher#{index}", :password => "password", :role_id => Role.teacher.id
+        teacher = Teacher.create :birth_date => DateTime.now, :email => "teacher#{index}@asdasd.ru", 
+          :first_name => teacher_name.second, :last_name => teacher_name.first, :login => "teacher#{index}", 
+          :password => "password", :password_confirmation => "password", :role_id => Role.teacher.id
         teachers << teacher
       end
       teachers
