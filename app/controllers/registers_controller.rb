@@ -84,6 +84,7 @@ class RegistersController < ApplicationController
         Rails.logger.error session[:register_current_term_id]
       end
     end
+    Rails.logger.flush
     
     @term = Term.find session[:register_current_term_id] rescue nil
     
