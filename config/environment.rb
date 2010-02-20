@@ -79,5 +79,3 @@ Rails::Initializer.run do |config|
 
 end
 
-Dir.glob("#{RAILS_ROOT}/lib/**/*.rb").each { |file| require file }
-
