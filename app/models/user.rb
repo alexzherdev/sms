@@ -9,23 +9,27 @@ class User < Person
     role.acl_actions.any? { |act| act.name == signature }    
   end
   
+  #  Дети этого пользователя.
+  #
   def children
     Student.find(:all, :conditions => [ "parent1_id = ? or parent2_id = ?", self.id, self.id ])
   end
 
-  #  Should be overridden for all user types browsing registers.
+  #  Возвращает классы, журналы которых этот пользователь может просматривать (реализация для родителя).
   #
   def student_groups_for_register
     children.collect(&:student_group).compact.uniq
   end
   
-  #  Should be overridden for all user types browsing registers.
+  #  Возвращает предметы, которые может просматривать этот пользователь в журнале данного класса (реализация для родителя).
+  #
+  #  * <tt>group</tt>:: Класс.
   #
   def subjects_for_register(group)
     Subject.find_all_by_year(group.year).sort
   end
   
-  #  Should be overridden for all user types browsing registers.
+  #  Может ли пользователь редактировать журнал - нет (реализация для родителя).
   #
   def can_edit_register?
     false

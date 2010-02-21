@@ -5,13 +5,13 @@ class TeacherSubject < ActiveRecord::Base
   
   default_scope :include => [:teacher, :subject, :student_group]
   
-  #  For rendering the thing to json.
+  #  Для удобства рендеринга в json.
   #
   def subject_name
     subject.name
   end
   
-  #  For rendering the thing to json.
+  #  Для удобства рендеринга в json.
   #
   def student_group_name
     student_group.full_name

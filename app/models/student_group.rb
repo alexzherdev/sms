@@ -6,6 +6,8 @@ class StudentGroup < ActiveRecord::Base
   
   accepts_comma_separated_ids_for :students
   
+  #  Название класса в формате "1 A".
+  #
   def full_name
     "#{self.year} #{self.letter}"
   end

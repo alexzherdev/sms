@@ -5,10 +5,14 @@ class Year < ActiveRecord::Base
   
   default_scope :order => "end_year DESC", :include => :terms
   
+  #  Возвращает все года, в которых есть хоть одна четверть.
+  #
   def self.with_terms
     self.all.select { |y| y.terms.count > 0 }
   end
   
+  #  Добавляет еще один год.
+  #
   def self.add
     last_year = self.first
     start_year = last_year ? last_year.end_year : Time.now.year
@@ -16,6 +20,8 @@ class Year < ActiveRecord::Base
     self.create :start_year => start_year, :end_year => end_year
   end  
     
+  #  Название учебного года в формате "2009 - 2010".
+  #
   def full_name
     "#{start_year} - #{end_year}"
   end

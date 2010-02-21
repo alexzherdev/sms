@@ -12,10 +12,16 @@ class TimeTableItem < ActiveRecord::Base
   
   named_scope :lessons, :conditions => { :item_type => LESSON }
   
+  #  Возвращает хэш с длительностями уроков и перемен.
+  #
   def self.lengths
     { LESSON => Settings["lesson_length"].to_i.minutes, SHORT_BREAK => Settings["short_break"].to_i.minutes, LONG_BREAK => Settings["long_break"].to_i.minutes }
   end
   
+  #  Добавляет айтем нужного типа в конец расписания звонков.
+  #
+  #  * <tt>item_type</tt>:: Тип айтема.
+  #
   def self.add(item_type)
     time_table_items = self.all
     last = nil
@@ -29,6 +35,8 @@ class TimeTableItem < ActiveRecord::Base
     self.create :start_time => start, :end_time => finish, :item_type => item_type
   end
   
+  #  Пересчитывает времена начала и конца айтемов в расписании.
+  #
   def self.recalculate_times
     items = self.all
     return if items.size == 0
@@ -58,6 +66,8 @@ class TimeTableItem < ActiveRecord::Base
     self.item_type == LONG_BREAK
   end
   
+  #  Удаляет этот айтем из расписания и сдвигает по времени все последующие.
+  #
   def destroy_and_shift
     later_items = self.class.find(:all, :conditions => [ "start_time > ?", self.start_time ])
     delta = self.end_time - self.start_time
