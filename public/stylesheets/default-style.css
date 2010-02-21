@@ -695,6 +695,18 @@ a:link, a:visited, a:active {
   padding: 0px;
 }
 
+.news-item .attachments-header {
+  margin-top: 15px;
+  border-top: 1px dashed #CCC;
+  color: #555;
+  padding: 5px 0px 5px;
+}
+
+.news-item .attachments li {
+  background: url("../images/attachment_icon.png") no-repeat;
+  padding-left: 16px;
+}
+
 .news-page-header {
   font-size: 16px;
 }
@@ -706,4 +718,20 @@ a:link, a:visited, a:active {
 .news-list-container {
   position: relative;
   left: -12px;
+}
+
+.news-form {
+  margin-bottom: 20px;
+}
+
+.news-form .editor-cell {
+  padding-bottom: 20px;
+}
+
+.news-form .editor-cell .x-form-element {
+  padding: 0px;
+}
+
+.news-form .remove-file {
+  margin-left: 20px;
 }

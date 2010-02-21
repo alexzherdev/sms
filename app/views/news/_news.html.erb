@@ -3,6 +3,16 @@
   <h2 class="header"><%= h news.title %></h2>
   <div class="created-at"><%= news.created_at.to_s(:long) %> | <%= news.author.full_name %></div>
   <div class="content"><%= sanitize(news.content) %></div>
+  <% unless news.attachments.blank? %>
+    <div class="attachments-header">
+    Файлы:
+    </div>
+    <ul class="attachments">
+      <% news.attachments.each do |att| %>
+      <li><%= link_to att.name, att.url %> (<%= number_to_human_size(att.file_size) %>)</li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>
 <div id="news_wrapper_<%= uid %>">
   <div id="news_panel_<%= uid %>"></div>

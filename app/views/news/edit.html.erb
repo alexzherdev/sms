@@ -1,6 +1,6 @@
 <div class="news-container">
   <h2>Редактировать новость</h2>
-  <% form_tag news_item_path(@news), :method => :put do %>
+  <% form_tag news_item_path(@news), :method => :put, :multipart => true do %>
     <%= render :partial => "form" %>
   <% end %>
 </div>

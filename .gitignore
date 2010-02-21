@@ -6,3 +6,4 @@ vendor/*
 config/database.yml
 public/stylesheets/sms.css
 public/javascripts/sms.js
+public/system/**/*

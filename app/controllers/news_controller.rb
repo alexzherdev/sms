@@ -8,8 +8,11 @@ class NewsController < ApplicationController
   end
   
   def create
-    @news = News.create params[:news].merge(:author_id => current_user.id)
-    if @news.valid?
+    @news = News.new params[:news].merge(:author_id => current_user.id)
+    
+    process_file_uploads(@news)
+    
+    if @news.save
       redirect_to root_url
     else
       render :action => "new"
@@ -29,9 +32,26 @@ class NewsController < ApplicationController
   def update
     @news = News.find params[:id]
     if @news.update_attributes params[:news]
+      process_file_uploads(@news)
+      @news.save
       redirect_to :action => "index"
     else
       render :action => "edit"
     end
   end
+  
+  def destroy_attachment
+    @attachment = Attachment.find params[:id]
+    @att_id = @attachment.id
+    @attachment.destroy
+  end
+  
+  protected
+  
+  def process_file_uploads(news)
+    params[:attachment].each do |k, v|
+      news.attachments.build(:data => v)
+    end
+  end
+  
 end
