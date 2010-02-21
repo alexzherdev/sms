@@ -28,6 +28,8 @@
     
     Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" } %>;
 
+    Global.teacher_store = <%= extjs_simple_store :data => teacher_collection(@teachers), :type => :arrays, :fields => [ "id", "full_name" ] %>;
+    
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
       { :header => "Класс", :width => 200 }

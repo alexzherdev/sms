@@ -1,35 +1,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <%= stylesheet_link_tag "ext-all", "MultiSelect", "xtheme-gray", "protoload", "default-style", :cache => "sms"  %>
-    <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", "application", "ext-prototype-adapter-debug", "ext-all-debug", "ext-lang-ru", "default", "sms-checkbox", "multifile", "protoload", "default", :cache => "sms" %>
-    <title>School Management System</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <%= stylesheet_link_tag "ext-all", "MultiSelect", "xtheme-gray", "protoload", "default-style", :cache => "sms"  %>
+  <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", "application", "ext-prototype-adapter-debug", "ext-all-debug", "ext-lang-ru", "default", "sms-checkbox", "multifile", "protoload", "default", :cache => "sms" %>
+  <title>School Management System</title>
 
 </head>
 <body>
 <% javascript_tag do %>
-    Ext.Ajax.extraParams = {
-      "authenticity_token": '<%= form_authenticity_token %>'
-    };
+Ext.Ajax.extraParams = {
+  "authenticity_token": '<%= form_authenticity_token %>'
+};
 <% end %>
 <div id="main_container">
-    <div class="top">
-        <% link_to(root_url, :class => "logo") do %>
-            <span>School Management System</span>
-        <% end %>
-    </div>
-    <div class="clear"></div>
-    
-    <%= render :partial => "layouts/menu" %>
-    
-    <div class="content-container">
-      <%= yield %> 
-    </div>
-    <div class="clear"></div>
-    <div id="footer">&copy; Алексей Жердев, Алексей Шпаков, 2009-2010</div>
-    <%= yield :bottom %>
+  <div class="top">
+    <% link_to(root_url, :class => "logo") do %>
+    <span>School Management System</span>
+    <% end %>
+  </div>
+  <div class="clear"></div>
+
+  <%= render :partial => "layouts/menu" %>
+
+  <div class="content-container">
+    <%= yield %> 
+  </div>
+  <div class="clear"></div>
+  <div id="footer">&copy; Алексей Жердев, Алексей Шпаков, 2009-2010</div>
+  <%= yield :bottom %>
 </div>
 </body>
 </html>

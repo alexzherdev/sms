@@ -43,6 +43,10 @@
         <td><%= f.label :letter, "Буква" %></td>
         <td><%= extjs_text_field_control :student_group, :letter, :width => 80 %></td>
       </tr>
+      <tr>
+        <td><%= f.label :group_teacher_id, "Классный руководитель" %></td>
+        <td><%= extjs_combo_box_control :student_group, :group_teacher_id, :store => "Global.teacher_store".j, :displayField => "full_name", :valueField => "id", :hiddenName => "student_group[group_teacher_id]", :width => 260 %></td>
+      </tr>
     </table>  
     <div id="students_selector"></div>
     <%= extjs_button "Сохранить" %>

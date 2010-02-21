@@ -1,6 +1,7 @@
 class StudentGroupsController < ApplicationController
   def index
     @student_groups = StudentGroup.all
+    @teachers = Teacher.all
   end
   
   def new
