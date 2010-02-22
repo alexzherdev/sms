@@ -49,7 +49,7 @@ class NewsController < ApplicationController
   protected
   
   def process_file_uploads(news)
-    params[:attachment].each do |k, v|
+    (params[:attachment] || {}).each do |k, v|
       news.attachments.build(:data => v)
     end
   end
