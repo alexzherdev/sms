@@ -6,7 +6,7 @@ module SchedulesHelper
   def day_time_collection(day_times)
     collection = []
     day_times.each_with_index do |dt, i|
-      collection << [i, dt.first, dt.second.start_time.lesson_format]
+      collection << [i, dt.first, dt.second.start_time.to_s(:lesson)]
     end
     collection
   end

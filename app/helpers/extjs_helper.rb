@@ -500,7 +500,7 @@ module ExtjsHelper
   def format_field_value(value)
     case value
     when Time:
-      return value.date_format
+      return value.to_s(:date)
     else
       return value
     end
@@ -559,7 +559,7 @@ module ExtjsHelper
       value = model.send(model_field)
       case value
         when Date: options[:value] ||= date_only_json(value)
-        when Time: options[:value] ||= value.date_format
+        when Time: options[:value] ||= value.to_s(:date)
         when ActiveRecord::Base: options[:value] ||= value.id
       else
         options[:value] ||= value

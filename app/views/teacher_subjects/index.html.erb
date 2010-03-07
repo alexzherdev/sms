@@ -103,17 +103,7 @@
                 Ext.Ajax.request({
                   form: 'teacher_subject_form',
                   params: { 'teacher_subject[teacher_id]': Global.teacher_grid.getSelectionModel().getSelected().get("id") }
-                });
-                
-            //TeacherSubjectsEditAction.assignSubject(
-            //    parseInt(Ext.getCmp("popup_subjects").getValue()), 
-            //    parseInt(Global.teacherGrid.getSelectionModel().getSelected().get("Id")),
-            //    parseInt(Ext.getCmp("popup_letters").getValue()),
-            //    Global.flowExecutionKey, function(result) {
-            //      eval(result);
-            //      $('teachersubjectsdiv').stopWaiting();
-            //});
-    
+                });   
               }.bind(this)},
             { text: "Отмена",
               handler: function() {

@@ -93,7 +93,7 @@
 <% end %>
 <div id="popup" class="x-hidden">
 <div class="x-window-header"></div>
-<div id="popup_main" class="schedule-popup">
+<div id="popup_main" class="popup schedule-popup">
   <%= extjs_combo_box_control nil, nil, :id => "popup_subjects", :store => "Global.subjectStore", :displayField => "name", :valueField => "id" %>
   <%= extjs_group_combo_box_control nil, nil, :id => "popup_rooms", :store => "Global.roomStore", :displayField => "name", :valueField => "id", :groupTextTpl => "{[values.text == \"true\" ? \"Занятые\" : \"Свободные\"]}" %>
 </div>

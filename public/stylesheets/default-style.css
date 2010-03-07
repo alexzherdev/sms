@@ -523,8 +523,12 @@ a:link, a:visited, a:active {
   font-size: 8px;
 }
 
-.schedule-popup .x-panel-bwrap {
+.popup .x-panel-bwrap {
   display: none;
+}
+
+.popup .x-panel .x-panel-bwrap {
+  display: block;
 }
 
 .schedule-panel-container .generate-icon {
@@ -568,6 +572,11 @@ a:link, a:visited, a:active {
 .remove {
   background-image:url("../images/delete.gif") !important;
 }
+
+.cross {
+  background-image:url("../images/cross.gif") !important;
+}
+
 .save {
   background-image:url("../images/save.gif") !important;
 }
@@ -705,4 +714,64 @@ a:link, a:visited, a:active {
 
 .x-panel-header {
   font-size: 14px;
+}
+
+.mailbox .new-message-container {
+  padding: 5px;
+}
+
+.mailbox .message-row {
+  border-bottom: 1px solid #CCC;
+  cursor: pointer;
+}
+
+.mailbox .unread-message {
+  font-weight: bold;
+}
+
+.mailbox .folder-tree .x-tree-node-el {
+  padding: 5px;
+}
+
+.mailbox .folder-tree .x-tree-node-icon {
+  display: none;
+}
+
+.mailbox .folder-tree .x-tree-ec-icon {
+  display: none;
+} 
+
+.mailbox .folder-tree .x-tree-node-anchor {
+  font-family: Verdana;
+  font-size: 12px;
+}
+
+.mailbox .folder-tree .folder-with-unread {
+  font-weight: bold;
+}
+
+.mailbox .message-container {
+  width: 606px;
+}
+
+.mailbox .message-container .message-header {
+  border-bottom: 4px solid #EEE;
+}
+
+.mailbox .message-container .message-header .info {
+  padding: 8px;
+}
+
+.mailbox .message-container .message-header .info .info-name {
+  color: #666;
+}
+
+.mailbox .message-container .message-header .subject {
+  padding: 5px;
+  background: #EEE;
+}
+
+.mailbox .message-container .body-container {
+  overflow: hidden;
+  padding: 10px;
 }

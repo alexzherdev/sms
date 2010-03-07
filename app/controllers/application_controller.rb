@@ -27,9 +27,10 @@ class ApplicationController < ActionController::Base
   protected
   
   def action_protected?(controller_path, action_name)
-    controller_settings = AclAction.find_by_name controller_path
-    return true unless controller_settings.blank?
-    return AclAction.find_by_name compose_action_signature(controller_path, action_name)
+    controller_settings = AclAction.by_name controller_path
+
+    return true if controller_settings
+    return AclAction.by_name compose_action_signature(controller_path, action_name)
   end
   
   def authorized?(controller_path = self.class.controller_path, action_name = params[:action])

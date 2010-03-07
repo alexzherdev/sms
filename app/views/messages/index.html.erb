@@ -1,0 +1,38 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.mailbox = new Mailbox({
+      folders: <%= mailbox_folders %>,
+      message_store: <%= extjs_simple_store :data => message_collection(@messages), :type => :arrays, :fields => MessagesHelper::MESSAGE_FIELDS %>,
+      recipient_store: <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => UsersHelper::USER_FIELDS %>,
+      message_tpl: [<%= render :partial => "message_tpl.js" %>],
+      message_view_tpl: [<%= render :partial => "message_view_tpl.js" %>],
+      new_message_url: "<%= new_mailbox_message_url %>",
+      show_message_url: "<%= mailbox_messages_url %>",
+      folders_url: "<%= mailbox_folders_url %>",
+      initial_folder_id: <%= current_user.mailbox.inbox.id %>,
+      inbox_id: <%= current_user.mailbox.inbox.id %>
+    });
+  });
+<% end %>
+
+<div id="mailbox_container" class="mailbox"></div>
+
+<div id="folder_header" class="x-hidden">
+  <table>
+    <tr>
+      <td width="15"></td>
+      <td width="200">От кого</td>
+      <td width="320">Сообщение</td>
+      <td width="50" align="right">Когда</td>
+    </tr>
+  </table>
+</div>
+
+<%= render :partial => "new" %>
+
+<div id="popup" class="x-hidden">
+  <div class="x-window-header"></div>
+  <div id="popup_main" class="popup recipients-popup">
+    <div id="recipient_grid_container"></div>
+  </div>
+</div>

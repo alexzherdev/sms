@@ -1,0 +1,1 @@
+page.call "Global.mailbox.viewFolderMessages", strip_in_json(strip_hash_keys_for_json(message_collection(@messages)).to_json)

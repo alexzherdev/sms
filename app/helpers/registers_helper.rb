@@ -33,7 +33,7 @@ module RegistersHelper
   def date_collection(dates)
     collection = []
     dates.each_with_index do |date, i|
-      collection[i] = [ i, date.try(:first).try(:register_date_format), date.try(:second).try(:id), date.try(:first).try(:to_s) ]
+      collection[i] = [ i, (date.try(:first) ? date.first.to_s(:register) : nil), date.try(:second).try(:id), date.try(:first).try(:to_s) ]
     end
     collection
   end

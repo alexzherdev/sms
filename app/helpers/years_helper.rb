@@ -5,7 +5,7 @@ module YearsHelper
   
   def term_collection(terms)
     terms.collect do |t|
-      [ t.id, t.start_date.date_format, t.end_date.date_format, t.year_id, t.current?, term_name(t) ]
+      [ t.id, t.start_date.to_s(:date), t.end_date.to_s(:date), t.year_id, t.current?, term_name(t) ]
     end
   end
 end

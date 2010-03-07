@@ -3,7 +3,7 @@
     <table>
       <tr>
         <td width="150">Начало занятий</td>
-        <td><%= extjs_time_field_control "settings", "lessons_start", :value => Settings["lessons_start"].lesson_format, :width => 60, :minValue => "07:30", :maxValue => "09:00", :increment => 5, :format => "H:i", :initDate => "new Date()".j %></td>
+        <td><%= extjs_time_field_control "settings", "lessons_start", :value => Settings["lessons_start"].to_s(:lesson), :width => 60, :minValue => "07:30", :maxValue => "09:00", :increment => 5, :format => "H:i", :initDate => "new Date()".j %></td>
         <td>мин</td>
       </tr>
       <tr>

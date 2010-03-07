@@ -1,0 +1,6 @@
+Time::DATE_FORMATS[:lesson] = "%H:%M"
+Time::DATE_FORMATS[:date] = "%d-%m-%Y"
+Time::DATE_FORMATS[:register] = "%a<br/>%d.%m"
+Time::DATE_FORMATS[:date_js] = "%m/%d/%Y"
+Time::DATE_FORMATS[:message] = "%d.%m"
+Time::DATE_FORMATS[:message_full] = "%d.%m %H:%M"

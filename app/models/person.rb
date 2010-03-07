@@ -9,4 +9,8 @@ class Person < ActiveRecord::Base
     "#{last_name} #{first_name}"
   end
   
+  def full_name_abbr
+    "#{last_name} #{first_name.first}."
+  end
+  
 end

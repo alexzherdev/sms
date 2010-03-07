@@ -1,0 +1,20 @@
+<div id="new_message_form" class="x-hidden new-message-container">
+  <% form_remote_tag :url => mailbox_messages_url do %>
+    <table>
+      <tr>
+        <td><%= link_to_function "Кому", "Global.mailbox.showRecipientsPopup()" %></td>
+        <td><%= extjs_text_field_control "", "", :width => 473, :readOnly => true, :id => "recipients" %></td>
+      </tr>
+      <tr>
+        <td>Тема</td>
+        <td><%= extjs_text_field_control :message, :subject, :width => 473 %></td>
+      </tr>
+      <tr>
+        <td colspan="2"><%= extjs_html_editor_control :message, :body, :width => 506, :height => 300 %></td>
+      </tr>
+    </table>
+    <%= hidden_field_tag "message[to]", "", :id => "hidden_to" %>
+    <%= extjs_button "Отправить" %>
+  <% end %>
+</div>
+

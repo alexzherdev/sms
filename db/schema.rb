@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100221205433) do
+ActiveRecord::Schema.define(:version => 20100223210357) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -46,6 +46,19 @@ ActiveRecord::Schema.define(:version => 20100221205433) do
     t.integer "subject_id"
   end
 
+  create_table "mailbox_folders", :force => true do |t|
+    t.integer  "mailbox_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mailboxes", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "marks", :force => true do |t|
     t.datetime "date"
     t.integer  "student_id"
@@ -57,6 +70,24 @@ ActiveRecord::Schema.define(:version => 20100221205433) do
     t.string   "type"
     t.integer  "term_id"
     t.integer  "year_id"
+  end
+
+  create_table "message_copies", :force => true do |t|
+    t.integer  "message_id"
+    t.integer  "recipient_id"
+    t.integer  "folder_id"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "messages", :force => true do |t|
+    t.integer  "mailbox_id"
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "news", :force => true do |t|

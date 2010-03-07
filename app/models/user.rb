@@ -1,7 +1,10 @@
 class User < Person  
+  has_one :mailbox, :class_name => "Mailbox::Mailbox"
   belongs_to :role
   
   validates_presence_of :role_id
+  
+  after_create :create_mailbox
   
   acts_as_authentic
   
@@ -33,5 +36,11 @@ class User < Person
   #
   def can_edit_register?
     false
+  end
+  
+  protected
+  
+  def create_mailbox
+    self.mailbox.create
   end
 end

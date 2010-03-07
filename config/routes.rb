@@ -1,4 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resource :mailbox do |mailbox|
+    mailbox.folder "folder", :controller => "mailboxes", :action => "folder" 
+    mailbox.folders "folders", :controller => "mailboxes", :action => "folders"
+    mailbox.sent "sent", :controller => "mailboxes", :action => "sent" 
+    mailbox.resources :messages
+  end
+
   map.save_schedule "schedule/save", :controller => "schedules", :action => "save" 
  
   map.resource :schedule, :member => { :save => :post, :generate => :get }

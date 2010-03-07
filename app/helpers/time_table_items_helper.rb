@@ -9,7 +9,7 @@ module TimeTableItemsHelper
   
   def to_time_table_record(time, index)
     if time.lesson?
-      [time.id, index, time.start_time.lesson_format, time.end_time.lesson_format]
+      [time.id, index, time.start_time.to_s(:lesson), time.end_time.to_s(:lesson)]
     elsif time.short_break? 
       [time.id, "", "Короткая перемена", ""]
     else
