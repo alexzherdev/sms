@@ -589,6 +589,22 @@ a:link, a:visited, a:active {
   background-image:url("../images/edit.png") !important;
 }
 
+.new-message {
+  background-image:url("../images/email_add.png") !important;
+}
+
+.reply-message {
+  background-image:url("../images/email_reply.png") !important;
+}
+
+.reply-all-message {
+  background-image:url("../images/email_reply_all.png") !important;
+}
+
+.forward-message {
+  background-image:url("../images/email_forward.png") !important;
+}
+
 #markBoxContainer .form-item {
   margin: 0px;
   padding: 0px;

@@ -2,7 +2,7 @@ module Mailbox
   class Folder < ActiveRecord::Base
     set_table_name "mailbox_folders"
     
-    has_many :message_copies, :class_name => "Mailbox::MessageCopy", :foreign_key => "folder_id", :order => "created_at DESC"
+    has_many :message_copies, :class_name => "Mailbox::MessageCopy", :foreign_key => "folder_id", :order => "created_at DESC", :conditions => { :deleted => false }
 
     validates_presence_of :name
 

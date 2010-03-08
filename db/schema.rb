@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100223210357) do
+ActiveRecord::Schema.define(:version => 20100308102956) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -76,9 +76,10 @@ ActiveRecord::Schema.define(:version => 20100223210357) do
     t.integer  "message_id"
     t.integer  "recipient_id"
     t.integer  "folder_id"
-    t.integer  "status"
+    t.integer  "status",       :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "deleted",      :default => false
   end
 
   create_table "messages", :force => true do |t|
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(:version => 20100223210357) do
     t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "deleted",    :default => false
   end
 
   create_table "news", :force => true do |t|

@@ -13,4 +13,9 @@ class MailboxesController < ApplicationController
     @messages = current_user.mailbox.sent_messages
     render :action => "show_folder"
   end
+  
+  def trash
+    @messages = current_user.mailbox.trash_messages
+    render :action => "show_folder"
+  end
 end

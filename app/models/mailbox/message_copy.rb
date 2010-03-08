@@ -1,5 +1,7 @@
 module Mailbox
   class MessageCopy < ActiveRecord::Base
+    include MessageUtils
+    
     UNREAD = 0
     READ = 1
 
@@ -18,9 +20,9 @@ module Mailbox
     def read!
       self.update_attribute :status, READ
     end
-
-    def created_at_full
-      self.created_at.to_s(:message_full)
+    
+    def prepare_reply
+      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => [self.recipient_id]
     end
   end
 end

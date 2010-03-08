@@ -1,7 +1,9 @@
 module Mailbox
   class Mailbox < ActiveRecord::Base
+    SENT_FOLDER_ID = 100500
+    TRASH_ID = 100600
 
-    FOLDERS = { :inbox => "Входящие", :sent => "Отправленные", :trash => "Корзина" }
+    FOLDERS = { :inbox => "Входящие" }
 
     FOLDERS.each do |k, v|
       define_method k do
@@ -10,11 +12,23 @@ module Mailbox
     end
 
     belongs_to :user
-    has_many :sent_messages, :class_name => "Mailbox::Message", :order => "created_at DESC"
+    has_many :sent_messages, :class_name => "Mailbox::Message", :conditions => { :deleted => false }, :order => "created_at DESC"
     has_many :folders, :class_name => "Mailbox::Folder"
 
     after_create :create_folders
-
+    
+    def sent
+      { :id => SENT_FOLDER_ID, :name => "Отправленные" }
+    end
+    
+    def trash
+      { :id => TRASH_ID, :name => "Корзина" }
+    end
+    
+    def trash_messages
+      (Message.find_all_by_mailbox_id_and_deleted(self, true) + MessageCopy.find(:all, :conditions => ["deleted = ? and folder_id in (?)", true, self.folder_ids])).sort_by { |m| -m.created_at.to_i }
+    end
+    
     protected
 
     def create_folders

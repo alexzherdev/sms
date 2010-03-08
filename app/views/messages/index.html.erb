@@ -1,20 +1,3 @@
-<% javascript_tag do %>
-  Ext.onReady(function() {
-    Global.mailbox = new Mailbox({
-      folders: <%= mailbox_folders %>,
-      message_store: <%= extjs_simple_store :data => message_collection(@messages), :type => :arrays, :fields => MessagesHelper::MESSAGE_FIELDS %>,
-      recipient_store: <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => UsersHelper::USER_FIELDS %>,
-      message_tpl: [<%= render :partial => "message_tpl.js" %>],
-      message_view_tpl: [<%= render :partial => "message_view_tpl.js" %>],
-      new_message_url: "<%= new_mailbox_message_url %>",
-      show_message_url: "<%= mailbox_messages_url %>",
-      folders_url: "<%= mailbox_folders_url %>",
-      initial_folder_id: <%= current_user.mailbox.inbox.id %>,
-      inbox_id: <%= current_user.mailbox.inbox.id %>
-    });
-  });
-<% end %>
-
 <div id="mailbox_container" class="mailbox"></div>
 
 <div id="folder_header" class="x-hidden">
@@ -36,3 +19,21 @@
     <div id="recipient_grid_container"></div>
   </div>
 </div>
+
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.mailbox = new Mailbox({
+      folders: <%= mailbox_folders %>,
+      message_store: <%= extjs_simple_store :data => message_collection(@messages), :type => :arrays, :fields => MessagesHelper::MESSAGE_FIELDS %>,
+      recipient_store: <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => UsersHelper::USER_FIELDS %>,
+      message_tpl: '<%= escape_javascript(render :partial => "message_tpl") %>',
+      message_view_tpl: '<%= escape_javascript(render :partial => "message_view_tpl") %>',
+      new_message_url: "<%= new_mailbox_message_url %>",
+      show_message_url: "<%= mailbox_messages_url %>",
+      reply_url: "<%= reply_mailbox_messages_url %>",
+      folders_url: "<%= mailbox_folders_url %>",
+      initial_folder_id: <%= current_user.mailbox.inbox.id %>,
+      inbox_id: <%= current_user.mailbox.inbox.id %>
+    });
+  });
+<% end %>

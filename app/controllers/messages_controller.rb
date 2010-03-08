@@ -5,8 +5,7 @@ class MessagesController < ApplicationController
   end
   
   def show
-    klass = params[:copy] == "true" ? Mailbox::MessageCopy : Mailbox::Message
-    @message = klass.find params[:id]
+    preload_message
     @message.read! if @message.copy?
   end
   
@@ -19,5 +18,18 @@ class MessagesController < ApplicationController
   
   def create
     @message = Mailbox::Message.create params[:message].merge(:mailbox_id => current_user.mailbox)
+  end
+  
+  def reply
+    preload_message
+    @reply = @message.prepare_reply
+    render :json => @reply.to_json(:methods => [:recipients_string, :recipient_ids])
+  end
+  
+  protected
+  
+  def preload_message
+    klass = params[:copy] == "true" ? Mailbox::MessageCopy : Mailbox::Message
+    @message = klass.find params[:id]
   end
 end

@@ -1,5 +1,7 @@
 module Mailbox
   class Message < ActiveRecord::Base
+    include MessageUtils
+    
     belongs_to :mailbox, :class_name => "Mailbox::Mailbox" 
     has_many :message_copies, :class_name => "Mailbox::MessageCopy"
     has_many :recipients, :through => :message_copies
@@ -28,13 +30,13 @@ module Mailbox
     def sender_full_name_abbr
       self.sender.full_name_abbr
     end
-    
-    def created_at_full
-      self.created_at.to_s(:message_full)
+      
+    def folder_id
+      Mailbox::SENT_FOLDER_ID
     end
     
-    def folder
-      self.mailbox.inbox.id
+    def prepare_reply
+      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => recipient_ids
     end
 
     protected
@@ -49,7 +51,7 @@ module Mailbox
       return if to.blank?
       to.split(",").each do |rec|
         recipient = User.find rec
-        message_copies.build(:recipient_id => recipient.id, :folder_id => recipient.mailbox.inbox.id, :status => MessageCopy::UNREAD)
+        message_copies.build(:recipient_id => recipient.id, :folder_id => recipient.mailbox.inbox.id)
       end
     end
   end

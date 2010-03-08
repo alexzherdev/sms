@@ -3,18 +3,17 @@
     <table>
       <tr>
         <td><%= link_to_function "Кому", "Global.mailbox.showRecipientsPopup()" %></td>
-        <td><%= extjs_text_field_control "", "", :width => 473, :readOnly => true, :id => "recipients" %></td>
+        <td><%= extjs_text_field_control "", "", :width => 473, :readOnly => true, :id => "new_msg_recipients" %></td>
       </tr>
       <tr>
         <td>Тема</td>
-        <td><%= extjs_text_field_control :message, :subject, :width => 473 %></td>
+        <td><%= extjs_text_field_control :message, :subject, :width => 473, :id => "new_msg_subject" %></td>
       </tr>
       <tr>
-        <td colspan="2"><%= extjs_html_editor_control :message, :body, :width => 506, :height => 300 %></td>
+        <td colspan="2"><%= extjs_html_editor_control :message, :body, :width => 506, :height => 300, :id => "new_msg_body" %></td>
       </tr>
     </table>
-    <%= hidden_field_tag "message[to]", "", :id => "hidden_to" %>
+    <%= hidden_field_tag "message[to]", "", :id => "new_msg_hidden_to" %>
     <%= extjs_button "Отправить" %>
   <% end %>
 </div>
-

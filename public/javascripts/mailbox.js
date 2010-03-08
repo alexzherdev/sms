@@ -19,6 +19,7 @@ var Mailbox = Class.create({
     this.message_view_tpl = config.message_view_tpl;
     this.new_message_url = config.new_message_url;
     this.show_message_url = config.show_message_url; 
+    this.reply_url = config.reply_url;
     this.folders_url = config.folders_url;
     
     this.initFolderTree();
@@ -63,7 +64,7 @@ var Mailbox = Class.create({
       height: 500,
       listeners: {
         click: function(node) {
-          this.showFolder(node.attributes.id);
+          this.showFolder(node.attributes);
         }.bind(this)
       },
       cls: 'folder-tree'
@@ -96,24 +97,27 @@ var Mailbox = Class.create({
       {
         text: "Вернуться в папку",
         handler: function() {
-          this.selectInbox();
+          this.selectFolder(this.current_message.folder_id);
         }.bind(this)
       },
       '-',
       {
         text: "Ответить",
+        iconCls: "x-btn-text-icon reply-message",
         handler: function() {
           this.reply();
         }.bind(this)
       },
       {
         text: "Ответить всем",
+        iconCls: "x-btn-text-icon reply-all-message",
         handler: function() {
           this.reply();
         }.bind(this)
       },
       {
         text: "Переслать",
+        iconCls: "x-btn-text-icon forward-message",
         handler: function() {
           this.forward();
         }.bind(this)
@@ -136,6 +140,11 @@ var Mailbox = Class.create({
       id: 'new_message_panel',
       contentEl: 'new_message_form'
     });
+    
+    this.new_message_recipients = Ext.getCmp("new_msg_recipients");
+    this.new_message_subject = Ext.getCmp("new_msg_subject");
+    this.new_message_body = Ext.getCmp("new_msg_body");
+    this.new_message_hidden_to = $("new_msg_hidden_to");
   },
   
   initRecipientGrid: function() {
@@ -176,6 +185,12 @@ var Mailbox = Class.create({
         border: false
       }),
 
+      listeners: {
+        beforeshow: function() {
+          this.recipient_grid.getSelectionModel().selectRecords(this.current_recipients || []);
+        }.bind(this)
+      },
+      
       buttons: [
       { 
         text: "OK",
@@ -254,7 +269,7 @@ var Mailbox = Class.create({
   
   initContainerPanel: function() {
     this.container_panel = new Ext.Panel({
-      title: 'Сообщения',
+      title: 'Мои сообщения',
       layout: {
         type: 'hbox',
         align: 'stretch' 
@@ -263,7 +278,9 @@ var Mailbox = Class.create({
       height: 500,
       tbar: [{
         text: "Новое сообщение",
+        iconCls: "x-btn-text-icon new-message",
         handler: function() {
+          this.prepareNewMessagePanel("", "", "", []);
           this.content_panel.getLayout().setActiveItem('new_message_panel');
         }.bind(this)
       }],
@@ -275,25 +292,31 @@ var Mailbox = Class.create({
     }); 
   },
   
+  prepareNewMessagePanel: function(recipients, subject, body, to) {
+    this.new_message_subject.setValue(subject);
+    this.new_message_body.setValue(body);
+    var recipients = this.recipient_store.queryBy(function(rec, id) {
+      return $A(to).include(id);
+    });
+    this.setRecipients(recipients.items);
+  },
+  
   findFolderById: function(id) {
     return this.folders.detect(function(folder) {
       return folder.id == id;
     });
   },
   
-  showFolder: function(id) {
-    var folder = this.findFolderById(id);
-    if (folder) {
-      this.waiting_el.startWaiting();
-      Ext.Ajax.request({
-        url: folder.url,
-        method: 'POST',
-        scripts: true,
-        success: function() {
-          this.waiting_el.stopWaiting();
-        }.bind(this)
-      });
-    } 
+  showFolder: function(folder_attrs) {
+    this.waiting_el.startWaiting();
+    Ext.Ajax.request({
+      url: folder_attrs.url,
+      method: 'POST',
+      scripts: true,
+      success: function() {
+        this.waiting_el.stopWaiting();
+      }.bind(this)
+    });
   },
   
   findFolderNodeById: function(id) {
@@ -343,24 +366,29 @@ var Mailbox = Class.create({
   },  
     
   setRecipients: function(selections) {
-    if ($('hidden_to')) {
-      var hidden = $('hidden_to');
-      hidden.value = "";
-      var field = Ext.getCmp("recipients");
-      field.setValue("");
-      var field_value = '';
-      selections.each(function(sel) {
-        hidden.value += sel.get("id") + ",";
-        field_value += sel.get("full_name_abbr") + ", ";
-      });
-      hidden.value = hidden.value.substring(0, hidden.value.length - 1);
-      field_value = field_value.substring(0, field_value.length - 2);
-      field.setValue(field_value);
-    }
+    this.current_recipients = selections;
+    this.new_message_hidden_to.value = "";
+    this.new_message_recipients.setValue("");
+    var field_value = '';
+    $A(selections).each(function(sel) {
+      this.new_message_hidden_to.value += sel.get("id") + ",";
+      field_value += sel.get("full_name_abbr") + ", ";
+    }.bind(this));
+    this.new_message_hidden_to.value = this.new_message_hidden_to.value.substring(0, this.new_message_hidden_to.value.length - 1);
+    field_value = field_value.substring(0, field_value.length - 2);
+    this.new_message_recipients.setValue(field_value);
   },
   
   reply: function() {
-
+    Ext.Ajax.request({
+      url: this.reply_url,
+      params: { id: this.current_message.id, copy: this.current_message["copy?"] },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        this.prepareNewMessagePanel(json.recipients_string, json.subject, json.body, json.recipient_ids);
+        this.content_panel.getLayout().setActiveItem('new_message_panel');
+      }.bind(this)
+    })
   },
   
   forward: function() {
