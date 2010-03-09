@@ -1,5 +1,5 @@
 <tpl for=".">
-  <div class="message-row {[values.is_copy && values.status == 0 ? 'unread-message' : '']}" id="message_{id}">
+  <div class="message-row {[values['copy?'] && values.status == 0 ? 'unread-message' : '']}" id="message_{id}">
   <table><tr>
     <td width="15"><input type="checkbox"/></td>
     <td width="200">{recipients_string}</td>

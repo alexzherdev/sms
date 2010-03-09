@@ -1,16 +1,5 @@
 <div id="mailbox_container" class="mailbox"></div>
 
-<div id="folder_header" class="x-hidden">
-  <table>
-    <tr>
-      <td width="15"></td>
-      <td width="200">От кого</td>
-      <td width="320">Сообщение</td>
-      <td width="50" align="right">Когда</td>
-    </tr>
-  </table>
-</div>
-
 <%= render :partial => "new" %>
 
 <div id="popup" class="x-hidden">
@@ -31,9 +20,9 @@
       new_message_url: "<%= new_mailbox_message_url %>",
       show_message_url: "<%= mailbox_messages_url %>",
       reply_url: "<%= reply_mailbox_messages_url %>",
+      delete_messages_url: "<%= delete_mailbox_messages_url %>",
       folders_url: "<%= mailbox_folders_url %>",
-      initial_folder_id: <%= current_user.mailbox.inbox.id %>,
-      inbox_id: <%= current_user.mailbox.inbox.id %>
+      initial_folder_id: <%= current_user.mailbox.inbox.id %>
     });
   });
 <% end %>

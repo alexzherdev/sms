@@ -20,6 +20,7 @@ var Mailbox = Class.create({
     this.new_message_url = config.new_message_url;
     this.show_message_url = config.show_message_url; 
     this.reply_url = config.reply_url;
+    this.delete_messages_url = config.delete_messages_url;
     this.folders_url = config.folders_url;
     
     this.initFolderTree();
@@ -97,7 +98,7 @@ var Mailbox = Class.create({
       {
         text: "Вернуться в папку",
         handler: function() {
-          this.selectFolder(this.current_message.folder_id);
+          this.selectFolder(this.current_folder.id);
         }.bind(this)
       },
       '-',
@@ -127,7 +128,7 @@ var Mailbox = Class.create({
         text: "Удалить",
         iconCls: 'x-btn-text-icon cross',
         handler: function() {
-          this.forward();
+          this.deleteMessages([this.message_store.getById(this.current_message.id)]);
         }.bind(this)
       }
       ],
@@ -215,7 +216,10 @@ var Mailbox = Class.create({
       emptyText : '<div style="padding:10px;">Эта папка пуста.</div>',
       store: this.message_store,
       listeners: {
-        click: function(view, index) {
+        click: function(view, index, node, event) {
+          if (event.getTarget().tagName == "INPUT") {
+            return false;
+          }
           var record = this.message_store.getAt(index);
           Ext.Ajax.request({
             url: this.show_message_url + "/" + record.get("id"),
@@ -224,7 +228,7 @@ var Mailbox = Class.create({
             params: { copy: record.get("is_copy") },
             success: function() {
               this.folder_tree.getLoader().load(this.folder_tree.getRootNode(), function() {
-                this.findFolderNodeById(record.get("folder_id")).select();
+                this.findFolderNodeById(this.current_folder.id).select();
               }.bind(this));              
             }.bind(this)
           });
@@ -234,13 +238,6 @@ var Mailbox = Class.create({
   },
   
   initFolderViewPanel: function() {
-    var header_panel = new Ext.Panel({
-      contentEl: 'folder_header',
-      border: false,
-      bodyStyle: 'border-bottom: 1px solid #999',
-      height: 30
-    });
-    
     this.folder_view_panel = new Ext.Panel({
       layout: {
   		  type: 'vbox',
@@ -261,7 +258,6 @@ var Mailbox = Class.create({
       },
       ],
       items: [
-        header_panel,
         this.folder_view
       ]
     });
@@ -308,6 +304,7 @@ var Mailbox = Class.create({
   },
   
   showFolder: function(folder_attrs) {
+    this.current_folder = folder_attrs;
     this.waiting_el.startWaiting();
     Ext.Ajax.request({
       url: folder_attrs.url,
@@ -335,10 +332,6 @@ var Mailbox = Class.create({
     if (node) {
       node.fireEvent("click", node);
     }
-  },
-  
-  selectInbox: function() {
-    this.selectFolder(this.config.inbox_id);
   },
   
   updateFolder: function(folder) {
@@ -380,6 +373,7 @@ var Mailbox = Class.create({
   },
   
   reply: function() {
+    this.waiting_el.startWaiting();
     Ext.Ajax.request({
       url: this.reply_url,
       params: { id: this.current_message.id, copy: this.current_message["copy?"] },
@@ -387,12 +381,29 @@ var Mailbox = Class.create({
         var json = Ext.decode(response.responseText);
         this.prepareNewMessagePanel(json.recipients_string, json.subject, json.body, json.recipient_ids);
         this.content_panel.getLayout().setActiveItem('new_message_panel');
+        this.waiting_el.stopWaiting();
       }.bind(this)
     })
   },
   
   forward: function() {
     
+  },
+  
+  deleteMessages: function(messages) {
+    this.waiting_el.startWaiting();
+    var ids = messages.inject("", function(memo, msg) {
+      memo += msg.get("id") + ",";
+      return memo;
+    });
+    ids = ids.substring(0, ids.length - 1);
+    Ext.Ajax.request({
+      url: this.delete_messages_url,
+      params: { ids: ids, copy: messages[0].get("copy?") },
+      success: function() {
+        this.selectFolder(this.current_folder.id);
+      }.bind(this)
+    });
   }
    
 });

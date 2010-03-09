@@ -1,5 +1,5 @@
 module MessagesHelper
-  MESSAGE_FIELDS = ["id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "is_copy", "folder_id"]
+  MESSAGE_FIELDS = ["id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "copy?", "folder_id"]
   
   def message_collection(messages)
     messages.collect do |msg|

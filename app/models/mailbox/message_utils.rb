@@ -23,5 +23,13 @@ module Mailbox
     def created_at_full
       self.created_at.to_s(:message_full)
     end
+    
+    def delete!
+      if self.deleted
+        self.destroy
+      else
+        self.update_attribute :deleted, true
+      end
+    end
   end
 end
