@@ -31,5 +31,9 @@ module Mailbox
         self.update_attribute :deleted, true
       end
     end
+    
+    def restore!
+      self.update_attribute :deleted, false
+    end
   end
 end

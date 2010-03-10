@@ -13,15 +13,8 @@ var Mailbox = Class.create({
   initialize: function(config) {
     this.config = config;
     this.folders = $A(config.folders);
-    this.message_store = config.message_store;
-    this.recipient_store = config.recipient_store;
-    this.message_tpl = config.message_tpl;
-    this.message_view_tpl = config.message_view_tpl;
-    this.new_message_url = config.new_message_url;
-    this.show_message_url = config.show_message_url; 
-    this.reply_url = config.reply_url;
-    this.delete_messages_url = config.delete_messages_url;
-    this.folders_url = config.folders_url;
+
+    Ext.apply(this, config);
     
     this.initFolderTree();
     this.initFolderView();
@@ -53,7 +46,7 @@ var Mailbox = Class.create({
         listeners: {
           load: function() {
             if (this.initialLoad) {
-              this.mailbox.selectFolder(this.mailbox.config.initial_folder_id);
+              this.mailbox.selectFolder(this.mailbox.initial_folder_id);
               this.initialLoad = false;
             }
           }
@@ -225,7 +218,7 @@ var Mailbox = Class.create({
             url: this.show_message_url + "/" + record.get("id"),
             method: 'GET',
             scripts: true,
-            params: { copy: record.get("is_copy") },
+            params: { copy: record.get("copy?") },
             success: function() {
               this.folder_tree.getLoader().load(this.folder_tree.getRootNode(), function() {
                 this.findFolderNodeById(this.current_folder.id).select();
@@ -247,15 +240,19 @@ var Mailbox = Class.create({
       width: 608,
       height: 500,
       tbar: [{
+        iconCls: 'x-btn-text-icon restore-message',
+        text: 'Восстановить',
+        handler: function() {
+          this.restoreSelectedMessages();
+        }.bind(this)
+      },
+      {
         iconCls: 'x-btn-text-icon cross',
         text: 'Удалить',
         handler: function() {
-          Ext.Ajax.request({
-            method: 'DELETE', 
-            url: '#{messages_path}/' + Global.subject_grid.getSelectionModel().getSelected().get('id')
-          })
-        }
-      },
+          this.deleteSelectedMessages();
+        }.bind(this)
+      }
       ],
       items: [
         this.folder_view
@@ -390,13 +387,35 @@ var Mailbox = Class.create({
     
   },
   
-  deleteMessages: function(messages) {
-    this.waiting_el.startWaiting();
+  collectSelectedMessages: function() {
+    var ids = $$('.message-checkbox').collect(function(cb) {
+      if (cb.checked) {
+        return parseInt(cb.id.substring(6));
+      }
+    });
+    var records = this.message_store.queryBy(function(rec, id) {
+      return $A(ids).include(id);
+    });
+    return records.items;
+  },
+  
+  collectMessagesPropertyString: function(messages, property) {
     var ids = messages.inject("", function(memo, msg) {
-      memo += msg.get("id") + ",";
+      memo += msg.get(property) + ",";
       return memo;
     });
     ids = ids.substring(0, ids.length - 1);
+    return ids;
+  },
+  
+  deleteSelectedMessages: function() {
+    var messages = this.collectSelectedMessages();
+    this.deleteMessages(messages);
+  },
+  
+  deleteMessages: function(messages) {
+    this.waiting_el.startWaiting();
+    var ids = this.collectMessagesPropertyString(messages, "id");
     Ext.Ajax.request({
       url: this.delete_messages_url,
       params: { ids: ids, copy: messages[0].get("copy?") },
@@ -404,8 +423,25 @@ var Mailbox = Class.create({
         this.selectFolder(this.current_folder.id);
       }.bind(this)
     });
+  },
+  
+  restoreSelectedMessages: function() {
+    var messages = this.collectSelectedMessages();
+    this.restoreMessages(messages);
+  },
+  
+  restoreMessages: function(messages) {
+    this.waiting_el.startWaiting();
+    var ids = this.collectMessagesPropertyString(messages, "id");
+    var copy = this.collectMessagesPropertyString(messages, "copy?");
+    Ext.Ajax.request({
+      url: this.restore_messages_url,
+      params: { ids: ids, copy: copy },
+      success: function() {
+        this.selectFolder(this.current_folder.id);
+      }.bind(this)
+    });
   }
-   
 });
 
 Observable.mixin(Mailbox);

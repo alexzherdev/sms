@@ -32,9 +32,23 @@ class MessagesController < ApplicationController
       messages = Mailbox::MessageCopy.find :all, :conditions => [ "id in (?) and recipient_id = ?" , ids, current_user.id ]
     else
       messages = Mailbox::Message.find :all, 
-          :conditions => [ "id in (?) and mailbox_id = ?" , ids, current_user.mailbox.id ]
+          :conditions => [ "id in (?) and mailbox_id = ?", ids, current_user.mailbox.id ]
     end
     [messages].flatten.each(&:delete!)
+    render :nothing => true
+  end
+  
+  def restore
+    ids = params[:ids].split(",")
+    copy = params[:copy].split(",")
+    ids.each_with_index do |id, i|
+      if copy[i] == "true"
+        message = Mailbox::MessageCopy.find_by_id_and_recipient_id id, current_user.id
+      else
+        message = Mailbox::Message.find_by_id_and_mailbox_id id, current_user.mailbox.id  
+      end
+      message.restore!
+    end
     render :nothing => true
   end
   

@@ -605,6 +605,10 @@ a:link, a:visited, a:active {
   background-image:url("../images/email_forward.png") !important;
 }
 
+.restore-message {
+  background-image:url("../images/restore.png") !important;
+}
+
 #markBoxContainer .form-item {
   margin: 0px;
   padding: 0px;

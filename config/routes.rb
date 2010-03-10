@@ -5,7 +5,7 @@ ActionController::Routing::Routes.draw do |map|
     mailbox.sent "sent", :controller => "mailboxes", :action => "sent" 
     mailbox.trash "trash", :controller => "mailboxes", :action => "trash" 
     
-    mailbox.resources :messages, :collection => { :reply => :post, :delete => :post }
+    mailbox.resources :messages, :collection => { :reply => :post, :delete => :post, :restore => :post }
   end
 
   map.save_schedule "schedule/save", :controller => "schedules", :action => "save" 

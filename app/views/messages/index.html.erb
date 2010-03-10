@@ -21,6 +21,7 @@
       show_message_url: "<%= mailbox_messages_url %>",
       reply_url: "<%= reply_mailbox_messages_url %>",
       delete_messages_url: "<%= delete_mailbox_messages_url %>",
+      restore_messages_url: "<%= restore_mailbox_messages_url %>",
       folders_url: "<%= mailbox_folders_url %>",
       initial_folder_id: <%= current_user.mailbox.inbox.id %>
     });
