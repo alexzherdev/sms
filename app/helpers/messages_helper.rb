@@ -1,9 +1,9 @@
 module MessagesHelper
-  MESSAGE_FIELDS = ["id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "copy?", "folder_id"]
+  MESSAGE_FIELDS = ["uid", "id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "copy?", "folder_id"]
   
   def message_collection(messages)
     messages.collect do |msg|
-      [msg.id, msg.subject, msg.body, truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length), msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id]
+      [msg.uid, msg.id, msg.subject, msg.body, truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length), msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id]
     end
   end
   

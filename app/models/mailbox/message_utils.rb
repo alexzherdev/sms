@@ -1,23 +1,48 @@
 module Mailbox
   module MessageUtils
-    REPLY_REGEX = /Ответ \((.+)\)/
+    NOT_DELETED = 0
+    TRASHED = 1
+    DELETED = 2
     
-    def format_reply_subject
-      re_index = self.subject.index("Ответ")
+    REPLY_REGEX = /Ответ \((.+)\)/
+    FORWARD_REGEX = /Пересланное \((.+)\)/
+    
+    def uid
+      "#{self.class.name}_#{id}"
+    end
+    
+    def format_subject(prefix, regex)
+      re_index = self.subject.index(prefix)
       if re_index != 0
-        return "Ответ: #{self.subject}"
+        return "#{prefix}: #{self.subject}"
       else
-        if self.subject.index("Ответ:") == 0
-          return "Ответ (2):" + self.subject.sub("Ответ:", "")
+        if self.subject.index("#{prefix}:") == 0
+          return "#{prefix} (2):" + self.subject.sub("#{prefix}:", "")
         else
-          num = REPLY_REGEX.match(self.subject)[1]
-          return "Ответ (#{num + 1}):" + self.subject.sub(REPLY_REGEX, "")
+          num = regex.match(self.subject)[1]
+          return "#{prefix} (#{num + 1}):" + self.subject.sub(regex, "")
         end
       end
     end
     
+    def format_reply_subject
+      format_subject("Ответ", REPLY_REGEX)
+    end
+    
     def format_reply_body
       "<br/>" + "-" * 50 + "<br/><br/>" + self.body
+    end
+    
+    def format_forward_subject
+      format_subject("Пересланное", FORWARD_REGEX)      
+    end
+    
+    def format_forward_body
+      "<br/>" + "-" * 50 + "<br/><br/>" + self.body
+    end
+    
+    def prepare_forward
+      forward = self.class.new :subject => format_forward_subject, :body => format_forward_body
     end
     
     def created_at_full
@@ -25,10 +50,10 @@ module Mailbox
     end
     
     def delete!
-      if self.deleted
-        self.destroy
+      if self.deleted == TRASHED
+        self.update_attribute :deleted, DELETED
       else
-        self.update_attribute :deleted, true
+        self.update_attribute :deleted, TRASHED
       end
     end
     

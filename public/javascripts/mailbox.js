@@ -13,6 +13,9 @@ var Mailbox = Class.create({
   initialize: function(config) {
     this.config = config;
     this.folders = $A(config.folders);
+    
+    this.observe("folderChanged", this.updateFolderToolbar.bind(this));
+    this.observe("messageChanged", this.updateMessageToolbar.bind(this));
 
     Ext.apply(this, config);
     
@@ -106,7 +109,7 @@ var Mailbox = Class.create({
         text: "Ответить всем",
         iconCls: "x-btn-text-icon reply-all-message",
         handler: function() {
-          this.reply();
+          this.replyAll();
         }.bind(this)
       },
       {
@@ -118,6 +121,15 @@ var Mailbox = Class.create({
       },
       '-',
       {
+        id: 'restore',
+        iconCls: 'x-btn-text-icon restore-message',
+        text: 'Восстановить',
+        handler: function() {
+          this.restoreMessages([this.message_store.getById(this.current_message.id)]);
+        }.bind(this)
+      },
+      {
+        id: 'delete',
         text: "Удалить",
         iconCls: 'x-btn-text-icon cross',
         handler: function() {
@@ -240,6 +252,7 @@ var Mailbox = Class.create({
       width: 608,
       height: 500,
       tbar: [{
+        id: 'restore-checked',
         iconCls: 'x-btn-text-icon restore-message',
         text: 'Восстановить',
         handler: function() {
@@ -247,6 +260,7 @@ var Mailbox = Class.create({
         }.bind(this)
       },
       {
+        id: 'delete-checked',
         iconCls: 'x-btn-text-icon cross',
         text: 'Удалить',
         handler: function() {
@@ -294,6 +308,30 @@ var Mailbox = Class.create({
     this.setRecipients(recipients.items);
   },
   
+  updateFolderToolbar: function() {
+    if (this.current_folder.id == this.trash_id) {
+      this.folder_view_panel.getTopToolbar().items.get('restore-checked').show();
+    } else {
+      this.folder_view_panel.getTopToolbar().items.get('restore-checked').hide();
+    }
+  },
+  
+  updateMessageToolbar: function() {
+    if (this.current_message.deleted == 1) {
+      this.message_view_panel.getTopToolbar().items.each(function(item) {
+        item.hide();
+      });
+      this.message_view_panel.getTopToolbar().items.get('delete').show();
+      this.message_view_panel.getTopToolbar().items.get('restore').show();
+    } else {
+      this.message_view_panel.getTopToolbar().items.each(function(item) {
+        item.show();
+      });
+      this.message_view_panel.getTopToolbar().items.get('delete').show();
+      this.message_view_panel.getTopToolbar().items.get('restore').hide();
+    }
+  },
+  
   findFolderById: function(id) {
     return this.folders.detect(function(folder) {
       return folder.id == id;
@@ -301,14 +339,15 @@ var Mailbox = Class.create({
   },
   
   showFolder: function(folder_attrs) {
-    this.current_folder = folder_attrs;
     this.waiting_el.startWaiting();
     Ext.Ajax.request({
       url: folder_attrs.url,
       method: 'POST',
       scripts: true,
       success: function() {
+        this.current_folder = folder_attrs;
         this.waiting_el.stopWaiting();
+        this.fire("folderChanged");
       }.bind(this)
     });
   },
@@ -349,6 +388,7 @@ var Mailbox = Class.create({
     this.current_message = message;
     this.content_panel.getLayout().setActiveItem('message_view_panel');
     this.message_view_panel.update(this.current_message);
+    this.fire("messageChanged");
   },
   
   showRecipientsPopup: function() {
@@ -380,11 +420,35 @@ var Mailbox = Class.create({
         this.content_panel.getLayout().setActiveItem('new_message_panel');
         this.waiting_el.stopWaiting();
       }.bind(this)
-    })
+    });
+  },
+  
+  replyAll: function() {
+    this.waiting_el.startWaiting();
+    Ext.Ajax.request({
+      url: this.reply_all_url,
+      params: { id: this.current_message.id, copy: this.current_message["copy?"] },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        this.prepareNewMessagePanel(json.recipients_string, json.subject, json.body, json.recipient_ids);
+        this.content_panel.getLayout().setActiveItem('new_message_panel');
+        this.waiting_el.stopWaiting();
+      }.bind(this)
+    });
   },
   
   forward: function() {
-    
+    this.waiting_el.startWaiting();
+    Ext.Ajax.request({
+      url: this.forward_url,
+      params: { id: this.current_message.id, copy: this.current_message["copy?"] },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        this.prepareNewMessagePanel(json.recipients_string, json.subject, json.body, json.recipient_ids);
+        this.content_panel.getLayout().setActiveItem('new_message_panel');
+        this.waiting_el.stopWaiting();
+      }.bind(this)
+    });
   },
   
   collectSelectedMessages: function() {
@@ -393,8 +457,8 @@ var Mailbox = Class.create({
         return parseInt(cb.id.substring(6));
       }
     });
-    var records = this.message_store.queryBy(function(rec, id) {
-      return $A(ids).include(id);
+    var records = this.message_store.queryBy(function(rec) {
+      return $A(ids).include(rec.get("id"));
     });
     return records.items;
   },

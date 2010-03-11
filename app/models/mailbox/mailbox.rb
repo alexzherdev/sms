@@ -12,7 +12,7 @@ module Mailbox
     end
 
     belongs_to :user
-    has_many :sent_messages, :class_name => "Mailbox::Message", :conditions => { :deleted => false }, :order => "created_at DESC"
+    has_many :sent_messages, :class_name => "Mailbox::Message", :conditions => { :deleted => MessageUtils::NOT_DELETED }, :order => "created_at DESC"
     has_many :folders, :class_name => "Mailbox::Folder"
 
     after_create :create_folders
@@ -26,7 +26,7 @@ module Mailbox
     end
     
     def trash_messages
-      (Message.find_all_by_mailbox_id_and_deleted(self, true) + MessageCopy.find(:all, :conditions => ["deleted = ? and folder_id in (?)", true, self.folder_ids])).sort_by { |m| -m.created_at.to_i }
+      (Message.find_all_by_mailbox_id_and_deleted(self.id, MessageUtils::TRASHED) + MessageCopy.find(:all, :conditions => ["deleted = ? and folder_id in (?)", MessageUtils::TRASHED, self.folder_ids])).sort_by { |m| -m.created_at.to_i }
     end
     
     protected

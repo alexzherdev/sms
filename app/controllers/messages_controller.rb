@@ -1,11 +1,12 @@
 class MessagesController < ApplicationController
+  before_filter :preload_message, :only => [:show, :reply, :reply_all, :forward]
+  
   def index
     @users = User.all
     @messages = current_user.mailbox.sent_messages
   end
   
   def show
-    preload_message
     @message.read! if @message.copy?
   end
   
@@ -21,9 +22,18 @@ class MessagesController < ApplicationController
   end
   
   def reply
-    preload_message
     @reply = @message.prepare_reply
     render :json => @reply.to_json(:methods => [:recipients_string, :recipient_ids])
+  end
+  
+  def reply_all
+    @reply = @message.prepare_reply_all
+    render :json => @reply.to_json(:methods => [:recipients_string, :recipient_ids])
+  end
+  
+  def forward
+    @forward = @message.prepare_forward
+    render :json => @forward.to_json(:methods => [:recipients_string, :recipient_ids])
   end
   
   def delete

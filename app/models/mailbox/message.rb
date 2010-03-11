@@ -1,5 +1,7 @@
 module Mailbox
+  
   class Message < ActiveRecord::Base
+    
     include MessageUtils
     
     belongs_to :mailbox, :class_name => "Mailbox::Mailbox" 
@@ -9,7 +11,8 @@ module Mailbox
     attr_accessor :to
 
     validates_presence_of :mailbox
-
+    validates_inclusion_of :deleted, :in => [ MessageUtils::NOT_DELETED, MessageUtils::TRASHED, MessageUtils::DELETED ]
+    
     sanitize :subject
     sanitize :body
 
@@ -39,6 +42,10 @@ module Mailbox
       reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => recipient_ids
     end
 
+    def prepare_reply_all
+      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => recipient_ids
+    end
+    
     protected
 
     def set_defaults

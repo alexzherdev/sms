@@ -20,10 +20,13 @@
       new_message_url: "<%= new_mailbox_message_url %>",
       show_message_url: "<%= mailbox_messages_url %>",
       reply_url: "<%= reply_mailbox_messages_url %>",
+      reply_all_url: "<%= reply_all_mailbox_messages_url %>",
+      forward_url: "<%= forward_mailbox_messages_url %>",
       delete_messages_url: "<%= delete_mailbox_messages_url %>",
       restore_messages_url: "<%= restore_mailbox_messages_url %>",
       folders_url: "<%= mailbox_folders_url %>",
-      initial_folder_id: <%= current_user.mailbox.inbox.id %>
+      initial_folder_id: <%= current_user.mailbox.inbox.id %>,
+      trash_id: <%= Mailbox::Mailbox::TRASH_ID %>
     });
   });
 <% end %>
