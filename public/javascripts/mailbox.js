@@ -73,7 +73,8 @@ var Mailbox = Class.create({
       autoDestroy: false,
       layout: 'card',
       bodyCfg: {
-        id: 'mailbox_content_panel'
+        id: 'mailbox_content_panel',
+        cls: 'mailbox-content-panel'
       },
       width: 608,
       height: 500,
@@ -125,7 +126,7 @@ var Mailbox = Class.create({
         iconCls: 'x-btn-text-icon restore-message',
         text: 'Восстановить',
         handler: function() {
-          this.restoreMessages([this.message_store.getById(this.current_message.id)]);
+          this.restoreMessages([this.message_store.getById(this.current_message.uid)]);
         }.bind(this)
       },
       {
@@ -133,7 +134,7 @@ var Mailbox = Class.create({
         text: "Удалить",
         iconCls: 'x-btn-text-icon cross',
         handler: function() {
-          this.deleteMessages([this.message_store.getById(this.current_message.id)]);
+          this.deleteMessages([this.message_store.getById(this.current_message.uid)]);
         }.bind(this)
       }
       ],
@@ -409,6 +410,19 @@ var Mailbox = Class.create({
     this.new_message_recipients.setValue(field_value);
   },
   
+  showMessageBox: function(text, icon) {
+    Ext.MessageBox.show({ title: 'SMS', msg: text, icon: (icon || Ext.MessageBox.INFO), buttons: Ext.MessageBox.OK });
+  },
+  
+  sendMessage: function(form) {
+    if ((this.current_recipients || []).length == 0) {
+      this.showMessageBox('Укажите получателей письма.');
+      return false;
+    }
+    this.waiting_el.startWaiting();
+    Global.submitForm(form);
+  },
+  
   reply: function() {
     this.waiting_el.startWaiting();
     Ext.Ajax.request({
@@ -474,10 +488,26 @@ var Mailbox = Class.create({
   
   deleteSelectedMessages: function() {
     var messages = this.collectSelectedMessages();
+    if (messages.length == 0) {
+      this.showMessageBox('Отметьте сообщения, которые хотите удалить.');
+      return;
+    }
     this.deleteMessages(messages);
   },
   
   deleteMessages: function(messages) {
+    if (this.current_folder.id == this.trash_id) {
+      Ext.MessageBox.confirm('SMS', 'Эту операцию нельзя будет отменить. Вы уверены?', function(btn) {
+        if (btn == 'yes') {
+          this.doDeleteMessages(messages);
+        }
+      }, this);
+    } else {
+      this.doDeleteMessages(messages);
+    }
+  },
+  
+  doDeleteMessages: function(messages) {
     this.waiting_el.startWaiting();
     var ids = this.collectMessagesPropertyString(messages, "id");
     Ext.Ajax.request({
@@ -491,6 +521,10 @@ var Mailbox = Class.create({
   
   restoreSelectedMessages: function() {
     var messages = this.collectSelectedMessages();
+    if (messages.length == 0) {
+      this.showMessageBox('Отметьте сообщения, которые хотите восстановить.');
+      return;
+    }
     this.restoreMessages(messages);
   },
   

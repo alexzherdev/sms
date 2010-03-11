@@ -1,5 +1,5 @@
 <div id="new_message_form" class="x-hidden new-message-container">
-  <% form_remote_tag :url => mailbox_messages_url do %>
+  <% form_remote_tag :url => mailbox_messages_url, :html => { :id => "message_form" } do %>
     <table>
       <tr>
         <td><%= link_to_function "Кому", "Global.mailbox.showRecipientsPopup()" %></td>
@@ -14,6 +14,6 @@
       </tr>
     </table>
     <%= hidden_field_tag "message[to]", "", :id => "new_msg_hidden_to" %>
-    <%= extjs_button "Отправить" %>
+    <%= extjs_button :text => "Отправить", :handler => strip_in_json("function() { Global.mailbox.sendMessage('message_form'); }") %>
   <% end %>
 </div>

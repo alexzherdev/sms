@@ -795,3 +795,7 @@ a:link, a:visited, a:active {
   overflow: hidden;
   padding: 10px;
 }
+
+.mailbox .mailbox-content-panel .x-panel-body {
+  z-index: 0;
+}
