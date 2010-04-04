@@ -12,6 +12,14 @@ module ApplicationHelper
     render :partial => "partials/school_year_store.js.erb", :locals => { :name => name }
   end
   
+  def link_to_mailbox
+    if current_user.mailbox.inbox.unread_count == 0
+      link_to "Мои сообщения", mailbox_messages_path
+    else
+      content_tag("b", link_to("Мои сообщения (#{current_user.mailbox.inbox.unread_count})", mailbox_messages_path))
+    end
+  end
+  
   def acl_block(path, &block)
     path = path[1..-1] if path.index("/") == 0
     controller_path = path.split("/")[0]

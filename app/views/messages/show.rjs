@@ -1,2 +1,3 @@
 page.call "Global.mailbox.viewMessage", strip_in_json(@message.to_json(:methods => [:uid, :body, :subject, :recipients_string, :sender_full_name_abbr, :created_at_full, :copy?, :folder_id]))
 page.call "Global.mailbox.updateFolder", strip_in_json(@message.folder.to_json(:methods => :unread_count)) if @message.copy?
+page.replace_html "mailbox_link", link_to_mailbox

@@ -35,9 +35,10 @@
     });
     
     Global.class_room_grid = <%= extjs_grid :store => "Global.class_room_store".j, :width => 175, :height => 400,
-      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+      :cm => "cm".j, :sm => "sm".j, :title => "", :flex => 1 %>;
 
     Global.class_room_data = new Ext.Panel({
+      flex: 3,
       bodyCfg: {
         id: 'class_room_form_container'
       }
@@ -45,7 +46,7 @@
     
 		var panel = new Ext.Panel({
 			renderTo: "class_rooms",
-			width: 682,
+			width: 788,
 			height: 500,
 			title: "Аудитории",
 			tbar: [

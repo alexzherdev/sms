@@ -16,10 +16,16 @@ Ext.Ajax.extraParams = {
 <% end %>
 <div id="main_container">
   <div class="top">
-    <% link_to(root_url, :class => "logo") do %>
-    <span>School Management System</span>
-    <% end %>
-    <%= link_to "Мои сообщения", mailbox_messages_path %>
+    <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
+      <% link_to root_url, :class => "logo" do %>
+        <span>School Management System</span>
+      <% end %>
+      <div class="top-links">
+        <span id="mailbox_link"><%= link_to_mailbox %></span> | <%= link_to "Выход", logout_path %>
+      </div>
+      <div class="clear"></div>
+    </div></div></div>
+    <div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>
   </div>
   <div class="clear"></div>
 
@@ -29,7 +35,7 @@ Ext.Ajax.extraParams = {
     <%= yield %> 
   </div>
   <div class="clear"></div>
-  <div id="footer">&copy; Алексей Жердев, Алексей Шпаков, 2009-2010</div>
+  <div id="footer">&copy; Алексей Жердев, Алексей Шпаков, 2009&ndash;2010</div>
   <%= yield :bottom %>
 </div>
 </body>

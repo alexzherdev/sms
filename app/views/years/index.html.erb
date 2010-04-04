@@ -109,12 +109,12 @@
       }
     };
     
-    Global.year_grid = <%= extjs_grid :store => "Global.year_store".j, :height => 350, :width => 350, :cm => "y_cm".j, :sm => "y_sm".j, :tbar => [
+    Global.year_grid = <%= extjs_grid :store => "Global.year_store".j, :height => 350, :flex => 1, :cm => "y_cm".j, :sm => "y_sm".j, :tbar => [
       extjs_toolbar_button("Добавить", { :iconCls => "x-btn-text-icon add" }, { :url => years_url, :method => "POST" }),
 
     ] %>;
     
-    Global.term_grid = <%= extjs_grid :store => "Global.term_store".j, :height => 350, :width => 350, :cm => "t_cm".j, :sm => "t_sm".j, :tbar => [
+    Global.term_grid = <%= extjs_grid :store => "Global.term_store".j, :height => 350, :flex => 1, :cm => "t_cm".j, :sm => "t_sm".j, :tbar => [
       { :text => "Добавить", :iconCls => "add", :handler => "Global.showPopup".j },
       extjs_toolbar_button("Удалить", { :iconCls => "x-btn-text-icon remove" }, { :url => url_for(:action => "destroy_term"), :method => "POST", :params => { :id => "Global.term_grid.getSelectionModel().getSelected().get('id')".j } }),
       "-",
@@ -123,7 +123,7 @@
       
     var panel = new Ext.Panel({
       renderTo: "years",
-      width: 682,
+      width: 788,
       height: 500,
       title: "Учебные годы и четверти",
       layout: {

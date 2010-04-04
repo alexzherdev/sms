@@ -32,7 +32,7 @@
     
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
-      { :header => "Класс", :width => 200 }
+      { :header => "Класс", :width => 100 }
     ]) %>;
     
     var sm = new Ext.grid.RowSelectionModel({
@@ -49,10 +49,11 @@
       }
     });
     
-    Global.group_grid = <%= extjs_grid :store => "Global.group_store".j, :width => 204, :height => 400,
-      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+    Global.group_grid = <%= extjs_grid :store => "Global.group_store".j, :width => 100, :height => 400,
+      :cm => "cm".j, :sm => "sm".j, :title => "", :flex => 1 %>;
 
     Global.group_data = new Ext.Panel({
+      flex: 4,
       bodyCfg: {
         id: 'group_form_container'
       }
@@ -60,7 +61,7 @@
     
 		var panel = new Ext.Panel({
 			renderTo: "groups",
-			width: 682,
+			width: 788,
 			height: 400,
 			title: "Классы",
       

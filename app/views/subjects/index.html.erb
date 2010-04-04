@@ -58,7 +58,7 @@
       }
     });
     
-    Global.subject_grid = <%= extjs_grid :store => "Global.subject_store".j, :width => 335, :height => 400,
+    Global.subject_grid = <%= extjs_grid :store => "Global.subject_store".j, :flex => 1, :height => 400,
       :cm => "cm".j, :sm => "sm".j, :title => "", :view => "new Ext.grid.GroupingView({
                   forceFit: true,
                   startCollapsed: true,
@@ -66,6 +66,7 @@
               })".j   %>;
 
     Global.subject_data = new Ext.Panel({
+      flex: 2,
       bodyCfg: {
         id: 'subject_form_container'
       }
@@ -73,7 +74,7 @@
     
 		var panel = new Ext.Panel({
 			renderTo: "subjects",
-			width: 682,
+			width: 788,
 			height: 500,
 			title: "Предметы",
 			tbar: [

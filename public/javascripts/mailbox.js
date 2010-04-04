@@ -38,6 +38,7 @@ var Mailbox = Class.create({
   initFolderTree: function() {
     this.folder_tree = new Ext.tree.TreePanel({
       mailbox: this,
+      flex: 1,
       root: {
         expanded: true,
         draggable: false
@@ -76,7 +77,7 @@ var Mailbox = Class.create({
         id: 'mailbox_content_panel',
         cls: 'mailbox-content-panel'
       },
-      width: 608,
+      flex: 4,
       height: 500,
       items: [
         this.folder_view_panel,
@@ -88,7 +89,7 @@ var Mailbox = Class.create({
   
   initMessageViewPanel: function() {
     this.message_view_panel = new Ext.Panel({
-      width: 608,
+      //width: 608,
       height: 500,
       id: 'message_view_panel',
       tbar: [
@@ -250,7 +251,7 @@ var Mailbox = Class.create({
   		  align: 'stretch' 
   		},
   		id: 'folder_view_panel',
-      width: 608,
+      //width: 608,
       height: 500,
       tbar: [{
         id: 'restore-checked',
@@ -282,7 +283,7 @@ var Mailbox = Class.create({
         type: 'hbox',
         align: 'stretch' 
       },
-      width: 760,
+      width: 788,
       height: 500,
       tbar: [{
         text: "Новое сообщение",

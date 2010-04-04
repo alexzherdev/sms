@@ -34,9 +34,10 @@
     });
     
     Global.student_grid = <%= extjs_grid :store => "Global.student_store".j, :width => 325, :height => 400,
-      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+      :cm => "cm".j, :sm => "sm".j, :title => "", :flex => 3 %>;
 
     Global.student_data = new Ext.Panel({
+      flex: 4,
       bodyCfg: {
         id: 'student_form_container'
       }
@@ -44,7 +45,7 @@
     
 		var panel = new Ext.Panel({
 			renderTo: "students",
-			width: 682,
+			width: 788,
 			height: 500,
 			title: "Ученики",
 			tbar: [

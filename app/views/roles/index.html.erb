@@ -25,15 +25,16 @@
     });
     
     Global.role_grid = <%= extjs_grid :store => "Global.role_store".j, :width => 204, :height => 400,
-      :cm => "cm".j, :sm => "sm".j, :title => "" %>;
+      :cm => "cm".j, :sm => "sm".j, :title => "", :flex => 2 %>;
 
     Global.role_data = new Ext.Panel({
-      bodyCssClass: 'role-data'
+      bodyCssClass: 'role-data',
+      flex: 5
     });
     
 		var panel = new Ext.Panel({
 			renderTo: "roles",
-			width: 682,
+			width: 788,
 			height: 400,
 			title: "Роли",
 

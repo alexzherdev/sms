@@ -10,7 +10,7 @@
     <li><%= link_to "Роли", roles_path %></li>
     <% end %>
     <% acl_block(years_path) do %>
-    <li><%= link_to "Учебный год и четверти", years_path %></li>
+    <li><%= link_to "Учебные годы и четверти", years_path %></li>
     <% end %>
     <% acl_block(time_table_items_path) do %>
     <li><%= link_to "Расписание звонков", time_table_items_path %></li>
@@ -36,7 +36,6 @@
     <% acl_block(register_path) do %>
     <li><%= link_to "Журналы", register_path %></li>
     <% end %>
-    <li class="last"><%= link_to "Выход", logout_path %></li>
     </ul>
     </div></div></div>
     <div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>

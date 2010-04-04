@@ -32,13 +32,14 @@
 
     Global.user_data = new Ext.Panel({
       bodyCfg: {
-        id: 'user_form_container'
+        id: 'user_form_container',
+        cls: 'right-panel'
       }
     });
     
 		var panel = new Ext.Panel({
 			renderTo: "users",
-			width: 682,
+			width: 788,
 			height: 500,
 			title: "Пользователи",
 			tbar: [
