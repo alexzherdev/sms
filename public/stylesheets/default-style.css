@@ -303,11 +303,11 @@ a:link, a:visited, a:active {
 }
 
 .schedule-container {
-  width: 770px;
+  width: 788px;
 }
 
 .register-container {
-  width: 770px;
+  width: 788px;
 }
 
 .schedule-container .daytime-table-container, 
@@ -389,12 +389,12 @@ a:link, a:visited, a:active {
 .register-container .scrollable-register-container {
   overflow-x: scroll;
   float: left;
-  width: 696px;
+  width: 720px;
   border-right: 1px solid #D0D0D0;
 }
 
 .register-container .scrollable-register-container {
-  width: 553px;
+  width: 577px;
 }
 
 .final-register .register-container .scrollable-register-container {
