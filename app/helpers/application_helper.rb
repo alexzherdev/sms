@@ -12,11 +12,42 @@ module ApplicationHelper
     render :partial => "partials/school_year_store.js.erb", :locals => { :name => name }
   end
   
+  def link_or_bold(text, url)
+    if current_page? url
+      content_tag "b", text
+    else 
+      link_to text, url
+    end
+  end
+  
+  def menu_items
+    [
+      ["Пользователи", users_path], 
+      ["Роли", roles_path],
+      ["Учебные годы и четверти", years_path],
+      ["Расписание звонков", time_table_items_path],
+      ["Аудитории", class_rooms_path],
+      ["Ученики", students_path],
+      ["Классы", student_groups_path],
+      ["Предметы", subjects_path],
+      ["Нагрузка учителей", teacher_subjects_path],
+      ["Расписание занятий", schedule_path],
+      ["Журналы", register_path]
+    ]
+  end
+  
   def link_to_mailbox
+    in_mailbox = ["mailboxes", "messages"].include? params[:controller]
     if current_user.mailbox.inbox.unread_count == 0
-      link_to "Мои сообщения", mailbox_messages_path
+      if in_mailbox
+        content_tag "b", "Мои сообщения"
+      else
+        link_to "Мои сообщения", mailbox_messages_path
+      end
     else
-      content_tag("b", link_to("Мои сообщения (#{current_user.mailbox.inbox.unread_count})", mailbox_messages_path))
+      text = "Мои сообщения (#{current_user.mailbox.inbox.unread_count})"
+      content = in_mailbox ? text : link_to(text, mailbox_messages_path)
+      content_tag "b", content
     end
   end
   

@@ -79,42 +79,41 @@
       Ext.getCmp("popup_subjects").setValue("");
     };
 
-    Global.initPopup = function() {
-      Global.ts_popup = new Ext.Window({
-          el: 'popup',
-          layout: 'fit',
-          width: 200,
-          height: 150,
-          closeAction: 'hide',
-          animateTarget: null,
-          plain: true,
-          modal: true,
-      
-          items: new Ext.Panel({
-            el: 'popup_main',
-            deferredRender: true,
-            border: false
-          }),
-      
-          buttons: [
-            { text: "Добавить",
-              handler: function() {
-                Global.ts_popup.hide();
-                Ext.Ajax.request({
-                  form: 'teacher_subject_form',
-                  params: { 'teacher_subject[teacher_id]': Global.teacher_grid.getSelectionModel().getSelected().get("id") }
-                });   
-              }.bind(this)},
-            { text: "Отмена",
-              handler: function() {
-                Global.ts_popup.hide();  
-              }.bind(this)
-            }]
-        });
-        Global.ts_popup.on("beforeshow", Global.preparePopup.bind(this));
-    } 
-    
-    Global.initPopup();   
+
+    Global.ts_popup = new Ext.Window({
+      el: 'popup',
+      layout: 'fit',
+      width: 200,
+      height: 150,
+      closeAction: 'hide',
+      animateTarget: null,
+      plain: true,
+      modal: true,
+  
+      items: new Ext.Panel({
+        el: 'popup_main',
+        deferredRender: true,
+        border: false
+      }),
+  
+      buttons: [
+        { text: "Добавить",
+          handler: function() {
+            Global.ts_popup.hide();
+            Ext.Ajax.request({
+              form: 'teacher_subject_form',
+              params: { 'teacher_subject[teacher_id]': Global.teacher_grid.getSelectionModel().getSelected().get("id") }
+            });   
+          }.bind(this)},
+        { text: "Отмена",
+          handler: function() {
+            Global.ts_popup.hide();  
+          }.bind(this)
+        }]
+    });
+    Global.ts_popup.on("beforeshow", Global.preparePopup.bind(this));
+
+ 
     
     Global.teacher_subjects_grid = <%= extjs_grid :store => "Global.teacher_subjects_store".j, :cm => "ts_cm".j, 
       :bbar => [
