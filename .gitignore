@@ -8,3 +8,4 @@ config/*.sphinx.conf
 public/stylesheets/sms.css
 public/javascripts/sms.js
 public/system/**/*
+db/sphinx/*
