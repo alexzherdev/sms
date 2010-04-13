@@ -21,7 +21,7 @@
       { :header => "Начало", :width => 145 },
       { :header => "Конец", :width => 145 }
     ]) %>;
-    Global.time_table_grid = <%= extjs_grid :store => "Global.time_table_item_store".j, :width => 325,
+    Global.time_table_grid = <%= extjs_grid :store => "Global.time_table_item_store".j, :flex => 2,
       :autoHeight => true, :cm => "cm".j, :title => "", :tbar => [
         extjs_toolbar_button("Добавить", { :iconCls => "x-btn-text-icon add", 
           :menu => {
@@ -41,6 +41,7 @@
       ] %>;
       
     Global.time_table_settings = new Ext.Panel({
+      flex: 3,
       autoLoad: {
         url: '<%= url_for :action => "settings" %>',
         scripts: true 
