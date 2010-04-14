@@ -4,3 +4,4 @@ development:
 production:
   port: 9313
   morphology: stem_ru
+  bin_path: '/usr/local/bin'
