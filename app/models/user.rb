@@ -37,10 +37,5 @@ class User < Person
   def can_edit_register?
     false
   end
-  
-  protected
-  
-  def create_mailbox
-    self.mailbox.create
-  end
+
 end
