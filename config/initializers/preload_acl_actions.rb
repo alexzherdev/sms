@@ -1,1 +1,1 @@
-ACL_ACTIONS_MAP = AclAction.preload
+ACL_ACTIONS_MAP = AclAction.preload if defined? AclAction
