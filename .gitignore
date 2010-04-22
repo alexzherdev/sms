@@ -5,6 +5,7 @@ tmp/**/*
 ._*
 vendor/*
 config/database.yml
+config/sphinx.yml
 config/*.sphinx.conf
 public/stylesheets/sms.css
 public/javascripts/sms.js
