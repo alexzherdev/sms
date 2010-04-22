@@ -42,6 +42,20 @@ body a {
   float: right;
 }
 
+.top .search-box {
+  float: right;
+  margin-right: 100px;
+}
+
+.top .search-box .clear {
+  clear: none;
+}
+
+.top .search-box .form-item {
+  padding: 0px 3px;
+  margin-top: 0px;
+}
+
 .clear {
   clear: both;
 }

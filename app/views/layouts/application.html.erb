@@ -24,6 +24,12 @@ Ext.Ajax.extraParams = {
         <div class="top-links">
           <span id="mailbox_link"><%= link_to_mailbox %></span> | <%= link_to "Выход", logout_path %>
         </div>
+        <div class="search-box">
+          <% form_tag search_url do %>
+            <%= extjs_text_field_control "search", "query" %>
+            <%= extjs_button "Найти" %>
+          <% end %>
+        </div>
       <% end %>
       <div class="clear"></div>
     </div></div></div>

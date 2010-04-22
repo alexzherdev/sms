@@ -6,4 +6,8 @@ class ClassRoom < ActiveRecord::Base
   accepts_comma_separated_ids_for :subjects
   
   default_scope :order => "number ASC"
+  
+  define_index do
+    indexes :number
+  end
 end

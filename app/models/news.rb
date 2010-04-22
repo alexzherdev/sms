@@ -5,4 +5,9 @@ class News < ActiveRecord::Base
   validates_presence_of :title, :content, :author
   
   default_scope :order => "created_at DESC"
+  
+  define_index do
+    indexes title
+    indexes content
+  end
 end

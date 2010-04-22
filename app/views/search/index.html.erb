@@ -1,0 +1,6 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.student_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => StudentsHelper::STUDENT_FIELDS %>;
+    Global.news_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => StudentsHelper::STUDENT_FIELDS %>;
+  });
+<% end %>

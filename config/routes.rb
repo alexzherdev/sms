@@ -39,6 +39,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :news, :singular => :news_item
   
+  map.search "/search", :controller => :search
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
