@@ -1,8 +1,8 @@
-<div class="entrance-form-container">
+<div class="login-form-container">
   <div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>
   <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
 
-    <table class="entrance_scaffold">
+    <table class="login-form-scaffold">
     <tr><td colspan="2">
       <h3><b>Вход</b></h3>
 
@@ -20,7 +20,7 @@
       <%= extjs_text_field_control :user_session, :password, :inputType => "password" %>
 
     <tr><td><td>
-      <%= extjs_button :text => "Войти" %>
+      <%= extjs_button :text => "Войти", :button_class => "login-button" %>
 
       <% end %>
 

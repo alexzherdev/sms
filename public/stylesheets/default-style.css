@@ -114,7 +114,7 @@ body a {
   padding: 0px 6px;
 }
 
-.entrance-form-container {
+.login-form-container {
   position: relative;
   left: -12px;
 }
@@ -319,9 +319,15 @@ a:link, a:visited, a:active {
   font-size: 14px;
 }
 
-.entrance_scaffold {
+.login-form-scaffold {
+  font-family: "Myriad Pro","Myriad Web","Tahoma","Helvetica","Arial",sans-serif;
+  font-size: 12px;
   padding: 4px;
   padding-bottom: 6px;
+}
+
+.login-button {
+  margin-left:3px;
 }
 
 
