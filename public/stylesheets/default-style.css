@@ -11,7 +11,7 @@ body a {
 }
 
 #main_container {
-  min-width: 980px;  
+  min-width: 980px;
   position: relative;
 }
 
@@ -62,7 +62,7 @@ body a {
 
 .left-menu-container {
   float: left;
-  height: 400px;  
+  height: 400px;
   padding-right: 30px;
 }
 
@@ -109,23 +109,13 @@ body a {
   *filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/menu_bottom.png", sizingMethod="crop");
 }
 
-.left-menu-container {
-  font-family: verdana;
-  padding: 0px 6px;
-}
-
-.login-form-container {
-  position: relative;
-  left: -12px;
-}
-
-.x-box-mc {
+.left-menu-container .x-box-mc {
   font-family: verdana;
   padding: 0px 6px;
 }
 
 .content-container {
-  float: left; 
+  float: left;
 }
 
 .content-container h1 {
@@ -167,7 +157,7 @@ body a {
   margin-top: 10px;
 }
 
-.form-container .x-panel .x-panel-btns-ct  {
+.form-container .x-panel .x-panel-btns-ct {
   padding: 0px 0px 0px 107px;
 }
 
@@ -188,7 +178,7 @@ body a {
 /* our styles */
 
 .error {
-  border: solid 1px #999999; 
+  border: solid 1px #999999;
   background-color: #FF8080;
   clear: both;
   font-weight: bold;
@@ -196,7 +186,7 @@ body a {
 }
 
 .message {
-  border: solid 1px #999999; 
+  border: solid 1px #999999;
   background-color: #FACE8D;
   font-weight: bold;
   padding: 3px;
@@ -319,18 +309,6 @@ a:link, a:visited, a:active {
   font-size: 14px;
 }
 
-.login-form-scaffold {
-  font-family: "Myriad Pro","Myriad Web","Tahoma","Helvetica","Arial",sans-serif;
-  font-size: 12px;
-  padding: 4px;
-  padding-bottom: 6px;
-}
-
-.login-button {
-  margin-left:3px;
-}
-
-
 /*********** Schedule, register ************/
 
 .schedule-panel-container .x-panel-header {
@@ -346,7 +324,7 @@ a:link, a:visited, a:active {
   width: 788px;
 }
 
-.schedule-container .daytime-table-container, 
+.schedule-container .daytime-table-container,
 .register-container .student-table-container {
   float: left;
   border-left: 1px solid #D0D0D0;
@@ -528,14 +506,14 @@ a:link, a:visited, a:active {
 .schedule-container .schedule-table .main-container .group-column .cell .validationTarget {
   position: absolute;
   left: 0px;
-  top: 0px; 
+  top: 0px;
   width: 38px;
   height: 21px;
   z-index: 1000;
   cursor: pointer;
 }
 
-.schedule-container .schedule-table .main-container .group-column .cell:hover { 
+.schedule-container .schedule-table .main-container .group-column .cell:hover {
   /*background-color: #FFFFCC;*/
 }
 
@@ -695,16 +673,27 @@ a:link, a:visited, a:active {
   overflow: hidden;
 }
 
-/*********** News ************/
-
-.news-container {
-  float: left;
-  margin-right: 10px;
-}
+/******** Login Form *********/
 
 .button-container {
   float: left;
-  margin-left:3px;
+  margin-left: 3px;
+}
+
+.login-form-scaffold {
+  padding: 4px;
+}
+
+.login-form-container {
+  position: relative;
+  left: -30px;
+}
+
+/*********** News ************/
+
+.news-container .button-container {
+  float: left;
+  margin-right: 10px;
 }
 
 .news-item {
@@ -795,7 +784,7 @@ a:link, a:visited, a:active {
 
 .mailbox .folder-tree .x-tree-ec-icon {
   display: none;
-} 
+}
 
 .mailbox .folder-tree .x-tree-node-anchor {
   font-family: Verdana;

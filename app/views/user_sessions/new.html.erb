@@ -2,13 +2,12 @@
   <div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>
   <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
 
-    <table class="login-form-scaffold">
-    <tr><td colspan="2">
-      <h3><b>Вход</b></h3>
-
       <% form_for @user_session do |f| %>
       <%= f.error_messages %>
 
+    <table class="login-form-scaffold">
+    <tr><td colspan="2">
+      <h3><b>Вход</b></h3>
     <tr><td>
       <%= f.label :login, "Логин:" %>
     <td>
@@ -20,11 +19,11 @@
       <%= extjs_text_field_control :user_session, :password, :inputType => "password" %>
 
     <tr><td><td>
-      <%= extjs_button :text => "Войти", :button_class => "login-button" %>
-
-      <% end %>
+      <%= extjs_button :text => "Войти" %>
 
     </table>
+      <% end %>
+
 
   </div></div></div>
   <div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>
