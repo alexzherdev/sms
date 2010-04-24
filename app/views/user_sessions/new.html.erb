@@ -1,15 +1,25 @@
-<h1>Вход</h1>
+<fieldset>
+<legend>&nbsp;<b>Вход</b>&nbsp;</legend>
 
 <% form_for @user_session do |f| %>
   <%= f.error_messages %>
 
-    <%= f.label :login, "Логин" %><br />
+  <table class="entrance_scaffold">
+    <tr><td>
+    <%= f.label :login, "Логин:" %>
+    <td>
     <%= extjs_text_field_control :user_session, :login %>
 
-    <%= f.label :password, "Пароль" %><br />
+    <tr><td>
+    <%= f.label :password, "Пароль:" %>
+    <td>
     <%= extjs_text_field_control :user_session, :password, :inputType => "password" %>
 
-  <%= extjs_button :text => "Войти" %>
+    <tr><td><td>
+    <%= extjs_button :text => "Войти" %>
+  </table>
 <% end %>
+
+</FIELDSET>
 
 

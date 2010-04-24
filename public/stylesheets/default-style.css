@@ -309,6 +309,12 @@ a:link, a:visited, a:active {
   font-size: 14px;
 }
 
+.entrance_scaffold {
+  padding: 4px;
+  padding-bottom: 6px;
+}
+
+
 /*********** Schedule, register ************/
 
 .schedule-panel-container .x-panel-header {
@@ -675,9 +681,14 @@ a:link, a:visited, a:active {
 
 /*********** News ************/
 
-.news-container .button-container {
+.news-container {
   float: left;
   margin-right: 10px;
+}
+
+.button-container {
+  float: left;
+  margin-left:3px;
 }
 
 .news-item {
