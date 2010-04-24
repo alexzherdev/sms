@@ -109,7 +109,17 @@ body a {
   *filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="images/menu_bottom.png", sizingMethod="crop");
 }
 
-.left-menu-container .x-box-mc {
+.left-menu-container {
+  font-family: verdana;
+  padding: 0px 6px;
+}
+
+.entrance-form-container {
+  position: relative;
+  left: -12px;
+}
+
+.x-box-mc {
   font-family: verdana;
   padding: 0px 6px;
 }
