@@ -1,5 +1,5 @@
 module UsersHelper
-  USER_FIELDS = [:id, :last_name, :first_name, :login, :password, :full_name, :full_name_abbr]
+  USER_FIELDS = [:id, :last_name, :first_name, :patronymic, :login, :password, :full_name, :full_name_abbr]
   def user_collection(users)
     collect_values(users, USER_FIELDS)
   end

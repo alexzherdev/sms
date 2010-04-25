@@ -1,5 +1,5 @@
 class StudentGroup < ActiveRecord::Base
-  has_many :students, :order => "last_name ASC, first_name ASC"
+  has_many :students, :order => "last_name ASC, first_name ASC, patronymic ASC"
   belongs_to :group_teacher, :class_name => "Teacher"
   
   default_scope :order => "year ASC, letter ASC"

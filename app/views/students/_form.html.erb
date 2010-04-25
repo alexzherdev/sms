@@ -14,6 +14,10 @@
         <td><%= extjs_text_field_control :student, :first_name %></td>
       </tr>
       <tr>
+        <td><%= f.label :patronymic, "Отчество" %></td>
+        <td><%= extjs_text_field_control :student, :patronymic %></td>
+      </tr>
+      <tr>
         <td><%= f.label :student_group_id, "Класс" %></td>
         <td><%= extjs_combo_box_control :student, :student_group_id, :store => "Global.student_group_store", :displayField => "full_name", :valueField => "id", :hiddenName => "student[student_group_id]", :width => 50 %></td>
       </tr>

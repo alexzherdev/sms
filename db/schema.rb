@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100311174402) do
+ActiveRecord::Schema.define(:version => 20100425154606) do
 
   create_table "acl_actions", :force => true do |t|
     t.string   "name"
@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(:version => 20100311174402) do
     t.string   "home_address"
     t.integer  "student_group_id"
     t.integer  "role_id"
+    t.string   "patronymic"
   end
 
   create_table "roles", :force => true do |t|

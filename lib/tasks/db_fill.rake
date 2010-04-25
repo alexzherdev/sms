@@ -23,7 +23,7 @@ namespace :sms do
       subject_ids = create_subject_ids(room_map)
       teachers = create_teachers
       create_teacher_subjects(teachers)
-      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe", :role_id => Role.admin.id
+      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe", :role_id => Role.admin.id, :patronymic => "patronymic"
       admin.save
     end
     
@@ -109,7 +109,8 @@ namespace :sms do
       teachers = []
       TEACHERS.each_with_index do |teacher_name, index|
         teacher = Teacher.create :birth_date => DateTime.now, :email => "teacher#{index}@asdasd.ru", 
-          :first_name => teacher_name.second, :last_name => teacher_name.first, :login => "teacher#{index}", 
+          :first_name => teacher_name.second.split.first, :last_name => teacher_name.first,
+          :patronymic => teacher_name.second.split.second, :login => "teacher#{index}", 
           :password => "password", :password_confirmation => "password", :role_id => Role.teacher.id
         teachers << teacher
       end
