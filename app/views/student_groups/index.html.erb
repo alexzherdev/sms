@@ -26,7 +26,7 @@
     
     <%= school_year_store %>
     
-    Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" } %>;
+    Global.group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => [ "id", "full_name", "year" ], :sortInfo => { :field => "year", :direction => "ASC" }, :remoteSort => false %>;
 
     Global.teacher_store = <%= extjs_simple_store :data => teacher_collection(@teachers), :type => :arrays, :fields => [ "id", "full_name" ] %>;
     
@@ -108,6 +108,7 @@
       var record = Global.group_grid.getSelectionModel().getSelected();
       record.set("full_name", config["student_group[year]"] + " " + config["student_group[letter]"]);
       record.commit();
+      Global.group_store.sort( [ { field : 'year', direction: 'ASC' }, { field : 'full_name', direction: 'ASC' } ], 'ASC');
     });
 	});
 <% end %>
