@@ -1,3 +1,4 @@
+﻿<% unless @day_times.empty? || @student_groups.empty? %>
 <% content_for :bottom do %>
   <%= javascript_include_tag "groupdataview" %>
   <%= javascript_include_tag "groupcombo" %>
@@ -99,3 +100,7 @@
 </div>
 </div>
 
+<% else %>Расписание занятий не может быть отображено, пока расписание звонков и/или список классов пусты.
+<br>
+Для управления этими списками выберите соответствующий пункт меню слева.
+<% end %>

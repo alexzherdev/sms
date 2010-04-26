@@ -9,13 +9,19 @@ class SchedulesController < ApplicationController
       subjects.unshift(empty_subject)
       @year_subjects[year] = subjects
     end
+
     validator = Schedule::Validator.new(@schedule_items)
     validator.validate
     @errors = validator.errors
+
     @class_rooms = ClassRoom.all
     empty_room = ClassRoom.new { |room| room.id = 0; room.number = "Empty" }
     @class_rooms.unshift(empty_room)
+
     @day_times = create_day_times
+
+    return if @day_times.empty? || @schedule_items.empty?
+
     @item_table = create_item_table(@schedule_items, @day_times, @student_groups)
   end
   
