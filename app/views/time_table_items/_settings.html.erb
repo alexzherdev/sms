@@ -1,27 +1,33 @@
 <div class="form-container settings-form-container">
+  <br>
   <% form_tag :action => "update_settings" do %>
     <table>
       <tr>
         <td width="150">Начало занятий</td>
-        <td><%= extjs_time_field_control "settings", "lessons_start", :value => Settings["lessons_start"].to_s(:lesson), :width => 60, :minValue => "07:30", :maxValue => "09:00", :increment => 5, :format => "H:i", :initDate => "new Date()".j %></td>
-        <td>мин</td>
+        <td><%= extjs_time_field_control :settings, :lessons_start, :value => Settings["lessons_start"].to_s(:lesson), :width => 60, :minValue => "07:30", :maxValue => "09:00", :increment => 5, :format => "H:i" %></td>
+        <td></td>
       </tr>
       <tr>
         <td>Длительность урока</td>
-        <td><%= extjs_text_field_control "settings", "lesson_length", :value => Settings["lesson_length"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
+        <td><%= extjs_text_field_control :settings, :lesson_length, :value => Settings["lesson_length"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
         <td>мин</td>
       </tr>
       <tr>
         <td>Короткая перемена</td>
-        <td><%= extjs_text_field_control "settings", "short_break", :value => Settings["short_break"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
+        <td><%= extjs_text_field_control :settings, :short_break, :value => Settings["short_break"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
         <td>мин</td>        
       </tr>
       <tr>
         <td>Большая перемена</td>
-        <td><%= extjs_text_field_control "settings", "long_break", :value => Settings["long_break"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
+        <td><%= extjs_text_field_control :settings, :long_break, :value => Settings["long_break"], :regex => "/^(\\d)+$/".j, :width => 60 %></td>
         <td>мин</td>        
       </tr>
+      <tr>
+      <td>
+      <td height=30 valign="center">
+        <%= extjs_button "Сохранить" %>
+      <td>
+      </tr>
     </table>
-    <%= extjs_button "Сохранить" %>
   <% end %>
 </div>

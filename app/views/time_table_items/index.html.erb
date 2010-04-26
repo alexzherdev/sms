@@ -18,11 +18,11 @@
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
       { :header => "№", :width => 30 },
-      { :header => "Начало", :width => 145 },
-      { :header => "Конец", :width => 145 }
+      { :header => "Начало", :width => 140 },
+      { :header => "Конец", :width => 140 }
     ]) %>;
     Global.time_table_grid = <%= extjs_grid :store => "Global.time_table_item_store".j, :flex => 2,
-      :autoHeight => true, :cm => "cm".j, :title => "", :tbar => [
+       :cm => "cm".j, :title => "", :tbar => [
         extjs_toolbar_button("Добавить", { :iconCls => "x-btn-text-icon add", 
           :menu => {
             :xtype => "menu",
@@ -51,7 +51,7 @@
     var panel = new Ext.Panel({
 			renderTo: "time_table",
 			width: 788,
-			height: 300,
+			height: 400,
 			title: "Расписание звонков",
   		layout: {
   		  type: 'hbox',
