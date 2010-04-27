@@ -80,9 +80,9 @@ var Mailbox = Class.create({
       flex: 4,
       height: 500,
       items: [
+        this.new_message_panel,
         this.folder_view_panel,
-        this.message_view_panel,
-        this.new_message_panel
+        this.message_view_panel
       ]
     });   
   },
@@ -389,7 +389,24 @@ var Mailbox = Class.create({
   viewMessage: function(message) {
     this.current_message = message;
     this.content_panel.getLayout().setActiveItem('message_view_panel');
+
+    if (message.attachments_string != "") {
+      var attSplit = message.attachments_string.split("|");
+      var attFormatted = "<table><tr><td class=\"message-attachments\" width=\"40\"></td><td>Файлы:<br />";
+      for(i = 0; i < attSplit.length; i+=2) {
+          attFormatted += "<a href=\"" + attSplit[i + 1] + "\">" + attSplit[i] + "</a><br />"; 
+      }
+      attFormatted += "</td></tr></table>";
+      message.attachments_string = attFormatted;
+      s = "visible";
+    } else {
+      s = "hidden";
+    }
+
     this.message_view_panel.update(this.current_message);
+
+    document.getElementById("attachments_div").style.visibility = s;
+
     this.fire("messageChanged");
   },
   

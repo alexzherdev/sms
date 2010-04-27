@@ -4,6 +4,7 @@ class MessagesController < ApplicationController
   def index
     @users = User.all
     @messages = current_user.mailbox.sent_messages
+    @message = Mailbox::Message.new
   end
   
   def show
@@ -18,7 +19,15 @@ class MessagesController < ApplicationController
   end
   
   def create
-    @message = Mailbox::Message.create params[:message].merge(:mailbox_id => current_user.mailbox)
+    @message = Mailbox::Message.new params[:message].merge(:mailbox_id => current_user.mailbox.id)
+    process_file_uploads(@message)
+
+    #logger.info("Pole010 " + @message.attachments.length.to_s + " " + current_user.mailbox.id.to_s)
+    #p @message
+
+    @message.save
+    index
+    render :action => "index"
   end
   
   def reply
@@ -62,6 +71,12 @@ class MessagesController < ApplicationController
     render :nothing => true
   end
   
+  def destroy_attachment
+    @attachment = Attachment.find params[:id]
+    @att_id = @attachment.id
+    @attachment.destroy
+  end
+  
   protected
   
   def preload_message
@@ -69,6 +84,12 @@ class MessagesController < ApplicationController
       @message = Mailbox::MessageCopy.find_by_id_and_recipient_id params[:id], current_user.id
     else
       @message = Mailbox::Message.find_by_id_and_mailbox_id params[:id], current_user.mailbox.id  
+    end
+  end
+
+  def process_file_uploads(messages)
+    (params[:attachment] || {}).each do |k, v|
+      messages.attachments.build(:data => v)
     end
   end
 end

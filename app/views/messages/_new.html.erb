@@ -1,19 +1,43 @@
 <div id="new_message_form" class="x-hidden new-message-container">
-  <% form_remote_tag :url => mailbox_messages_url, :html => { :id => "message_form" } do %>
+  <% form_for (@message, :url => mailbox_messages_url, :html => { :id => "message_form", :multipart => true }) do |f| %>
     <table>
       <tr>
-        <td><%= link_to_function "Кому", "Global.mailbox.showRecipientsPopup()" %></td>
+        <td><%= link_to_function "Кому:", "Global.mailbox.showRecipientsPopup()" %></td>
         <td><%= extjs_text_field_control "", "", :width => 473, :readOnly => true, :id => "new_msg_recipients" %></td>
       </tr>
       <tr>
-        <td>Тема</td>
+        <td>Тема:</td>
         <td><%= extjs_text_field_control :message, :subject, :width => 473, :id => "new_msg_subject" %></td>
+      </tr>
+      <tr>
+        <td class="mailbox-paperclip"></td>
+        <td><div class="button-container">Прикрепить файл: <%= file_field_tag "attachment", :id => "file", :size => 41 %></div></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><div class="button-container">
+            <ul>
+              <% 
+                   @message.attachments.each do |att| %>
+                     <li id="attachment_<%= att.id %>"><%= att.name %><%= link_to_remote "Удалить", { :url => { :action => "destroy_attachment", :id => att.id } }, { :class => "remove-file" } %></li>
+              <%   end
+                    %>
+            </ul>
+            <ul id="pending_files"></ul>
+            </div></td>
       </tr>
       <tr>
         <td colspan="2"><%= extjs_html_editor_control :message, :body, :width => 506, :height => 300, :id => "new_msg_body" %></td>
       </tr>
     </table>
     <%= hidden_field_tag "message[to]", "", :id => "new_msg_hidden_to" %>
-    <%= extjs_button :text => "Отправить", :handler => strip_in_json("function() { Global.mailbox.sendMessage('message_form'); }") %>
+    <div class="mailbox-button-container">
+    <%= extjs_button :text => "Отправить" %>
+    </div>
   <% end %>
 </div>
+
+<% javascript_tag do %>
+  var ms = new MultiSelector($('pending_files'));
+  ms.addElement($('file'));
+<% end %>

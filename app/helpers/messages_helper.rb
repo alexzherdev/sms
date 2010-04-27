@@ -1,9 +1,20 @@
 module MessagesHelper
-  MESSAGE_FIELDS = ["uid", "id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "copy?", "folder_id"]
+  MESSAGE_FIELDS = ["uid", "id", "subject", "body", "short_body", "status", "recipients_string", "created_at", "copy?", "folder_id", "attachments_string"]
+  ATTACHMENT_FIELDS = ["name", "url", "content_type", "file_size"]
   
+  def attachment_collection
+    self.attachments.collect do |obj|
+      ATTACHMENT_FIELDS.collect do |meth|
+        obj.send(meth)
+      end
+    end
+  end
+
   def message_collection(messages)
     messages.collect do |msg|
-      [msg.uid, msg.id, msg.subject, msg.body, truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length), msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id]
+      _short_body = truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length)
+      _short_body += "..." unless _short_body.length == msg.body.length
+      [msg.uid, msg.id, msg.subject, msg.body, _short_body, msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id, msg.attachments_string ]
     end
   end
   

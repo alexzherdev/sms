@@ -756,7 +756,7 @@ a:link, a:visited, a:active {
 }
 
 .news-form .remove-file {
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 /*********** Mailbox ************/
@@ -772,6 +772,12 @@ a:link, a:visited, a:active {
 
 .mailbox .unread-message {
   font-weight: bold;
+}
+
+.mailbox .message-short-body {
+  font-style: italic;
+  display: inline;
+  color: #888888;
 }
 
 .mailbox .folder-tree .x-tree-node-el {
@@ -799,6 +805,12 @@ a:link, a:visited, a:active {
   width: 100%;
 }
 
+.mailbox .message-attachments {
+  background-image: url(../images/paperclip.png);
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
 .mailbox .message-container .message-header {
   border-bottom: 4px solid #EEE;
 }
@@ -823,4 +835,14 @@ a:link, a:visited, a:active {
 
 .mailbox .mailbox-content-panel .x-panel-body {
   z-index: 0;
+}
+
+.mailbox-button-container {
+  margin-left: 2px;
+}
+
+.mailbox-paperclip {
+  background-image: url(../images/paperclip.png);
+  background-repeat: no-repeat;
+  background-position: center;
 }
