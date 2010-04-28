@@ -40,4 +40,8 @@
 <% javascript_tag do %>
   var ms = new MultiSelector($('pending_files'));
   ms.addElement($('file'));
+  ms.onclickUserEvent = function(element) {
+    Global.mailbox.container_panel.setHeight(Global.mailbox.container_panel.getHeight() + 15);
+    Global.mailbox.content_panel.setHeight(Global.mailbox.content_panel.getHeight() + 15);
+  }
 <% end %>

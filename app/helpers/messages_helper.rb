@@ -12,9 +12,7 @@ module MessagesHelper
 
   def message_collection(messages)
     messages.collect do |msg|
-      _short_body = truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length)
-      _short_body += "..." unless _short_body.length == msg.body.length
-      [msg.uid, msg.id, msg.subject, msg.body, _short_body, msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id, msg.attachments_string ]
+      [msg.uid, msg.id, msg.subject, msg.body, truncate(strip_tags(msg.body.gsub("<br>", " ")), :length => 50 - msg.subject.length), msg.status, truncate(msg.recipients_string, :length => 50), msg.created_at.to_s(:message), msg.copy?, msg.folder_id, msg.attachments_string ]
     end
   end
   

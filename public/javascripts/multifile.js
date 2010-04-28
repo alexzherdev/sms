@@ -3,6 +3,7 @@
 // -------------------------
 function MultiSelector(list_target, max) {
   this.list_target = list_target;this.count = 0;this.id = 0;if( max ){this.max = max;} else {this.max = -1;};
+  this.onclickUserEvent = 0;
   this.addElement = function( element ){
     if( element.tagName == 'INPUT' && element.type == 'file' ){
       element.name = 'attachment[file_' + (this.id++) + ']';
@@ -10,10 +11,12 @@ function MultiSelector(list_target, max) {
       element.onchange = function(){
         var new_element = document.createElement( 'input' );
         new_element.type = 'file';
+        new_element.size = element.size;
         this.parentNode.insertBefore( new_element, this );
         this.multi_selector.addElement( new_element );
         this.multi_selector.addListRow( this );
         this.style.position = 'absolute';this.style.left = '-1000px';
+        if (this.multi_selector.onclickUserEvent != 0) this.multi_selector.onclickUserEvent(this);
       };
       if( this.max != -1 && this.count >= this.max ){
         element.disabled = true;
@@ -31,7 +34,7 @@ function MultiSelector(list_target, max) {
       this.parentNode.parentNode.removeChild( this.parentNode);
       this.parentNode.element.multi_selector.count--;this.parentNode.element.multi_selector.current_element.disabled = false;return false;
     };
-    new_row.innerHTML = element.value.split('/')[element.value.split('/').length - 1];
+    new_row.innerHTML = element.value.split('/')[element.value.split('/').length - 1] + "&nbsp;&nbsp;|&nbsp;&nbsp;";
     new_row.appendChild( new_row_button );this.list_target.appendChild( new_row );
   };
 }

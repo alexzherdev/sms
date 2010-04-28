@@ -533,6 +533,11 @@ var Mailbox = Class.create({
       params: { ids: ids, copy: messages[0].get("copy?") },
       success: function() {
         this.selectFolder(this.current_folder.id);
+        this.updateFolder(this.current_folder);
+        this.fire("folderChanged");
+              this.folder_tree.getLoader().load(this.folder_tree.getRootNode(), function() {
+                this.findFolderNodeById(this.current_folder.id).select();
+              }.bind(this));              
       }.bind(this)
     });
   },
