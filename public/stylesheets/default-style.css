@@ -780,6 +780,12 @@ a:link, a:visited, a:active {
   color: #888888;
 }
 
+.recipient-filter-container {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 3px;
+}
+
 .mailbox .folder-tree .x-tree-node-el {
   padding: 5px;
 }

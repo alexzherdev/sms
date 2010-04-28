@@ -30,6 +30,7 @@ var Mailbox = Class.create({
     this.initContainerPanel();
     
     this.initRecipientGrid();
+    this.initRecipientFilter();
     this.initRecipientsPopup();
     
     this.waiting_el = $('mailbox_content_panel');
@@ -172,6 +173,20 @@ var Mailbox = Class.create({
       renderTo: "recipient_grid_container",
       width: 280,
       height: 400
+    });
+  },
+
+  initRecipientFilter: function() {
+    this.recipient_filter_text = new Ext.form.TextField({
+      renderTo: "recipient_filter_container",
+      width: 237,
+      enableKeyEvents: true,
+      listeners: {
+        keyup: function(ev) {
+          filterCriteria = new RegExp("^" + this.recipient_filter_text.getValue());
+          this.recipient_store.filter("full_name_abbr", /^/, true, true);
+        }.bind(this)
+      }
     });
   },
   
