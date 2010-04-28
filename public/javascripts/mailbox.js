@@ -184,7 +184,7 @@ var Mailbox = Class.create({
       listeners: {
         keyup: function(ev) {
           filterCriteria = new RegExp("^" + this.recipient_filter_text.getValue());
-          this.recipient_store.filter("full_name_abbr", /^/, true, true);
+          this.recipient_store.filter("full_name_abbr", filterCriteria, true, true);
         }.bind(this)
       }
     });
@@ -391,10 +391,31 @@ var Mailbox = Class.create({
     var f = this.findFolderById(folder.id);
     f.unread_count = folder.unread_count;
   },
+
+  showInboxFolder: function() {
+    this.showFolder(this.findFolderNodeById(this.initial_folder_id).attributes);
+    this.updateFolderTree();
+  },
+
+  updateFolderTree: function() {
+    this.folder_tree.getLoader().load(this.folder_tree.getRootNode(), function() {
+      this.findFolderNodeById(this.current_folder.id).select();
+    }.bind(this));
+  },
   
   viewFolderMessages: function(messages) {
     this.content_panel.getLayout().setActiveItem('folder_view_panel');
     this.loadMessages(messages);
+    
+    // Next chunk performs container expanding when there're a lot of letters.
+    // This is temporary code while pagination is unimplemented (you can delete these lines at any time with no harm to app)
+    if (messages.length > 20) {
+      this.container_panel.setHeight(500 + (messages.length - 20) * 19);
+      this.folder_view_panel.setHeight(500 + (messages.length - 20) * 19);
+    } else {
+      this.container_panel.setHeight(500);
+      this.folder_view_panel.setHeight(500);
+    }
   },
   
   loadMessages: function(messages) {
@@ -550,9 +571,9 @@ var Mailbox = Class.create({
         this.selectFolder(this.current_folder.id);
         this.updateFolder(this.current_folder);
         this.fire("folderChanged");
-              this.folder_tree.getLoader().load(this.folder_tree.getRootNode(), function() {
-                this.findFolderNodeById(this.current_folder.id).select();
-              }.bind(this));              
+
+        this.updateFolderTree();
+
       }.bind(this)
     });
   },
@@ -575,6 +596,7 @@ var Mailbox = Class.create({
       params: { ids: ids, copy: copy },
       success: function() {
         this.selectFolder(this.current_folder.id);
+        this.updateFolderTree();
       }.bind(this)
     });
   }

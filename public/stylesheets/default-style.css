@@ -812,7 +812,7 @@ a:link, a:visited, a:active {
 }
 
 .mailbox .message-attachments {
-  background-image: url(../images/paperclip.png);
+  background-image: url(../images/attachment_icon.png);
   background-repeat: no-repeat;
   background-position: center top;
 }
@@ -848,7 +848,7 @@ a:link, a:visited, a:active {
 }
 
 .mailbox-paperclip {
-  background-image: url(../images/paperclip.png);
+  background-image: url(../images/attachment_icon.png);
   background-repeat: no-repeat;
   background-position: center;
 }

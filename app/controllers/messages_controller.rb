@@ -22,12 +22,18 @@ class MessagesController < ApplicationController
     @message = Mailbox::Message.new params[:message].merge(:mailbox_id => current_user.mailbox.id)
     process_file_uploads(@message)
 
-    #logger.info("Pole010 " + @message.attachments.length.to_s + " " + current_user.mailbox.id.to_s)
-    #p @message
-
     @message.save
-    index
-    render :action => "index"
+
+    respond_to do |format|
+      format.js do
+        responds_to_parent do
+          render :update do |page|
+            page.replace_html "mailbox_link", link_to_mailbox
+            page.call "Global.mailbox.showInboxFolder"
+          end
+        end          
+      end
+    end
   end
   
   def reply
