@@ -319,6 +319,21 @@ module ExtjsHelper
            :locals => {:options => strip_hash_keys_for_json(options)}
   end
 
+  #  Renders Extjs.Radio
+  #
+  def extjs_radio(model_name, model_field, options = {})
+    options.symbolize_keys!
+
+    options[:inputValue] = options.delete(:checkedValue)
+
+    populate_options_for_form_field model_name, model_field, options
+
+    options[:name] ||= options.delete(:hiddenName)
+
+    render :partial => "controls/radio.js.erb",
+           :locals => {:options => strip_hash_keys_for_json(options)}
+  end
+
   #  Renders a complete combo box control. Is needs storage as the original +extjs_combo_box+ helper,
   #  but doesn't require underlying field anymore.
   #
@@ -403,6 +418,18 @@ module ExtjsHelper
 
     validation = add_validation_errors(model_name, options[:borrow_errors_from] || model_field, options[:js_variable] || id, options)
     control_wrapper(id, [(options.delete(:js_variable) || "var " + id) + " = " + extjs_checkbox(model_name, model_field, options),
+                         validation])
+  end
+
+  #  Renders a complete radio control.
+  #
+  def extjs_radio_control(model_name, model_field, options = {})
+    id = "_radio_#{new_gui_id}"
+    options.delete :applyTo
+    options[:renderTo] = id
+
+    validation = add_validation_errors(model_name, options[:borrow_errors_from] || model_field, options[:js_variable] || id, options)
+    control_wrapper(id, [(options.delete(:js_variable) || "var " + id) + " = " + extjs_radio(model_name, model_field, options),
                          validation])
   end
 

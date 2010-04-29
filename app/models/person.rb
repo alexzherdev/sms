@@ -2,7 +2,8 @@ class Person < ActiveRecord::Base
   validates_presence_of :first_name
   validates_presence_of :last_name
   validates_presence_of :birth_date
-  validates_acceptance_of :patronymic, :allow_nil => true
+  validates_presence_of :patronymic, :allow_nil => true
+  validates_inclusion_of :sex, :in => ["male", "female"]
 
   define_index do
     indexes first_name, last_name, patronymic
@@ -35,4 +36,11 @@ class Person < ActiveRecord::Base
     "#{last_name} #{first_name.first}.#{patronymic_short}"
   end
   
+  def male?
+    sex == "male"
+  end
+
+  def female?
+    sex == "female"
+  end
 end

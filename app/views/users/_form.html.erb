@@ -34,6 +34,16 @@
         <td><%= extjs_text_field_control :user, :email %></td>
       </tr>
       <tr>
+        <td><%= f.label :birth_date, "Пол" %></td>
+        <td><table width="100%">
+              <tr>
+                <td width="50%">
+                    <%= extjs_radio_control :user, :sex, :checkedValue => "male",    :boxLabel => "мужской", :checked => @user.male? %></td>
+                <td><%= extjs_radio_control :user, :sex, :checkedValue => "female",  :boxLabel => "женский", :checked => @user.female? %></td>
+              </tr>
+            </table>
+      </tr>
+      <tr>
         <td><%= f.label :birth_date, "Дата рождения" %></td>
         <td><%= extjs_date_field_control :user, :birth_date, :format => "d-m-Y", :width => 178 %></td>
       </tr>
