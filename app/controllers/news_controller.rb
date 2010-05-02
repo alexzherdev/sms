@@ -1,5 +1,6 @@
 class NewsController < ApplicationController
   def index
+    @comment = Comment.new
     @news = News.paginate :per_page => 5, :page => params[:page] || 1
   end
   
@@ -46,6 +47,12 @@ class NewsController < ApplicationController
     @attachment.destroy
   end
   
+  def add_comment
+    @comment = Comment.new params[:comment].merge(:user_id => current_user.id)
+    @comment.save
+    render :action => "add_comment.rjs"
+  end
+
   protected
   
   def process_file_uploads(news)
