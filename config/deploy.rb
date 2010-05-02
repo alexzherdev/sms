@@ -42,7 +42,7 @@ end
 
 namespace :deploy do
   task :migrate, :roles => :app do
-    run "cd #{current_path}; rake db:migrate RAILS_ENV=production"
+    run "cd #{current_release}; rake db:migrate RAILS_ENV=production"
   end
   
   task :start, :roles => :app do
