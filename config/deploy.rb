@@ -1,12 +1,5 @@
 set :application, "SMS"
 
-set :default_environment, { 
-  'PATH' => "/Users/alex/.rvm/ree-1.8.7-2009.10/bin:/Users/alex/.rvm/gems/ree-1.8.7-2009.10/bin:/Users/alex/.rvm/bin:$PATH",
-  'RUBY_VERSION' => '1.8.7',
-  'GEM_HOME'     => '/Users/alex/.rvm/gems/ree-1.8.7-2009.10',
-  'GEM_PATH'     => '/Users/alex/.rvm/gems/ree-1.8.7-2009.10'
-}
-
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
 # via the :deploy_to variable:
