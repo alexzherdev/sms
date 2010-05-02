@@ -20,7 +20,7 @@ class SchedulesController < ApplicationController
 
     @day_times = create_day_times
 
-    return if @day_times.empty? || @schedule_items.empty?
+    return if @day_times.empty? || @student_groups.empty?
 
     @item_table = create_item_table(@schedule_items, @day_times, @student_groups)
   end
