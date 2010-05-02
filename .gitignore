@@ -3,7 +3,7 @@ tmp/*
 tmp/**/*
 .DS_Store
 ._*
-vendor/*
+vendor/rails/**/*
 config/database.yml
 config/sphinx.yml
 config/*.sphinx.conf
