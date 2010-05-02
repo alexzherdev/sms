@@ -34,6 +34,10 @@ task :after_update_code, :roles => [:app] do
 end
 
 namespace :deploy do
+  task :migrate, :roles => :app do
+    run "cd #{current_path}; rvm rake db:migrate RAILS_ENV=production"
+  end
+  
   task :start, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
@@ -46,6 +50,7 @@ namespace :deploy do
   task :restart, :roles => :app do
     run "touch #{current_release}/tmp/restart.txt"
   end
+  
 end
 
 after "deploy:restart", :restart_sphinx
