@@ -1,0 +1,24 @@
+<table cellspacing="0" cellpadding="0">
+  <tr height="7"></tr>
+  <tr>
+    <td>
+      <div class="comment-created-at"><%= comment.created_at.to_s(:long) %> | </div>
+      <div class="comment-author"><%= comment.user.full_name %></div>
+    </td>
+  </tr>
+  <tr height="7"></tr>
+  <tr>
+    <td><div class="comment-body"><%= sanitize(comment.body) %></div></td>
+  </tr>
+  <tr height="7"></tr>
+  <tr>
+    <td><div id="comment_toolbar_<%= comment.id %>"></div></td>
+  </tr>
+  <tr>
+    <td><div id="comment_editor_<%= comment.id %>" class="comment-editor"></div></td>
+  </tr>
+</table>
+
+<div class="news-comment">
+  <%= render :partial => "comment", :collection => comment.comments %>
+</div>
