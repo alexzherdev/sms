@@ -19,30 +19,22 @@
   <div id="news_panel_<%= uid %>"></div>
 </div>
 
-<table cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-      <div id="comments_container_<%= uid %>"></div>
-      <div id="comments_<%= uid %>" class="news-comment">
-        <%= render :partial => "comment", :collection => news.comments %>
-      </div>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <div class="comment-submit-form">
-        <% remote_form_for @comment, :url => { :action => "add_comment" },
-         :success => "Ext.MessageBox.alert('SMS', 'Ваш комментарий успешно сохранён.');",
-         :html => { :id => "comment_submit_form_#{uid}" } do %>
-           <div id="html_area_<%= uid %>"></div><div style="height:6px;"></div>
-           <div id="submit_<%= uid %>"></div>
-           <%= hidden_field_tag("comment[parent_id]", "#{uid}") %> 
-           <%= hidden_field_tag("comment[parent_type]", "News") %> 
-        <% end %>
-      </div>
-    </td>
-  </tr>
-</table>
+
+<div id="comments_container_<%= uid %>"></div>
+<div id="comments_<%= uid %>" class="news-comment">
+  <%= render :partial => "comment", :collection => news.comments %>
+</div>
+
+<div class="comment-submit-form" id="div_submit_form_<%= uid %>">
+  <% remote_form_for @comment, :url => { :action => "add_comment" },
+    :success => "$('div_submit_form_#{ uid }').stopWaiting(); Ext.MessageBox.alert('SMS', 'Ваш комментарий успешно сохранён.');",
+    :html => { :id => "comment_submit_form_#{uid}" } do %>
+      <div id="html_area_<%= uid %>"></div><div style="height:6px;"></div>
+      <div id="submit_<%= uid %>"></div>
+      <%= hidden_field_tag("comment[parent_id]", "#{uid}") %> 
+      <%= hidden_field_tag("comment[parent_type]", "News") %> 
+  <% end %>
+</div>
 
 <% javascript_tag do %>
   Ext.onReady(function() {
@@ -62,6 +54,7 @@
       renderTo:"submit_<%= uid %>",
       hidden: true,
       handler : function() {
+        $('div_submit_form_<%= uid %>').startWaiting();
         document.forms["comment_submit_form_<%= uid %>"].onsubmit();
       }
     });

@@ -1,10 +1,5 @@
 <div id="comment_wrapper_<%= comment.id %>">
-<% remote_form_for @comment, :url => { :action => "edit_comment" },
-      :success => "Ext.getCmp('comment_panel_#{ comment.id }').items.itemAt(0).handler(); $('comment_wrapper_#{ comment.id }').stopWaiting();",
-      :html => { :id => "comment_form_#{comment.id}" } do
-%>
 <table cellspacing="0" cellpadding="0" width="100%">
-
   <tr>
     <td>
       <div class="comment-created-at"><%= comment.created_at.to_s(:long) %> | </div>
@@ -16,7 +11,7 @@
   </tr>
   <tr height="5"></tr>
   <tr>
-    <td colspan="2"><div class="comment-body" id="comment_body_<%= comment.id %>"><%= sanitize(comment.body) %></div></td>
+    <td colspan="2"><div id="comment_body_<%= comment.id %>" class="comment-body"><%= sanitize(comment.body) %></div></td>
   </tr>
   <% if comment.editable?(current_user) %>
     <tr>
@@ -26,17 +21,12 @@
     <tr>
       <td colspan="2">
          <div id="comment_submit_<%= comment.id %>"></div>
-         <%= hidden_field_tag("comment[id]", "#{comment.id}") %>
       </td>
     </tr>
   <tr height="11"></tr>
   <% end %>
 </table>
 </div>
-
-<%
-  end
-%>
 
 <div class="news-comment-nested">
   <%= render :partial => "comment", :collection => comment.comments %>
@@ -53,7 +43,18 @@
            hidden: true,
            handler : function() {
              $('comment_wrapper_<%= comment.id %>').startWaiting();
-             document.forms["comment_form_<%= comment.id %>"].onsubmit();
+                    Ext.Ajax.request({
+                      url: 'news/edit_comment',
+                      params: { 'comment[id]': '<%= comment.id %>',
+                                'comment[parent_id]': '<%= comment.parent_id %>',
+                                'comment[parent_type]': 'News',
+                                'comment[body]': Ext.getCmp('comment_body_editor_<%= comment.id %>').getValue() },
+                      success: function() {
+                        Ext.getCmp('comment_panel_<%= comment.id %>').items.itemAt(0).handler();
+                        $('comment_wrapper_<%= comment.id %>').stopWaiting();
+                        //Ext.MessageBox.alert('SMS', 'Комментарий успешно удалён.');
+                      }
+                    });
            }
          });
 
@@ -75,6 +76,7 @@
               this.link_to_html_area = new Ext.form.HtmlEditor({
                 name:"comment[body]",
                 value:$("comment_body_<%= comment.id %>").innerHTML,
+                id:"comment_body_editor_<%= comment.id %>",
                 height:150,
                 width: 496,
                 hidden: true,
