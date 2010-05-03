@@ -30,12 +30,12 @@ task :restart_sphinx do
 end
 
 task :after_update_code, :roles => [:app] do
-  run "ln -s /#{shared_path}/vendor #{release_path}/vendor"
+  run "ln -s /#{shared_path}/vendor/rails #{release_path}/vendor/rails"
 end
 
 namespace :deploy do
   task :migrate, :roles => :app do
-    run "cd #{current_path}; rvm rake db:migrate RAILS_ENV=production"
+    run "cd #{current_release}; rake db:migrate RAILS_ENV=production"
   end
   
   task :start, :roles => :app do
