@@ -1,0 +1,1 @@
+page.replace_html "comment_body_#{@comment.id}", sanitize(@comment.body)

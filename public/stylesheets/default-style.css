@@ -575,6 +575,7 @@ a:link, a:visited, a:active {
 .option {
   background-image:url("../images/plugin.gif") !important;
 }
+
 .remove {
   background-image:url("../images/delete.gif") !important;
 }
@@ -613,6 +614,10 @@ a:link, a:visited, a:active {
 
 .restore-message {
   background-image:url("../images/restore.png") !important;
+}
+
+.comments {
+  background-image:url("../images/comments.png") !important;
 }
 
 #markBoxContainer .form-item {
@@ -757,6 +762,47 @@ a:link, a:visited, a:active {
 
 .news-form .remove-file {
   margin-left: 0px;
+}
+
+/*********** Comments ************/
+
+.news-comment {
+  margin-left: 0px;
+}
+
+.news-comment-nested {
+  margin-left: 12px;
+}
+
+.comment-created-at {
+  color: #888;
+  font-size: 80%;
+  display: inline;
+}
+
+.comment-author {
+  color: #888;
+  font-size: 80%;
+  display: inline;
+}
+
+.comment-body {
+  margin-left: 12px;
+  font-size: 95%;
+}
+
+.comment-separator {
+  background-color:#CCC;
+  color:#888;
+  border:0px none;
+  height:1px;
+}
+
+.comment-editor {
+}
+
+.comment-submit-form {
+  margin-left: 12px;
 }
 
 /*********** Mailbox ************/

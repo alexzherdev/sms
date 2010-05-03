@@ -1,24 +1,145 @@
-<table cellspacing="0" cellpadding="0">
-  <tr height="7"></tr>
+<div id="comment_wrapper_<%= comment.id %>">
+<% remote_form_for @comment, :url => { :action => "edit_comment" },
+      :success => "Ext.getCmp('comment_panel_#{ comment.id }').items.itemAt(0).handler(); $('comment_wrapper_#{ comment.id }').stopWaiting();",
+      :html => { :id => "comment_form_#{comment.id}" } do
+%>
+<table cellspacing="0" cellpadding="0" width="100%">
+
   <tr>
     <td>
       <div class="comment-created-at"><%= comment.created_at.to_s(:long) %> | </div>
       <div class="comment-author"><%= comment.user.full_name %></div>
     </td>
+    <% if comment.editable?(current_user) %>
+      <td align=right><div id="comment_toolbar_<%= comment.id %>"></div></td>
+    <% end %>
   </tr>
-  <tr height="7"></tr>
+  <tr height="5"></tr>
   <tr>
-    <td><div class="comment-body"><%= sanitize(comment.body) %></div></td>
+    <td colspan="2"><div class="comment-body" id="comment_body_<%= comment.id %>"><%= sanitize(comment.body) %></div></td>
   </tr>
-  <tr height="7"></tr>
-  <tr>
-    <td><div id="comment_toolbar_<%= comment.id %>"></div></td>
-  </tr>
-  <tr>
-    <td><div id="comment_editor_<%= comment.id %>" class="comment-editor"></div></td>
-  </tr>
+  <% if comment.editable?(current_user) %>
+    <tr>
+      <td colspan="2"><div id="comment_editor_<%= comment.id %>" class="comment-editor"></div></td>
+    </tr>
+    <tr height="6"></tr>
+    <tr>
+      <td colspan="2">
+         <div id="comment_submit_<%= comment.id %>"></div>
+         <%= hidden_field_tag("comment[id]", "#{comment.id}") %>
+      </td>
+    </tr>
+  <tr height="11"></tr>
+  <% end %>
 </table>
+</div>
 
-<div class="news-comment">
+<%
+  end
+%>
+
+<div class="news-comment-nested">
   <%= render :partial => "comment", :collection => comment.comments %>
 </div>
+
+<% javascript_tag do
+     if comment.editable?(current_user)  %>
+
+       Ext.onReady(function() {
+
+         var comment_submit_<%= comment.id %> = new Ext.Button({
+           text:"Сохранить",
+           renderTo:"comment_submit_<%= comment.id %>",
+           hidden: true,
+           handler : function() {
+             $('comment_wrapper_<%= comment.id %>').startWaiting();
+             document.forms["comment_form_<%= comment.id %>"].onsubmit();
+           }
+         });
+
+      var panel = new Ext.Panel({
+        id: 'comment_panel_<%= comment.id %>',
+        bodyStyle: 'padding: 0px',
+        border: false,
+        width: 47,
+        items: [{
+          xtype: 'button',
+          link_to_html_area: 0,
+          link_to_submit_button: comment_submit_<%= comment.id %>,
+          html_area_height: "",
+          text: '',
+          tooltip: 'Редактировать',
+          iconCls: 'x-btn-text-icon edit',
+          handler: function() {
+            if (this.link_to_html_area == 0) {
+              this.link_to_html_area = new Ext.form.HtmlEditor({
+                name:"comment[body]",
+                value:$("comment_body_<%= comment.id %>").innerHTML,
+                height:150,
+                width: 496,
+                hidden: true,
+                hiddenName:"comment[body]",
+                renderTo:"comment_editor_<%= comment.id %>"
+              });
+            }
+            if (!this.link_to_html_area.isVisible()) {
+              this.html_area_height = $("comment_body_<%= comment.id %>").style.height;
+              $("comment_body_<%= comment.id %>").style.height = "0px";
+              $("comment_body_<%= comment.id %>").style.visibility = "hidden";
+            } else {
+              $("comment_body_<%= comment.id %>").style.height = this.html_area_height;
+              $("comment_body_<%= comment.id %>").style.visibility = "visible";
+            }
+            this.link_to_html_area.setVisible(!this.link_to_html_area.isVisible());
+            this.link_to_submit_button.setVisible(!this.link_to_submit_button.isVisible());
+          }
+        },{
+            xtype: 'button',
+            text: '',
+            tooltip: 'Удалить',
+            iconCls: 'x-btn-text-icon remove',
+            handler: function() {
+              Ext.Msg.show({
+                title:'Подтвердите удаление',
+                msg: 'Удалить этот комментарий?',
+                buttons: Ext.Msg.YESNO,
+                fn: function(buttonId ) {
+                  if (buttonId == "yes") {
+                    $('comment_wrapper_<%= comment.id %>').startWaiting();
+                    Ext.Ajax.request({
+                      url: 'news/destroy_comment/<%= comment.id %>',
+                      success: function() {
+                        $('comment_wrapper_<%= comment.id %>').stopWaiting();
+                        //Ext.MessageBox.alert('SMS', 'Комментарий успешно удалён.');
+                      }
+                    });
+                  }
+                },
+                animEl: 'elId',
+                icon: Ext.MessageBox.QUESTION
+              });
+            }
+          }
+
+        ],
+        layout: 'hbox',
+        defaults:{margins:'0 3 0 0'},
+        renderTo: 'comment_toolbar_<%= comment.id %>',
+        listeners: {
+          afterrender: function() {
+            this.getEl().setVisible(false);
+            $('comment_wrapper_<%= comment.id %>').observe("mouseover", function() {
+              this.getEl().setVisible(true);
+            }.bind(this));
+            $('comment_wrapper_<%= comment.id %>').observe("mouseout", function() {
+              this.getEl().setVisible(false);
+            }.bind(this));
+          
+          }
+        }
+      });
+    });
+<%
+    end
+  end
+%>

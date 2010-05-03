@@ -31,11 +31,10 @@
   <tr>
     <td>
       <div class="comment-submit-form">
-
         <% remote_form_for @comment, :url => { :action => "add_comment" },
          :success => "Ext.MessageBox.alert('SMS', 'Ваш комментарий успешно сохранён.');",
          :html => { :id => "comment_submit_form_#{uid}" } do %>
-           <div id="html_area_<%= uid %>"></div>
+           <div id="html_area_<%= uid %>"></div><div style="height:6px;"></div>
            <div id="submit_<%= uid %>"></div>
            <%= hidden_field_tag("comment[parent_id]", "#{uid}") %> 
            <%= hidden_field_tag("comment[parent_type]", "News") %> 
@@ -45,36 +44,27 @@
   </tr>
 </table>
 
-  <% javascript_tag do %>
-
-    Global.group_data = new Ext.Panel({
-      flex: 2,
-      bodyCfg: {
-        id: 'comment_form_container'
-      }
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    var comments_panel = new Ext.Panel({
+      bodyStyle: 'padding: 10px',
+      hideCollapseTool: true,
+      hideLabel: true,
+      collapsible: true,
+      collapsed: true,
+      contentEl: 'comments_<%= uid %>',
+      renderTo: 'comments_container_<%= uid %>'
     });
 
-    Ext.onReady(function() {
-      var comments_panel = new Ext.Panel({
-        bodyStyle: 'padding: 10px',
-        hideCollapseTool: true,
-        hideLabel: true,
-        collapsible: true,
-        collapsed: true,
-        contentEl: 'comments_<%= uid %>',
-        renderTo: 'comments_container_<%= uid %>'
-      });
 
-
-      var submit_<%= uid %> = new Ext.Button({
-        name:"comment[body]",
-        text:"Отправить",
-        renderTo:"submit_<%= uid %>",
-        hidden: true,
-        handler : function() {
-          document.forms["comment_submit_form_<%= uid %>"].submit();
-        }
-      });
+    var submit_<%= uid %> = new Ext.Button({
+      text:"Отправить",
+      renderTo:"submit_<%= uid %>",
+      hidden: true,
+      handler : function() {
+        document.forms["comment_submit_form_<%= uid %>"].onsubmit();
+      }
+    });
 
 
 
@@ -85,7 +75,7 @@
           link_to_html_area: 0,
           link_to_submit_button: submit_<%= uid %>,
           text: 'Обсуждение',
-          iconCls: 'x-btn-text-icon edit',
+          iconCls: 'x-btn-text-icon comments',
           handler: function() {
             if (this.link_to_html_area == 0) {
               this.link_to_html_area = new Ext.form.HtmlEditor({
@@ -98,29 +88,35 @@
               });
             }
 
+            this.link_to_comments_panel.toggleCollapse(true);
             this.link_to_html_area.setVisible(!this.link_to_html_area.isVisible());
             this.link_to_submit_button.setVisible(!this.link_to_submit_button.isVisible());
-            this.link_to_comments_panel.toggleCollapse(true);
+            if (this.link_to_html_area.isVisible())
+               this.setText("Свернуть комментарии");
+            else
+               this.setText("Обсуждение");
           }
         }
 
           <% acl_block new_news_item_path do %>
          ,{
-          text: 'Редактировать',
-          iconCls: 'x-btn-text-icon edit',
-          handler: function() {
-            redirectTo('<%= edit_news_item_url(news) %>');
+            text: 'Редактировать',
+            iconCls: 'x-btn-text-icon edit',
+            handler: function() {
+              redirectTo('<%= edit_news_item_url(news) %>');
+            }
           }
-        },{
-          text: 'Удалить',
-          iconCls: 'x-btn-text-icon remove',
-          handler: function() {
-            Ext.Ajax.request({
-              method: 'DELETE',
-              url: '<%= news_item_url(news) %>'
-            });
+
+         ,{
+            text: 'Удалить',
+            iconCls: 'x-btn-text-icon remove',
+            handler: function() {
+              Ext.Ajax.request({
+                method: 'DELETE',
+                url: '<%= news_item_url(news) %>'
+              });
+            }
           }
-        }
         <% end %>
 
         ],

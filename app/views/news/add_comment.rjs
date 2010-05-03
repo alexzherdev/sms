@@ -1,2 +1,1 @@
 page.replace_html "comments_#{@comment.parent_id}", :partial => "comment", :collection => Comment.find(:all, :conditions => { :parent_id => @comment.parent_id, :parent_type => @comment.parent_type } )
-#page.replace_html "answer", :partial => "news", :object => @news

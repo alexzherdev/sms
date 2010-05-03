@@ -1,0 +1,1 @@
+page.replace_html "comment_wrapper_#{@comment.id}", ""

@@ -147,7 +147,8 @@ namespace :sms do
       { :name => "subjects", :title => "Предметы" },
       { :name => "teacher_subjects", :title => "Предметы учителей" },
       { :name => "schedule", :title => "Расписание занятий" },
-      { :name => "register", :title => "Журналы" }      
+      { :name => "register", :title => "Журналы" },
+      { :name => "comments", :title => "Управление комментариями" }
     ]
     
     LETTERS = ["A", "B", "C"]

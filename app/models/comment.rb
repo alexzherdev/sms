@@ -5,4 +5,11 @@ class Comment < ActiveRecord::Base
   has_many :attachments, :as => :parent, :dependent => :destroy, :class_name => "::Attachment"
 
   default_scope :order => "created_at DESC"
+
+  def editable?(current_user)
+    (current_user == self.user)||authorized?("comment")
+  end
+
+  alias_method :removable?, :editable?
+
 end

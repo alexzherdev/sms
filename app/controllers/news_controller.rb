@@ -48,9 +48,40 @@ class NewsController < ApplicationController
   end
   
   def add_comment
-    @comment = Comment.new params[:comment].merge(:user_id => current_user.id)
-    @comment.save
-    render :action => "add_comment.rjs"
+    if params[:comment][:parent_type] == "News"
+      @comment = Comment.new params[:comment].merge(:user_id => current_user.id)
+      unless News.find(params[:comment][:parent_id]).blank?
+        @comment.save
+        render :action => "add_comment.rjs", :status => 200
+      else
+        index
+        redirect_to :action => "index"
+      end
+    else
+      render :nothing => true, :status => 403
+    end
+  end
+
+  def edit_comment
+    @comment = Comment.find(params[:comment][:id])
+    if @comment.editable?(current_user)
+      @comment.body = params[:comment][:body]
+      @comment.save
+      render :action => "edit_comment.rjs", :status => 200
+    else
+      render :action => "edit_comment.rjs", :status => 403
+    end
+  end
+
+  def destroy_comment
+    @comment = Comment.find(params[:id])
+    if !@comment.blank? && @comment.removable?(current_user)
+      @comment.destroy
+      #render :action => "destroy_comment.rjs"
+    else
+      index
+      redirect_to :action => "index"
+    end
   end
 
   protected
