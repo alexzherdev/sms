@@ -1,7 +1,10 @@
 class NewsController < ApplicationController
   def index
-    @comment = Comment.new
     @news = News.paginate :per_page => 5, :page => params[:page] || 1
+  end
+  
+  def show
+    @news = News.find params[:id]
   end
   
   def new

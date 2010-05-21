@@ -32,6 +32,7 @@ Rails::Initializer.run do |config|
   config.gem "will_paginate", :source => "http://gemcutter.org"
   config.gem "thinking-sphinx", :lib => "thinking_sphinx", :version => "1.3.16", :source => "http://gemcutter.org"
   config.gem "fastercsv"
+  config.gem "russian"
   #config.gem 'russian', :source => 'http://gemcutter.org'
   
   # Only load the plugins named here, in the order given. By default, all plugins 

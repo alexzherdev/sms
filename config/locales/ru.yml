@@ -1,0 +1,4 @@
+ru:
+  time:
+    formats:
+      register: "%a<br/>%d.%m" 

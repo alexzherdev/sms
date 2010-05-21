@@ -66,6 +66,10 @@ class TimeTableItem < ActiveRecord::Base
     self.item_type == LONG_BREAK
   end
   
+  def break?
+    short_break? or long_break?
+  end
+  
   #  Удаляет этот айтем из расписания и сдвигает по времени все последующие.
   #
   def destroy_and_shift

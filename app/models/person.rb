@@ -14,9 +14,10 @@ class Person < ActiveRecord::Base
     read_attribute("patronymic")
   end
 
-  #  Имя в формате "Полещук Максим Александрович"
+  #  Имя в формате "Полещук Максим Александрович" или "Полещук Максим"
   #
-  def full_name
+  def full_name(add_patronymic = true)
+    return "#{last_name} #{first_name}" unless add_patronymic
     if patronymic.blank?
       _patronymic = ""
     else

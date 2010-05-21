@@ -405,8 +405,9 @@ module ExtjsHelper
 
     validation = add_validation_errors(model_name, options[:borrow_errors_from] || model_field, options[:js_variable] || id, options)
     js_var = options.delete(:js_variable)
+    no_clearer = options[:no_clearer].nil? ? false : options[:no_clearer]
     control_wrapper(id, [("var #{id} = " + (js_var.blank? ? "" : (js_var + " = "))) + extjs_text_field(model_name, model_field, options),
-                         validation, add_form_handlers(id)])
+                         validation, add_form_handlers(id)], no_clearer)
   end
 
   #  Renders a complete checkbox control.
@@ -558,12 +559,12 @@ module ExtjsHelper
   #  * <tt>id</tt>:: The id to assign to div.
   #  * <tt>lines</tt>:: The js code to place into handler. Can be an array of +String+ or a single +String+.
   #
-  def control_wrapper(id, lines)
+  def control_wrapper(id, lines, no_clearer = false)
     lines = lines.to_a
     "<div class=\"sms-extjs-control-wrapper form-item x-form-element\">
        <div class=\"sms-extjs-control\" id=\"#{id}\"></div>
      </div>
-     <div class=\"clear\"></div>
+     #{no_clearer ? '' : '<div class=\"clear\"></div>'}
      <script type=\"text/javascript\">
        Ext.onReady(function() {
          #{lines.join ";\n"};

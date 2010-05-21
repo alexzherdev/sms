@@ -1,8 +1,11 @@
-<% uid = news.id || uid! %>
+<% 
+  uid = news.id || uid!
+  full = false if (not defined? full)
+%>
 <div id="news_item_<%= uid %>" class="news-item" style="visibility:visible">
   <h2 class="header"><%= h news.title %></h2>
-  <div class="created-at"><%= news.created_at.to_s(:long) %> | <%= news.author.full_name %></div>
-  <div class="content"><%= sanitize(news.content) %></div>
+  <div class="created-at"><%= l(news.created_at, :format => :long) %> | <%= news.author.full_name %></div>
+  <div class="content"><%= sanitize(full ? format_truncated(news) : news.content) %></div>
   <% unless news.attachments.blank? %>
     <div class="attachments-header">
     Файлы:
@@ -26,7 +29,7 @@
 </div>
 
 <div class="comment-submit-form" id="div_submit_form_<%= uid %>">
-  <% remote_form_for @comment, :url => { :action => "add_comment" },
+  <% remote_form_for Comment.new, :url => { :action => "add_comment" },
     :success => "$('div_submit_form_#{ uid }').stopWaiting(); Ext.MessageBox.alert('SMS', 'Ваш комментарий успешно сохранён.');",
     :html => { :id => "comment_submit_form_#{uid}" } do %>
       <div id="html_area_<%= uid %>"></div><div style="height:6px;"></div>

@@ -7,7 +7,7 @@ class Comment < ActiveRecord::Base
   default_scope :order => "created_at DESC"
 
   def editable?(current_user)
-    (current_user == self.user)||authorized?("comment")
+    (current_user == self.user)
   end
 
   alias_method :removable?, :editable?

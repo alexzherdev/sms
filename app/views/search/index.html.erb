@@ -1,6 +1,102 @@
 <% javascript_tag do %>
   Ext.onReady(function() {
-    Global.student_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => StudentsHelper::STUDENT_FIELDS %>;
-    Global.news_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => StudentsHelper::STUDENT_FIELDS %>;
+    Global.updateResults = function(type, models) {
+      Global[type + "_store"].loadData(models);
+    }
+
+    Global.student_store = <%= extjs_simple_store :data => student_collection(@students), :type => :arrays, :fields => StudentsHelper::STUDENT_FIELDS %>;
+    
+    Global.student_view = new Ext.DataView({
+      title: 'Ученики (<%= @students.total_entries %>)',
+      store: Global.student_store,
+      tpl: '<%= escape_javascript(render :partial => "student_tpl") %>',
+      width: 788,
+      deferEmptyText: false,
+      emptyText: 'Ничего не найдено',
+      renderTo: 'students_container'
+    });
+    
+    Global.student_view_panel = new Ext.Panel({
+      title: 'Ученики (<%= @students.total_entries %>)',
+      contentEl: 'students_results'
+    });
+
+
+    Global.teacher_store = <%= extjs_simple_store :data => teacher_collection(@teachers), :type => :arrays, :fields => TeachersHelper::TEACHER_FIELDS %>;
+    
+    Global.teacher_view = new Ext.DataView({
+      title: 'Учителя (<%= @teachers.total_entries %>)',
+      store: Global.teacher_store,
+      tpl: '<%= escape_javascript(render :partial => "teacher_tpl") %>',
+      width: 788,
+      deferEmptyText: false,
+      emptyText: 'Ничего не найдено',
+      renderTo: 'teachers_container'      
+    });
+    
+    Global.teacher_view_panel = new Ext.Panel({
+      title: 'Учителя (<%= @teachers.total_entries %>)',
+      contentEl: 'teachers_results'
+    });
+    
+
+    Global.news_store = <%= extjs_simple_store :data => news_collection(@news), :type => :arrays, :fields => NewsHelper::NEWS_FIELDS %>;
+  
+    Global.news_view = new Ext.DataView({
+      title: 'Новости (<%= @news.total_entries %>)',
+      store: Global.news_store,
+      tpl: '<%= escape_javascript(render :partial => "news_tpl") %>',
+      width: 788,
+      deferEmptyText: false,
+      emptyText: 'Ничего не найдено',
+      renderTo: 'news_container'
+    });
+    
+    Global.news_view_panel = new Ext.Panel({
+      title: 'Новости (<%= @news.total_entries %>)',
+      contentEl: 'news_results'
+    });
+    
+    Global.search_results_panel = new Ext.TabPanel({
+      width: 788,
+      activeTab: 0,
+      items: [
+        Global.student_view_panel,
+        Global.teacher_view_panel,
+        Global.news_view_panel
+      ]
+    });
+    
+    Global.search_results_container = new Ext.Panel({
+      width: 788,
+      title: 'Результаты поиска: <%= h(@query) %>',
+      layout: 'fit',
+      items: Global.search_results_panel,
+      renderTo: 'search_results_container'
+    });
   });
 <% end %>
+
+<div class="search-results" id="search_results_container">
+  
+  <div id="students_results" class="search-results-column x-hidden">
+    <div id="students_container"></div>
+    <div id="student_pagination" class="pagination">
+      <%= will_paginate @students, :renderer => "SearchHelper::SearchLinkRenderer", :remote => { :with => "'type=Student'"} %>
+    </div>
+  </div>
+  <div id="teachers_results" class="search-results-column x-hidden">
+    <div id="teachers_container"></div>
+    <div id="teacher_pagination" class="pagination">
+      <%= will_paginate @teachers, :renderer => "SearchHelper::SearchLinkRenderer", :remote => { :with => "'type=Teacher'"} %>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div id="news_results" class="search-results-column x-hidden">
+    <div id="news_container"></div>
+    <div id="news_pagination" class="pagination">
+      <%= will_paginate @news, :renderer => "SearchHelper::SearchLinkRenderer", :remote => { :with => "'type=News'"} %>
+    </div>
+  </div>
+</div>
+

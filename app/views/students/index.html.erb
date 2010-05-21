@@ -11,7 +11,7 @@
   }
   
   Ext.onReady(function() {
-    Global.student_store = <%= extjs_simple_store :data => full_student_collection(@students), :type => :arrays, :fields => ["id", "last_name", "first_name", "patronymic", "birth_date", "parent_email", "parent1_id", "parent2_id", "home_address", "student_group_id" ] %>;
+    Global.student_store = <%= extjs_simple_store :data => student_collection(@students), :type => :arrays, :fields => ["id", "last_name", "first_name", "patronymic", "birth_date", "parent_email", "parent1_id", "parent2_id", "home_address", "student_group_id" ] %>;
     Global.student_group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "full_name"] %>
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },

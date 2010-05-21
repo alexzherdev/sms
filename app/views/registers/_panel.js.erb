@@ -9,7 +9,7 @@ Global.mark_values = <%= mark_value_collection %>;
 });
 Global.mark_value_store.loadData(Global.mark_values);
 
-Global.students = <%= student_collection(@students).to_json %>;
+Global.students = <%= register_student_collection(@students).to_json %>;
 
 var panel = new Ext.Panel({
   renderTo: "panel_container",

@@ -1,0 +1,3 @@
+page.call "Global.updateResults", @type.name.underscore, strip_in_json(strip_hash_keys_for_json(send(@type.name.underscore + "_collection", @models)).to_json)
+
+page.replace_html @type.name.underscore + "_pagination", will_paginate(@models, :renderer => "SearchHelper::SearchLinkRenderer", :remote => { :with => "'type=#{@type.name}'"})

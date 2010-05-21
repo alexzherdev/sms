@@ -4,6 +4,11 @@ class Student < Person
   validates_format_of :parent_email, :with => Authlogic::Regex.email, :allow_blank => true
   
   named_scope :unassigned, :conditions => { :student_group_id => nil }
+
+  def student_group_name
+    return nil if student_group.blank?
+    student_group.full_name
+  end
   
   def student_group_name=(name)
     return if name.blank?

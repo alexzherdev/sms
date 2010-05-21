@@ -33,15 +33,15 @@ module RegistersHelper
   def date_collection(dates)
     collection = []
     dates.each_with_index do |date, i|
-      collection[i] = [ i, (date.try(:first) ? date.first.to_s(:register) : nil), date.try(:second).try(:id), date.try(:first).try(:to_s) ]
+      collection[i] = [ i, (date.try(:first) ? l(date.first, :format => :register) : nil), date.try(:second).try(:id), date.try(:first).try(:to_s) ]
     end
     collection
   end
   
-  def student_collection(students)
+  def register_student_collection(students)
     index = -1
     students.collect do |student|
-      [ student.id, index += 1, student.full_name ]
+      [ student.id, index += 1, student.full_name(false) ]
     end
   end
   

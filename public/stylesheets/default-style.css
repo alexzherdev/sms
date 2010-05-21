@@ -47,8 +47,8 @@ body a {
   margin-right: 100px;
 }
 
-.top .search-box .clear {
-  clear: none;
+.top .search-box .button-container {
+  margin-left: 0px;
 }
 
 .top .search-box .form-item {
@@ -523,6 +523,7 @@ a:link, a:visited, a:active {
 
 .schedule-container .schedule-table .main-container .group-column .cell .subject {
   font-size: 8px;
+  white-space: nowrap;
 }
 
 .schedule-container .schedule-table .main-container .group-column .cell .room {
@@ -897,4 +898,40 @@ a:link, a:visited, a:active {
   background-image: url(../images/attachment_icon.png);
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.search-results {
+  width: 788px;
+}
+
+.search-results h1 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.search-results h2 {
+  font-size: 14px;
+}
+
+.search-results .search-results-column {
+  padding: 10px;
+}
+
+.search-results .search-result {
+  padding: 7px;
+}
+
+.search-results .pagination {
+  margin-top: 15px;
+}
+
+.search-results .student-search-result .student-location {
+  margin-left: 20px;
+  color: #888;
+  margin-top: 5px;
+}
+
+.search-results .news-search-result .news-title {
+  margin-bottom: 8px;
+  font-weight: bold;
 }

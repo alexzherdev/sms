@@ -12,6 +12,14 @@ module ApplicationHelper
     render :partial => "partials/school_year_store.js.erb", :locals => { :name => name }
   end
   
+  def collect_values(collection, methods)
+    collection.collect do |obj|
+      methods.collect do |meth|
+        obj.send(meth)
+      end
+    end
+  end
+  
   def link_or_bold(text, url)
     if current_page? url
       content_tag "b", text
