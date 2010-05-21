@@ -2,7 +2,7 @@
 <table cellspacing="0" cellpadding="0" width="100%">
   <tr>
     <td>
-      <div class="comment-created-at"><%= comment.created_at.to_s(:long) %> | </div>
+      <div class="comment-created-at"><%= l(comment.created_at, :format => :long) %> | </div>
       <div class="comment-author"><%= comment.user.full_name %></div>
     </td>
     <% if comment.editable?(current_user) %>

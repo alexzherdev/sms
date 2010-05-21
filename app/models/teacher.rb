@@ -1,5 +1,6 @@
 class Teacher < User
   has_one :student_group, :foreign_key => "group_teacher_id"
+  has_many :teacher_subjects
   
   #  Возвращает классы, в которых этот учитель ведет какие-нибудь предметы.
   #

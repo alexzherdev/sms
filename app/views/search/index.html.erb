@@ -10,7 +10,6 @@
       title: 'Ученики (<%= @students.total_entries %>)',
       store: Global.student_store,
       tpl: '<%= escape_javascript(render :partial => "student_tpl") %>',
-      width: 788,
       deferEmptyText: false,
       emptyText: 'Ничего не найдено',
       renderTo: 'students_container'
@@ -28,7 +27,6 @@
       title: 'Учителя (<%= @teachers.total_entries %>)',
       store: Global.teacher_store,
       tpl: '<%= escape_javascript(render :partial => "teacher_tpl") %>',
-      width: 788,
       deferEmptyText: false,
       emptyText: 'Ничего не найдено',
       renderTo: 'teachers_container'      
@@ -46,7 +44,6 @@
       title: 'Новости (<%= @news.total_entries %>)',
       store: Global.news_store,
       tpl: '<%= escape_javascript(render :partial => "news_tpl") %>',
-      width: 788,
       deferEmptyText: false,
       emptyText: 'Ничего не найдено',
       renderTo: 'news_container'
@@ -59,6 +56,9 @@
     
     Global.search_results_panel = new Ext.TabPanel({
       width: 788,
+      height: 500,
+      resizeTabs: true,
+      defaults: {autoScroll:true},
       activeTab: 0,
       items: [
         Global.student_view_panel,
