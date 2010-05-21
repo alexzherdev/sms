@@ -12,6 +12,7 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new params[:student]
     @student.save
+    p @student.errors
     render :action => "create.rjs", :status => @student.valid? ? 200 : 403
   end
   

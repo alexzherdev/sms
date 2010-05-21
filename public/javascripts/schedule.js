@@ -294,7 +294,6 @@ var Schedule = Class.create({
 				this.model.itemStore.each(function(item) {
 					item.get("item").markValid();					
 				}.bind(this));
-				//eval(result);
 				this.editItem.subjectId = subjectId;
 				this.editItem.roomId = roomId;
 				this.editItem.view.refresh();
@@ -332,14 +331,14 @@ var Schedule = Class.create({
 		    }),
 		
 		    buttons: [
-		      { text: "Save",
+		      { text: "Сохранить",
 		        handler: function() {
 		        	var subjects = Ext.getCmp("popup_subjects");
 		        	var rooms = Ext.getCmp("popup_rooms");	
 		          	this.popup.hide();	        	
 		          	this.saveItem(subjects.getValue(), rooms.getValue());
 		        }.bind(this)},
-		      { text: "Cancel",
+		      { text: "Отмена",
 		        handler: function() {
 		        	this.popup.hide();  
 		        }.bind(this)

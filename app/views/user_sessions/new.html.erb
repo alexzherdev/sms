@@ -3,7 +3,7 @@
   <div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">
 
       <% form_for @user_session do |f| %>
-      <%= f.error_messages %>
+      <%= f.error_messages unless @user_session.errors.on_base.blank? %>
 
     <table class="login-form-scaffold">
     <tr><td colspan="2">

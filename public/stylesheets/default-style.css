@@ -935,3 +935,11 @@ a:link, a:visited, a:active {
   margin-bottom: 8px;
   font-weight: bold;
 }
+
+#errorExplanation h2, #errorExplanation p {
+  display: none;
+}
+
+.errorExplanation {
+  color: red;
+}

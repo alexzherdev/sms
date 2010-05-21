@@ -24,11 +24,11 @@ module Mailbox
     end
     
     def prepare_reply
-      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => [self.recipient_id]
+      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => [self.sender.id]
     end
     
     def prepare_reply_all
-      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => self.message.recipient_ids - [self.recipient_id]
+      reply = Message.new :subject => format_reply_subject, :body => format_reply_body, :recipient_ids => ([self.sender.id] + self.message.recipient_ids - [self.recipient_id]).uniq
     end
   end
 end

@@ -18,6 +18,16 @@
         <td><%= extjs_text_field_control :student, :patronymic %></td>
       </tr>
       <tr>
+        <td><%= f.label :sex, "Пол" %></td>
+        <td><table width="100%">
+              <tr>
+                <td width="50%">
+                    <%= extjs_radio_control :student, :sex, :checkedValue => "male",    :boxLabel => "мужской", :checked => @student.male? %></td>
+                <td><%= extjs_radio_control :student, :sex, :checkedValue => "female",  :boxLabel => "женский", :checked => @student.female? %></td>
+              </tr>
+            </table>
+      </tr>
+      <tr>
         <td><%= f.label :student_group_id, "Класс" %></td>
         <td><%= extjs_combo_box_control :student, :student_group_id, :store => "Global.student_group_store", :displayField => "full_name", :valueField => "id", :hiddenName => "student[student_group_id]", :width => 50 %></td>
       </tr>
@@ -31,7 +41,7 @@
       </tr>
       <tr>
         <td><%= f.label :parent_email, "E-mail родителей" %></td>
-        <td><%= extjs_text_field_control :student, :parent_email, :vtype => "email" %></td>
+        <td><%= extjs_text_field_control :student, :parent_email %></td>
       </tr>
       
       <%= extjs_button "Сохранить" %>

@@ -1,1 +1,6 @@
+if @new_item_id
+  page.call "Global.schedule.updateEditItemId", @new_item_id
+elsif @deleted
+  page.call "Global.schedule.deleteEditItem"
+end
 mark_errors(page)

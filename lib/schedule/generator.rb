@@ -136,7 +136,6 @@ module Schedule
       for lesson in group_lessons do
         teacher = group_teacher_subjects[group.id][lesson.lesson]
         
-        (p "*" * 100; p group; p lesson) if teacher.blank? 
         if !free_teachers.include?(teacher.id)
           next
         end

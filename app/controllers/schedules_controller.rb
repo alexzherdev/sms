@@ -3,7 +3,7 @@ class SchedulesController < ApplicationController
     @schedule_items = ScheduleItem.all
     @student_groups = StudentGroup.all
     @year_subjects = {}
-    empty_subject = Subject.new { |subject| subject.id = 0; subject.name = "Empty" }
+    empty_subject = Subject.new { |subject| subject.id = 0; subject.name = "Пусто" }
     Subject::SCHOOL_YEARS.each do |year|
       subjects = Subject.by_year(year)
       subjects.unshift(empty_subject)
@@ -15,7 +15,7 @@ class SchedulesController < ApplicationController
     @errors = validator.errors
 
     @class_rooms = ClassRoom.all
-    empty_room = ClassRoom.new { |room| room.id = 0; room.number = "Empty" }
+    empty_room = ClassRoom.new { |room| room.id = 0; room.number = "Пусто" }
     @class_rooms.unshift(empty_room)
 
     @day_times = create_day_times
@@ -26,6 +26,7 @@ class SchedulesController < ApplicationController
   end
   
   def save
+    new_item = false
     if (params[:id].to_i == 0)
       @day_times = create_day_times
       @student_groups = StudentGroup.all
@@ -36,13 +37,20 @@ class SchedulesController < ApplicationController
       item.week_day = day_time.first
       item.student_group = group
       item.time_table_item = day_time.second
+      new_item = true
     else
       item = ScheduleItem.find params[:id]
     end
-
-    item.subject_id = params[:subject_id].to_i
-    item.class_room_id = params[:room_id].to_i
-    item.save
+    
+    if params[:subject_id] == "0" and params[:room_id] == "0"
+      item.destroy
+      @deleted = true
+    else
+      item.subject_id = params[:subject_id].to_i
+      item.class_room_id = params[:room_id].to_i
+      item.save
+      @new_item_id = item.id if new_item
+    end
     @schedule_items = ScheduleItem.all
     validator = Schedule::Validator.new(@schedule_items)
     validator.validate

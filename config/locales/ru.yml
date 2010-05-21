@@ -2,3 +2,38 @@ ru:
   time:
     formats:
       register: "%a<br/>%d.%m" 
+  
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            first_name:
+              blank: "должно быть заполнено"
+            last_name:
+              blank: "должна быть заполнена"
+    models:
+      user: "Пользователь"
+    attributes:
+      user:
+        first_name: "Имя"
+        last_name: "Фамилия"
+        
+  authlogic:
+    error_messages:
+      login_blank: не должен быть пустым
+      login_not_found: неверен
+      login_invalid: should use only letters, numbers, spaces, and .-_@ please.
+      consecutive_failed_logins_limit_exceeded: Consecutive failed logins limit exceeded, account is disabled.
+      email_invalid: should look like an email address.
+      password_blank: не должен быть пустым
+      password_invalid: неверен
+      not_active: Your account is not active
+      not_confirmed: Your account is not confirmed
+      not_approved: Your account is not approved
+      no_authentication_details: Вы не ввели данные для аутентификации.
+    attributes:
+      user_session:
+        login: "Логин"
+        password: "Пароль"
+      

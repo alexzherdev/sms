@@ -376,7 +376,7 @@ module ExtjsHelper
       options[:valueField] = "id"
     end
 
-    options[:valueNotFoundText] ||= "Choose..."
+    options[:valueNotFoundText] ||= "Выберите..."
 
     lines ||= []
     lines << (options.delete(:js_variable) || "var " + id) + " = " + extjs_group_combo_box(model_name, model_field, options) << validation
