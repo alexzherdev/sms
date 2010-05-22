@@ -10,6 +10,7 @@ class News < ActiveRecord::Base
   define_index do
     indexes title
     indexes content
+    has created_at
   end
 
 end
