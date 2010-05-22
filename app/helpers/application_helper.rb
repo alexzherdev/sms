@@ -21,7 +21,7 @@ module ApplicationHelper
   end
   
   def link_or_bold(text, url)
-    if current_page?(url) or url.include?(params[:controller].singularize)
+    if current_page?(url) or (url.include?("/register") and params[:controller] == "registers")
       content_tag "b", text
     else 
       link_to text, url
