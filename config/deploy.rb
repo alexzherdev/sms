@@ -31,6 +31,7 @@ end
 
 task :after_update_code, :roles => [:app] do
   run "ln -s /#{shared_path}/vendor/rails #{release_path}/vendor/rails"
+  run "cp #{shared_path}/config/*.yml #{release_path}/config/"
 end
 
 namespace :deploy do
