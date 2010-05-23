@@ -1,34 +1,36 @@
-<% javascript_tag do %>
-  Ext.onReady(function() {
-    Global.children_selector = new Ext.ux.form.ItemSelector({
-      renderTo: 'children_selector',
-      width: 374,
-      imagePath: '/images/ux/',
-      name: 'user[comma_separated_child_ids]',
-      multiselects: [{
-        width: 160,
-        height: 200,
-        store: <%= extjs_simple_store :data => small_student_collection(@unused_students), :type => :arrays, :fields => ["id", "full_name"] %>,
-        displayField: 'full_name',
-        valueField: 'id',
-        legend: 'Все ученики'
-      },{
-        width: 160,
-        height: 200,
-        store: <%= extjs_simple_store :data => small_student_collection(@user.children), :type => :arrays, :fields => ["id", "full_name"] %>,
-        legend: 'Дети пользователя',
-        displayField: 'full_name',
-        valueField: 'id',
-        tbar:[{
-          text: 'Очистить',
-          handler:function(){
-            Global.children_selector.reset();
-          }
+<% if @user.new_record? or @user.role == Role.parent_role %>
+  <% javascript_tag do %>
+    Ext.onReady(function() {
+      Global.children_selector = new Ext.ux.form.ItemSelector({
+        renderTo: 'children_selector',
+        width: 374,
+        imagePath: '/images/ux/',
+        name: 'user[comma_separated_child_ids]',
+        multiselects: [{
+          width: 160,
+          height: 200,
+          store: <%= extjs_simple_store :data => small_student_collection(@unused_students), :type => :arrays, :fields => ["id", "full_name"] %>,
+          displayField: 'full_name',
+          valueField: 'id',
+          legend: 'Все ученики'
+        },{
+          width: 160,
+          height: 200,
+          store: <%= extjs_simple_store :data => small_student_collection(@user.children), :type => :arrays, :fields => ["id", "full_name"] %>,
+          legend: 'Дети пользователя',
+          displayField: 'full_name',
+          valueField: 'id',
+          tbar:[{
+            text: 'Очистить',
+            handler:function(){
+              Global.children_selector.reset();
+            }
+          }]
         }]
-      }]
       
+      });
     });
-  });
+  <% end %>
 <% end %>
 <div class="form-container user-form-container">
   <% remote_form_for @user, :url => url, :method => method, 
@@ -82,7 +84,8 @@
       <% if @user.new_record? %>
         <tr>
           <td><%= f.label :role_id, "Роль" %></td>
-          <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>
+          <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178, :listeners => { 
+            :select => strip_in_json("function(combo, rec) { if (rec.get('id') == #{Role.parent_role.id}) { $('children_selector').show(); } else { $('children_selector').hide(); }  }")} %></td>
         </tr>
       <% end %>
       <tr>
@@ -90,7 +93,7 @@
         <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>
       </tr>
     </table>
-    <div id="children_selector" class="children-selector"></div>
+    <div id="children_selector" class="children-selector" <% unless @user.role == Role.parent_role %>style="display:none"<% end %>></div>
     <%= extjs_button "Сохранить" %>
   <% end %>
 </div>

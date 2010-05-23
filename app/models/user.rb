@@ -46,7 +46,9 @@ class User < Person
   protected
   
   def assign_children
-    Student.update_all({ :parent1_id => self.id }, { :id => self.child_ids })
+    if (self.role == Role.parent_role)
+      Student.update_all({ :parent1_id => self.id }, { :id => self.child_ids })
+    end
   end
 
 end

@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @user.role = Role.admin
     @unused_students = Student.all
     render :partial => "form", :locals => { :url => users_path, :method => "POST" }
   end
