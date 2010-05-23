@@ -1,10 +1,1 @@
-class Mailer < ActionMailer::Base
-  def student_weekly_results(student, marks)
-    recipients  'li0liq@yandex.ru' #student.parent_email
-    from        'school.management.system@yandex.ru'
-    subject     "Weekly marks"
-    body        :student => student,
-                :marks => marks
-    content_type "text/html"
-  end
-end
+class Mailer < ActionMailer::Base  def student_weekly_results(student, weekly_diary)    recipients  student.parent_email    from        'school.management.system@yandex.ru'    subject     "тесто"    body        :student => student,                :weekly_diary => weekly_diary    content_type "text/html"  endend
