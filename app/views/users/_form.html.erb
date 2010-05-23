@@ -1,63 +1,1 @@
-<div class="form-container user-form-container">
-  <% remote_form_for @user, :url => url, :method => method, 
-        :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {
-          Global.fire('userUpdated', Form.serialize($('user_form'), { hash: true }));              
-          });",
-        :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "user_form" } do |f| %>
-    <table>
-      <tr>
-        <td><%= f.label :last_name, "Фамилия" %></td>
-        <td><%= extjs_text_field_control :user, :last_name %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :first_name, "Имя" %></td>
-        <td><%= extjs_text_field_control :user, :first_name %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :patronymic, "Отчество" %></td>
-        <td><%= extjs_text_field_control :user, :patronymic %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :login, "Логин" %></td>
-        <td><%= extjs_text_field_control :user, :login %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :password, "Пароль" %></td>
-        <td><%= extjs_text_field_control :user, :password, :inputType => "password" %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :password_confirmation, "Подтвердите пароль" %></td>
-        <td><%= extjs_text_field_control :user, :password_confirmation, :inputType => "password" %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :email, "E-mail" %></td>
-        <td><%= extjs_text_field_control :user, :email %></td>
-      </tr>
-      <tr>
-        <td><%= f.label :sex, "Пол" %></td>
-        <td><table width="100%">
-              <tr>
-                <td width="50%">
-                    <%= extjs_radio_control :user, :sex, :checkedValue => "male",    :boxLabel => "мужской", :checked => @user.male? %></td>
-                <td><%= extjs_radio_control :user, :sex, :checkedValue => "female",  :boxLabel => "женский", :checked => @user.female? %></td>
-              </tr>
-            </table>
-      </tr>
-      <tr>
-        <td><%= f.label :birth_date, "Дата рождения" %></td>
-        <td><%= extjs_date_field_control :user, :birth_date, :format => "d-m-Y", :width => 178 %></td>
-      </tr>
-      <% if @user.new_record? %>
-        <tr>
-          <td><%= f.label :role_id, "Роль" %></td>
-          <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>
-        </tr>
-      <% end %>
-      <tr>
-        <td><%= f.label :blocked, "Заблокирован" %></td>
-        <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>
-      </tr>
-    </table>
-    <%= extjs_button "Сохранить" %>
-  <% end %>
-</div>
+<% javascript_tag do %>  Ext.onReady(function() {    Global.children_selector = new Ext.ux.form.ItemSelector({      renderTo: 'children_selector',      width: 374,      imagePath: '/images/ux/',      name: 'user[comma_separated_child_ids]',      multiselects: [{        width: 160,        height: 200,        store: <%= extjs_simple_store :data => small_student_collection(@unused_students), :type => :arrays, :fields => ["id", "full_name"] %>,        displayField: 'full_name',        valueField: 'id',        legend: 'Все ученики'      },{        width: 160,        height: 200,        store: <%= extjs_simple_store :data => small_student_collection(@user.children), :type => :arrays, :fields => ["id", "full_name"] %>,        legend: 'Дети пользователя',        displayField: 'full_name',        valueField: 'id',        tbar:[{          text: 'Очистить',          handler:function(){            Global.children_selector.reset();          }        }]      }]          });  });<% end %><div class="form-container user-form-container">  <% remote_form_for @user, :url => url, :method => method,         :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {          Global.fire('userUpdated', Form.serialize($('user_form'), { hash: true }));                        });",        :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "user_form" } do |f| %>    <table>      <tr>        <td><%= f.label :last_name, "Фамилия" %></td>        <td><%= extjs_text_field_control :user, :last_name %></td>      </tr>      <tr>        <td><%= f.label :first_name, "Имя" %></td>        <td><%= extjs_text_field_control :user, :first_name %></td>      </tr>      <tr>        <td><%= f.label :patronymic, "Отчество" %></td>        <td><%= extjs_text_field_control :user, :patronymic %></td>      </tr>      <tr>        <td><%= f.label :login, "Логин" %></td>        <td><%= extjs_text_field_control :user, :login %></td>      </tr>      <tr>        <td><%= f.label :password, "Пароль" %></td>        <td><%= extjs_text_field_control :user, :password, :inputType => "password" %></td>      </tr>      <tr>        <td><%= f.label :password_confirmation, "Подтвердите пароль" %></td>        <td><%= extjs_text_field_control :user, :password_confirmation, :inputType => "password" %></td>      </tr>      <tr>        <td><%= f.label :email, "E-mail" %></td>        <td><%= extjs_text_field_control :user, :email %></td>      </tr>      <tr>        <td><%= f.label :sex, "Пол" %></td>        <td><table width="100%">              <tr>                <td width="50%">                    <%= extjs_radio_control :user, :sex, :checkedValue => "male",    :boxLabel => "мужской", :checked => @user.male? %></td>                <td><%= extjs_radio_control :user, :sex, :checkedValue => "female",  :boxLabel => "женский", :checked => @user.female? %></td>              </tr>            </table>      </tr>      <tr>        <td><%= f.label :birth_date, "Дата рождения" %></td>        <td><%= extjs_date_field_control :user, :birth_date, :format => "d-m-Y", :width => 178 %></td>      </tr>      <% if @user.new_record? %>        <tr>          <td><%= f.label :role_id, "Роль" %></td>          <td><%= extjs_combo_box_control :user, :role_id, :store => "Global.role_store", :displayField => "name", :valueField => "id", :hiddenName => "user[role_id]", :width => 178 %></td>        </tr>      <% end %>      <tr>        <td><%= f.label :blocked, "Заблокирован" %></td>        <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>      </tr>    </table>    <div id="children_selector" class="children-selector"></div>    <%= extjs_button "Сохранить" %>  <% end %></div>
