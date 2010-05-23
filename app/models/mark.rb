@@ -36,7 +36,7 @@ class Mark < ActiveRecord::Base
   #
   def self.for_weekly_notification(student, date)
     self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
-  end
+    end
 
   named_scope :for_weekly_notification, lambda { |student, date| {:include => :schedule_item,  :conditions  => { :student => student, :date  => date.beginning_of_week..date.end_of_week } } }
 end

@@ -5,13 +5,8 @@ class User < Person
   validates_presence_of :role_id
   
   after_create :create_mailbox
-  after_save :assign_children
-  
-  attr_accessor :child_ids
   
   acts_as_authentic
-  
-  accepts_comma_separated_ids_for :children
   
   def can_access?(signature)
     role.acl_actions.any? { |act| act.name == signature }    
@@ -20,7 +15,7 @@ class User < Person
   #  Дети этого пользователя.
   #
   def children
-    Student.scoped(:conditions => [ "parent1_id = ? or parent2_id = ?", self.id, self.id ])
+    Student.find(:all, :conditions => [ "parent1_id = ? or parent2_id = ?", self.id, self.id ])
   end
 
   #  Возвращает классы, журналы которых этот пользователь может просматривать (реализация для родителя).
@@ -42,6 +37,7 @@ class User < Person
   def can_edit_register?
     false
   end
+<<<<<<< HEAD:app/models/user.rb
   
   protected
   
@@ -50,5 +46,7 @@ class User < Person
       Student.update_all({ :parent1_id => self.id }, { :id => self.child_ids })
     end
   end
+=======
+>>>>>>> 938ce40... Merge branch 'master' of github.com:alexzherdev/sms:app/models/user.rb
 
 end
