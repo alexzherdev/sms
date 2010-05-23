@@ -32,4 +32,12 @@ class StudentGroupsController < ApplicationController
     @student_group.update_attributes params[:student_group]
     render :action => "update.rjs", :status => @student_group.valid? ? 200 : 403
   end
+
+  def notify
+    @student_group = StudentGroup.find(params[:id])
+    @student_group.students.each { |student|
+      Mailer.deliver_student_weekly_results(student,  Mark.for_weekly_notification(student, Time.now))
+    }
+    render :action => "notify.rjs"
+  end
 end

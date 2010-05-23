@@ -21,6 +21,15 @@
   var deleteGroup = function(id) {
     Global.group_store.remove(Global.group_store.getById(id));
   }
+
+  var notifyGroup = function(id) {
+    Ext.MessageBox.show({
+      title: 'SMS',
+      msg: String.format('Письма с успеваемостями {0} были успешно посланы.', Global.group_store.getById(id).get('full_name')),
+      icon: Ext.MessageBox.INFO,
+      buttons: Ext.MessageBox.OK
+    })
+  }
   
   Ext.onReady(function() {
     
@@ -92,8 +101,18 @@
           },
           icon: Ext.MessageBox.QUESTION
         });
-      } ".j}).to_json %>
-      ],
+      } ".j}).to_json %>,
+      {
+        iconCls: 'x-btn-text-icon reply-message',
+        text: 'Послать успеваемость класса',
+        handler: function() {
+          Ext.Ajax.request({
+            method: 'POST',
+            url: '<%= url_for(:action => 'notify', :controller => 'student_groups') %>'
+                + '/'+ Global.group_grid.getSelectionModel().getSelected().get('id')
+          });
+        }
+  	  }],
   		layout: {
   		  type: 'hbox',
   		  align: 'stretch' 

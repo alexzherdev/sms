@@ -27,4 +27,16 @@ class Mark < ActiveRecord::Base
   def self.for_register_finals(group, subject, year)
     self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
   end
+
+  #  Находит все оценки для страницы итоговых оценок (четвертных и годовых).
+  #
+  #  * <tt>group</tt>:: Просматриваемый класс.
+  #  * <tt>subject</tt>:: Просматриваемый предмет.
+  #  * <tt>year</tt>:: Год.
+  #
+  def self.for_weekly_notification(student, date)
+    self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
+    end
+
+  named_scope :for_weekly_notification, lambda { |student, date| {:include => :schedule_item,  :conditions  => { :student => student, :date  => date.beginning_of_week..date.end_of_week } } }
 end

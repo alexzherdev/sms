@@ -34,8 +34,8 @@ Rails::Initializer.run do |config|
   config.gem "fastercsv"
   config.gem "russian"
   #config.gem 'russian', :source => 'http://gemcutter.org'
-  
-  # Only load the plugins named here, in the order given. By default, all plugins 
+
+  # Only load the plugins named here, in the order given. By default, all plugins
   # in vendor/plugins are loaded in alphabetical order.
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -80,5 +80,13 @@ Rails::Initializer.run do |config|
   # Please note that observers generated using script/generate observer need to have an _observer suffix
   # config.active_record.observers = :cacher, :garbage_collector, :forum_observer
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+     :address => "smtp.yandex.ru",
+     :port => 25,
+     :domain => "yandex.ru",
+     :authentication => :login,
+     :user_name => "school.management.system@yandex.ru",
+     :password => "secretpassword"
+  }
 end
-
