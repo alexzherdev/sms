@@ -1,3 +1,35 @@
+<% javascript_tag do %>
+  Ext.onReady(function() {
+    Global.children_selector = new Ext.ux.form.ItemSelector({
+      renderTo: 'children_selector',
+      width: 374,
+      imagePath: '/images/ux/',
+      name: 'user[comma_separated_child_ids]',
+      multiselects: [{
+        width: 160,
+        height: 200,
+        store: <%= extjs_simple_store :data => small_student_collection(@unused_students), :type => :arrays, :fields => ["id", "full_name"] %>,
+        displayField: 'full_name',
+        valueField: 'id',
+        legend: 'Все ученики'
+      },{
+        width: 160,
+        height: 200,
+        store: <%= extjs_simple_store :data => small_student_collection(@user.children), :type => :arrays, :fields => ["id", "full_name"] %>,
+        legend: 'Дети пользователя',
+        displayField: 'full_name',
+        valueField: 'id',
+        tbar:[{
+          text: 'Очистить',
+          handler:function(){
+            Global.children_selector.reset();
+          }
+        }]
+      }]
+      
+    });
+  });
+<% end %>
 <div class="form-container user-form-container">
   <% remote_form_for @user, :url => url, :method => method, 
         :success => "Ext.MessageBox.alert('SMS', 'Данные пользователя сохранены.', function() {
@@ -58,6 +90,7 @@
         <td><%= extjs_checkbox_control :user, :blocked, :uncheckedValue => false %></td>
       </tr>
     </table>
+    <div id="children_selector" class="children-selector"></div>
     <%= extjs_button "Сохранить" %>
   <% end %>
 </div>

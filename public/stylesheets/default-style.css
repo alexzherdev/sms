@@ -636,7 +636,12 @@ a:link, a:visited, a:active {
 }
 
 .user-form-container {
+  width: 430px;
   height: 100%;
+}
+
+.user-form-container .children-selector {
+  width: 420px;
 }
 
 .right-panel {

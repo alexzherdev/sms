@@ -12,5 +12,9 @@ class Role < ActiveRecord::Base
     def teacher
       @teacher ||= find_by_name("Учитель")
     end
+    
+    def parent_role
+      @parent_role ||= find_by_name("Родитель")
+    end
   end
 end
