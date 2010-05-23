@@ -12,7 +12,6 @@ class StudentsController < ApplicationController
   def create
     @student = Student.new params[:student]
     @student.save
-    p @student.errors
     render :action => "create.rjs", :status => @student.valid? ? 200 : 403
   end
   
@@ -37,7 +36,6 @@ class StudentsController < ApplicationController
   def import
     importer = StudentsImporter.new(params[:file].read)
     students = importer.parse
-    p students
     Student.create students
     redirect_to students_url
   end

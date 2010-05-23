@@ -1,3 +1,5 @@
+<%= javascript_include_tag "MultiSelect" %>
+<%= javascript_include_tag "ItemSelector" %>
 <% javascript_tag do %>
   var addUser = function(user) {
     Global.user_store.add(new Global.user_store.recordType(user));
@@ -35,7 +37,8 @@
       bodyCfg: {
         id: 'user_form_container',
         cls: 'right-panel'
-      }
+      },
+      autoScroll: true
     });
     
 		var panel = new Ext.Panel({

@@ -6,11 +6,9 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-<<<<<<< HEAD:app/controllers/users_controller.rb
     @user.role = Role.admin
     @unused_students = Student.all
-=======
->>>>>>> 938ce40... Merge branch 'master' of github.com:alexzherdev/sms:app/controllers/users_controller.rb
+
     render :partial => "form", :locals => { :url => users_path, :method => "POST" }
   end
   
@@ -21,25 +19,16 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find params[:id]
-<<<<<<< HEAD:app/controllers/users_controller.rb
     @unused_students = Student.find(:all, :conditions => ["parent1_id is null or parent1_id <> ?", @user.id])
-    
-=======
->>>>>>> 938ce40... Merge branch 'master' of github.com:alexzherdev/sms:app/controllers/users_controller.rb
+
     render :partial => "form", :locals => { :url => user_path(@user), :method => "PUT" }
   end
   
   def update
     @user = User.find params[:id]
     @user.update_attributes params[:user]
-<<<<<<< HEAD:app/controllers/users_controller.rb
     @unused_students = Student.find(:all, :conditions => ["parent1_id is null or parent1_id <> ?", @user.id])
     
     render :action => "update.rjs", :status => @user.valid? ? 200 : 403
   end
 end
-=======
-    render :action => "update.rjs", :status => @user.valid? ? 200 : 403
-  end
-end
->>>>>>> 938ce40... Merge branch 'master' of github.com:alexzherdev/sms:app/controllers/users_controller.rb
