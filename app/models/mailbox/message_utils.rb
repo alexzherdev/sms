@@ -42,7 +42,7 @@ module Mailbox
     end
     
     def prepare_forward
-      forward = self.class.new :subject => format_forward_subject, :body => format_forward_body
+      forward = Message.new :subject => format_forward_subject, :body => format_forward_body
     end
     
     def created_at_full
