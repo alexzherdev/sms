@@ -21,7 +21,7 @@ body a {
 }
 
 .top .logo {
-  width: 390px;
+  width: 500px;
   height: 40px;
   margin-top: 4px;
   display: block;
@@ -44,7 +44,7 @@ body a {
 
 .top .search-box {
   float: right;
-  margin-right: 100px;
+  margin-right: 35px;
 }
 
 .top .search-box .button-container {
