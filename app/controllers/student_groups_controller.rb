@@ -36,18 +36,8 @@ class StudentGroupsController < ApplicationController
   def notify
     @student_group = StudentGroup.find(params[:id])
     @student_group.students.each { |student|
-      #marks = Mark.for_weekly_notification(student, Time.now)
-      date = Time.now
-      weekly_diary = ScheduleItem.find(
-        :all,
-        :select => "schedule_items.*, marks.date, subjects.name, marks.mark",
-        :joins => "LEFT JOIN marks ON marks.schedule_item_id = schedule_items.id AND marks.student_id =#{student.id}",
-        :include => :subject,
-        :conditions => ["schedule_items.student_group_id = ? and marks.date BETWEEN ? and ?",
-          @student_group.id, date.beginning_of_week, date.end_of_week],
-        :order => :week_day
-      ).collect(&:mark)
-      Mailer.deliver_student_weekly_results(student,  weekly_diary)  
+      weekly_diary = Mark.for_weekly_notification(student, Time.now)
+      Mailer.deliver_student_weekly_results(student,  weekly_diary)
     }
     render :action => "notify.rjs"
   end
