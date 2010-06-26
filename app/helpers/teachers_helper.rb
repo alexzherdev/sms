@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module TeachersHelper
   TEACHER_METHOD_FIELDS = [:id, :full_name]
   TEACHER_HELPER_FIELDS = [:group_teacher_info, :teacher_location]

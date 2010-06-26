@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Mailbox
   module MessageUtils
     NOT_DELETED = 0

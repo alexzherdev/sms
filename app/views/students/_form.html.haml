@@ -1,0 +1,43 @@
+.form-container.student-form-container
+  - remote_form_for @student, :url => url, :method => method, :success => "Ext.MessageBox.alert('SMS', 'Данные ученика сохранены.', function() { Global.fire('studentUpdated', Form.serialize($('student_form'), { hash: true })); });", :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "student_form" } do |f|
+    %table
+      %tr
+        %td= f.label :last_name, "Фамилия"
+        %td= extjs_text_field_control :student, :last_name
+
+      %tr
+        %td= f.label :first_name, "Имя"
+        %td= extjs_text_field_control :student, :first_name
+    
+      %tr
+        %td= f.label :middle_name, "Отчество"
+        %td= extjs_text_field_control :student, :middle_name
+    
+      %tr
+        %td= f.label :sex, "Пол"
+        %td
+          %table{ :width => "100%" }
+            %tr
+              %td{ :width=> "50%" }
+                = extjs_radio_control :student, :sex, :checkedValue => "male",    :boxLabel => "мужской", :checked => @student.male?
+              %td
+                = extjs_radio_control :student, :sex, :checkedValue => "female",  :boxLabel => "женский", :checked => @student.female?
+            
+      %tr
+        %td= f.label :student_group_id, "Класс"
+        %td
+          = extjs_combo_box_control :student, :student_group_id, :store => "Global.student_group_store", :displayField => "full_name", :valueField => "id", :hiddenName => "student[student_group_id]", :width => 50
+
+      %tr
+        %td= f.label :birth_date, "Дата рождения"
+        %td= extjs_date_field_control :student, :birth_date, :format => "d-m-Y", :width => 178
+
+      %tr
+        %td= f.label :home_address, "Домашний адрес"
+        %td= extjs_text_area_control :student, :home_address, :width => 178
+
+      %tr
+        %td= f.label :parent_email, "E-mail родителей"
+        %td= extjs_text_field_control :student, :parent_email
+    = extjs_button "Сохранить"
+  

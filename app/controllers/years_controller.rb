@@ -20,7 +20,7 @@ class YearsController < ApplicationController
   end
   
   def destroy_term
-    if not Mark.find_by_term_id(params[:id])
+    if not Mark.find_by_term_id params[:id]
       @term = Term.find params[:id]
       @term.destroy
     end

@@ -23,18 +23,18 @@ class SubjectsController < ApplicationController
   end
   
   def edit
-    @subject = Subject.find(params[:id])
+    @subject = Subject.find params[:id]
     render :partial => "form", :locals => { :url => subject_path(@subject), :method => "PUT" }
   end
   
   def update
-    @subject = Subject.find(params[:id])
+    @subject = Subject.find params[:id]
     @subject.update_attributes params[:subject]
     render :action => "update.rjs", :status => @subject.valid? ? 200 : 403
   end
   
   def import
-    importer = SubjectsImporter.new(params[:file].read)
+    importer = SubjectsImporter.new params[:file].read
     subjects = importer.parse
     Subject.create subjects
     redirect_to subjects_url

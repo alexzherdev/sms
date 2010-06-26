@@ -1,7 +1,9 @@
+# coding: utf-8
+
 module RegistersHelper
   def format_mark(mark)
     case mark
-    when -1: "н"
+    when -1 then "н"
     else mark
     end
   end

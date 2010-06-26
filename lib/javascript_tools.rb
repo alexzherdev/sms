@@ -16,14 +16,19 @@ module Utils
       def to_s
         self
       end
+
+      def encode_json(encoder)
+        self
+      end
     end
+
 
     #  Replaces all the keys in the given hash with +StrippedJsonString+ objects to
     #  make them correctly appear in JS as object keys.
     def strip_hash_keys_for_json(obj)
       case obj
-        when Array: strip_hashes_for_json_from_array(obj)
-        when Hash:  strip_hashes_for_json_from_hash(obj)
+        when Array then strip_hashes_for_json_from_array(obj)
+        when Hash  then  strip_hashes_for_json_from_hash(obj)
       end
 
       obj
@@ -54,21 +59,23 @@ module Utils
     end
 
     def strip_hashes_for_json_from_hash(hash)
+      new_hash = {}
       hash.each do |key, value|
         new_key = StrippedJsonString.new key.to_s
         value = hash[key]
         hash.delete key
-        hash[new_key] = value
+        new_hash[new_key] = value
 
         if value.is_a?(Hash) || value.is_a?(Array)
           strip_hash_keys_for_json(value)
         end
       end
+      hash.merge!(new_hash)
+      hash
     end
 
   end
 
 end
 
-require "#{RAILS_ROOT}/lib/mixins/string"
 

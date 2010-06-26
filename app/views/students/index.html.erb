@@ -11,7 +11,7 @@
   }
   
   Ext.onReady(function() {
-    Global.student_store = <%= extjs_simple_store :data => student_collection(@students), :type => :arrays, :fields => ["id", "last_name", "first_name", "patronymic", "birth_date", "parent_email", "parent1_id", "parent2_id", "home_address", "student_group_id" ] %>;
+    Global.student_store = <%= extjs_simple_store :data => student_collection(@students), :type => :arrays, :fields => ["id", "last_name", "first_name", "middle_name", "birth_date", "parent_email", "parent1_id", "parent2_id", "home_address", "student_group_id" ] %>;
     Global.student_group_store = <%= extjs_simple_store :data => student_group_collection(@student_groups), :type => :arrays, :fields => ["id", "full_name"] %>
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
@@ -81,7 +81,7 @@
       var record = Global.selectedStudent;
       record.set("first_name", config["student[first_name]"]);
       record.set("last_name", config["student[last_name]"]);
-      record.set("patronymic", config["student[patronymic]"]);
+      record.set("middle_name", config["student[middle_name]"]);
       record.commit();
     });
     

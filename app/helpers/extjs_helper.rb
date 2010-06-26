@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require File.join(File.dirname(__FILE__), '..', '..', 'lib', 'javascript_tools')
 
 module ExtjsHelper
@@ -527,7 +529,7 @@ module ExtjsHelper
   #
   def format_field_value(value)
     case value
-    when Time:
+    when Time then
       return value.to_s(:date)
     else
       return value
@@ -569,7 +571,7 @@ module ExtjsHelper
        Ext.onReady(function() {
          #{lines.join ";\n"};
        });
-     </script>"
+     </script>".html_safe
   end
 
   #  Attempts to populate the :value element of the given +Hash+ <tt>options</tt> with the value
@@ -586,9 +588,9 @@ module ExtjsHelper
     unless (model.blank? || !model.respond_to?(model_field))
       value = model.send(model_field)
       case value
-        when Date: options[:value] ||= date_only_json(value)
-        when Time: options[:value] ||= value.to_s(:date)
-        when ActiveRecord::Base: options[:value] ||= value.id
+        when Date then options[:value] ||= date_only_json(value)
+        when Time then options[:value] ||= value.to_s(:date)
+        when ActiveRecord::Base then options[:value] ||= value.id
       else
         options[:value] ||= value
       end
@@ -640,11 +642,11 @@ module ExtjsHelper
   #
   def get_data_array_or_hash(collection)
     case collection[:type]
-      when :objects:
+      when :objects then
         return objects_to_collection_array(collection)
-      when :hashes:
+      when :hashes then
         return hashes_to_collection_array(collection)
-      when :arrays:
+      when :arrays then
         return collection[:data]
     end
   end
@@ -658,7 +660,7 @@ module ExtjsHelper
       if (event.getKey() == Ext.EventObject.ENTER) {
         Global.submitForm(field.getEl().id);
       }
-    });"
+    });".html_safe
   end
 
 end

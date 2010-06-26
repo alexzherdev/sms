@@ -1,4 +1,6 @@
-require 'fastercsv'
+# coding: utf-8
+
+require 'csv'
 
 class SubjectsImporter
   attr_accessor :content
@@ -11,7 +13,7 @@ class SubjectsImporter
   
   def parse
     subjects = []
-    FasterCSV.parse(self.content, :headers => true, :col_sep => ";") do |row|
+    CSV.parse(self.content, :headers => true, :col_sep => ";") do |row|
       attributes = {}
       row.each do |header, value|
         attributes[FIELDS[header]] = value

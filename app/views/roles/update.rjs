@@ -1,0 +1,1 @@
+page.replace_html :menu, :partial => "layouts/menu"

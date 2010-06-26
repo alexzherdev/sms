@@ -1,4 +1,7 @@
+# coding: utf-8
+
 # Methods added to this helper will be available to all templates in the application.
+
 module ApplicationHelper
   
   #  Returns a new integer that is guaranteed not to repeat in the current render
@@ -21,7 +24,7 @@ module ApplicationHelper
   end
   
   def link_or_bold(text, url)
-    if current_page?(url) or (url.include?("/register") and params[:controller] == "registers")
+    if current_page?(url) or (url.include?("/register") and params[:controller] == "registers") or (url.include?("/roles") and params[:controller] == "roles")
       content_tag "b", text
     else 
       link_to text, url

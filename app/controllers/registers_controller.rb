@@ -19,14 +19,8 @@ class RegistersController < ApplicationController
     @i = params[:i].to_i
     @j = params[:j].to_i
     @mark = params[:mark].to_i
-    if params[:type] == "TermMark"
-      mark = TermMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => (params[:term_id] || session[:register_current_term_id])
-    elsif params[:type] == "YearMark"
-      mark = YearMark.create :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :year_id => session[:register_current_year_id]
-    else
-      mark = Mark.create :mark => @mark, :student_id => params[:student_id].to_i, :date => Time.parse(params[:date]), :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id, :term_id => session[:register_current_term_id]
-      
-    end
+    
+    create_mark
     
     render :action => "mark.rjs"
   end
@@ -42,11 +36,19 @@ class RegistersController < ApplicationController
   
   protected
   
+  def create_mark
+    common_params = { :mark => @mark, :student_id => params[:student_id].to_i, :schedule_item_id => params[:item_id].to_i, :modified_by_id => current_user.id }
+    if params[:type] == "TermMark"
+      TermMark.create common_params.merge(:term_id => (params[:term_id] || session[:register_current_term_id]))
+    elsif params[:type] == "YearMark"
+      YearMark.create common_params.merge(:year_id => session[:register_current_year_id])
+    else
+      Mark.create common_params.merge(:date => Time.parse(params[:date]), :term_id => session[:register_current_term_id])
+    end
+  end
+  
   def load_models
-    session[:register_current_group_id] = params[:current_group]
-    session[:register_current_subject_id] = params[:current_subject]
-    session[:register_current_year_id] = params[:current_year]
-    session[:register_current_term_id] = params[:current_term]
+    fill_session_from_params
     
     @student_groups = current_user.student_groups_for_register
     return if @student_groups.blank?
@@ -54,6 +56,21 @@ class RegistersController < ApplicationController
     @read_only = (not current_user.can_edit_register?)
     @subjects = current_user.subjects_for_register(group)
     
+    set_current_group_and_subject
+        
+    set_current_year_and_terms
+    
+    set_variables
+  end
+  
+  def fill_session_from_params
+    session[:register_current_group_id] = params[:current_group]
+    session[:register_current_subject_id] = params[:current_subject]
+    session[:register_current_year_id] = params[:current_year]
+    session[:register_current_term_id] = params[:current_term]
+  end
+  
+  def set_current_group_and_subject
     session[:register_current_group_id] ||= group.id
     if session[:register_current_subject_id].blank?
       session[:register_current_subject_id] = @subjects[0].id
@@ -61,14 +78,16 @@ class RegistersController < ApplicationController
       tmp_subj = Subject.find session[:register_current_subject_id]
       tmp_group = StudentGroup.find session[:register_current_group_id]
       tmp_subjects = current_user.subjects_for_register(tmp_group)
-    
+
       @subjects = tmp_subjects
       session[:register_current_subject_id] = tmp_subjects[0].id unless tmp_subjects.include?(tmp_subj)
     end 
-    
+
     @current_group_id = session[:register_current_group_id]
-    @current_subject_id = session[:register_current_subject_id]
-    
+    @current_subject_id = session[:register_current_subject_id] 
+  end
+  
+  def set_current_year_and_term
     year = Year.with_terms[0]
     session[:register_current_year_id] ||= year.id
 
@@ -81,7 +100,9 @@ class RegistersController < ApplicationController
         session[:register_current_term_id] = tmp_year.terms[0].id 
       end
     end
-    
+  end
+  
+  def set_variables
     @term = Term.find session[:register_current_term_id] rescue nil
     
     @current_year_id = session[:register_current_year_id]

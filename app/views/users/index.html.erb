@@ -8,7 +8,7 @@
        
   Ext.onReady(function() {
     Global.role_store = <%= extjs_simple_store :data => role_collection(@roles), :type => :arrays, :fields => ["id", "name" ] %>;
-    Global.user_store = <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => ["id", "last_name", "first_name", "patronymic", "login", "password" ] %>;
+    Global.user_store = <%= extjs_simple_store :data => user_collection(@users), :type => :arrays, :fields => ["id", "last_name", "first_name", "middle_name", "login", "password" ] %>;
     var cm = <%= extjs_grid_column_model([
       { :header => "id", :hidden => true },
       { :header => "Фамилия", :width => 100 },
@@ -71,7 +71,7 @@
       var record = Global.user_grid.getSelectionModel().getSelected();
       record.set("first_name", config["user[first_name]"]);
       record.set("last_name", config["user[last_name]"]);
-      record.set("patronymic", config["user[patronymic]"]);
+      record.set("middle_name", config["user[middle_name]"]);
       record.commit();
     });
     

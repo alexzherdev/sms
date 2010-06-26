@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Mailbox
   class Mailbox < ActiveRecord::Base
     SENT_FOLDER_ID = 100500

@@ -7,10 +7,10 @@ class News < ActiveRecord::Base
   
   default_scope :order => "created_at DESC"
   
-  define_index do
-    indexes title
-    indexes content
-    has created_at
-  end
+  #define_index do
+  #  indexes title
+  #  indexes content
+  #  has created_at
+  #end
 
 end

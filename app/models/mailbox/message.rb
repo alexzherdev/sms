@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module Mailbox
   
   class Message < ActiveRecord::Base

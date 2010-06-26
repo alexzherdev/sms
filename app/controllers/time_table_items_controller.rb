@@ -4,7 +4,7 @@ class TimeTableItemsController < ApplicationController
   end
 
   def create
-    @item = TimeTableItem.add(params[:item_type].to_i) 
+    @item = TimeTableItem.add params[:item_type].to_i 
     @index = TimeTableItem.lessons.count
     render :action => "create.rjs"
   end

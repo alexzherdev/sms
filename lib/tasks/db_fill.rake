@@ -1,3 +1,5 @@
+# coding: utf-8
+
 namespace :sms do
   namespace :db do
     task :fill => [:empty_all, :populate] 
@@ -24,7 +26,7 @@ namespace :sms do
       subject_ids = create_subject_ids(room_map)
       teachers = create_teachers
       create_teacher_subjects(teachers)
-      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe", :role_id => Role.admin.id, :patronymic => "patronymic", :sex => "male"
+      admin = User.create :login => "qwe", :password => "123qwe", :password_confirmation => "123qwe", :email => "qwe@asdasd.ru", :first_name => "first", :last_name => "last", :birth_date => DateTime.now, :home_address => "qwe", :role_id => Role.admin.id, :middle_name => "patronymic", :sex => "male"
       admin.save
     end
     
@@ -68,7 +70,7 @@ namespace :sms do
         STUDENTS.each_with_index do |student_name, index|
           student = Student.create :birth_date => DateTime.now, :email => "student#{index}@asdasd.ru", 
             :first_name => student_name.second.split.first, :last_name => student_name.first,
-            :patronymic => student_name.second.split.second, :sex => student_name[2], :student_group_id => groups[index % groups.size].id
+            :middle_name => student_name.second.split.second, :sex => student_name[2], :student_group_id => groups[index % groups.size].id
           students << student
         end
       end
@@ -124,7 +126,7 @@ namespace :sms do
       TEACHERS.each_with_index do |teacher_name, index|
         teacher = Teacher.create :birth_date => DateTime.now, :email => "teacher#{index}@asdasd.ru", 
           :first_name => teacher_name.second.split.first, :last_name => teacher_name.first,
-          :patronymic => teacher_name.second.split.second, :login => "teacher#{index}", 
+          :middle_name => teacher_name.second.split.second, :login => "teacher#{index}", 
           :password => "password", :password_confirmation => "password", :role_id => Role.teacher.id,
           :sex => teacher_name[2]          
         teachers << teacher
@@ -160,7 +162,7 @@ namespace :sms do
       { :name => "students", :title => "Ученики" },
       { :name => "student_groups", :title => "Классы" },
       { :name => "subjects", :title => "Предметы" },
-      { :name => "teacher_subjects", :title => "Предметы учителей" },
+      { :name => "teacher_subjects", :title => "Нагрузка учителей" },
       { :name => "schedule", :title => "Расписание занятий" },
       { :name => "register", :title => "Журналы" },
       { :name => "comments", :title => "Управление комментариями" }

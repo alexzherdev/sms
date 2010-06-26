@@ -1,0 +1,30 @@
+.login-form-container
+  .x-box-tl
+    .x-box-tr
+      .x-box-tc
+  .x-box-ml
+    .x-box-mr
+      .x-box-mc
+        = strip_hash_keys_for_json({"a" => "x"}).to_json
+        = form_for @user_session do |f|
+          = f.error_messages unless @user_session.errors.on_base.blank?
+
+          %table.login-form-scaffold
+            %tr
+              %td{ :colspan => 2 }
+                %h3 <b>Вход</b>
+            %tr
+              %td= f.label :login, "Логин:"
+              %td= extjs_text_field_control :user_session, :login
+
+            %tr
+              %td= f.label :password, "Пароль:"
+              %td= extjs_text_field_control :user_session, :password, :inputType => "password"
+            
+            %tr
+              %td
+              %td= extjs_button :text => "Войти"
+  .x-box-bl
+    .x-box-br
+      .x-box-bc
+

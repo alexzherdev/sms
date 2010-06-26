@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Mailer < ActionMailer::Base
   def student_weekly_results(student, weekly_diary)
     recipients  student.parent_email

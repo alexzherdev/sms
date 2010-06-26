@@ -7,7 +7,7 @@ class ClassRoom < ActiveRecord::Base
   
   default_scope :order => "number ASC"
   
-  define_index do
-    indexes :number
-  end
+  #define_index do
+  #  indexes :number
+  #end
 end

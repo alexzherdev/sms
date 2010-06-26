@@ -1,0 +1,27 @@
+.news-form
+  %table
+    %tr
+      %td{ :width => 130 } Заголовок
+      %td= extjs_text_field_control :news, :title, :width => 300
+    %tr
+      %td.editor-cell{ :colspan => 2 }= extjs_html_editor_control :news, :content
+    %tr
+      %td Прикрепить файлы
+      %td
+        = file_field_tag "attachment", :id => "file", :size => 45
+        %br
+      
+  %ul#pending_files
+  
+  %ul
+    - @news.attachments.each do |att|
+      %li{ :id => [ "attachment", att.id ] }
+        = att.name
+        = link_to_remote "Удалить", { :url => { :action => "destroy_attachment", :id => att.id } }, { :class => "remove-file" } 
+   
+- javascript_tag do
+  var ms = new MultiSelector($('pending_files')); |
+  ms.addElement($('file')); |
+
+= extjs_button "Сохранить"
+= extjs_button :text => "Назад", :handler => { :action => "index" }

@@ -13,3 +13,4 @@ public/javascripts/sms.js
 public/system/**/*
 db/sphinx/*
 .idea/*
+test/**/*

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Role < ActiveRecord::Base
   has_and_belongs_to_many :acl_actions
   validates_presence_of :name
@@ -15,6 +17,10 @@ class Role < ActiveRecord::Base
     
     def parent_role
       @parent_role ||= find_by_name("Родитель")
+    end
+    
+    def reload!
+      @admin = @teacher = @parent_role = nil
     end
   end
 end

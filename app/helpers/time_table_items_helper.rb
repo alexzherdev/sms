@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module TimeTableItemsHelper
   def time_table_items_collection(time_table_items)
     index = 0

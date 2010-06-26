@@ -1,2 +1,5 @@
 require 'acl_action'
-ACL_ACTIONS_MAP = AclAction.preload if defined? AclAction
+begin
+  ACL_ACTIONS_MAP = AclAction.preload
+rescue
+end

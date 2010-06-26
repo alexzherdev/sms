@@ -1,4 +1,5 @@
 class RolesController < ApplicationController
+
   def index
     @roles = Role.all
   end
@@ -7,12 +8,6 @@ class RolesController < ApplicationController
     @role = Role.new
     @unused_actions = AclAction.all
     render :partial => "form", :locals => { :url => roles_path, :method => "POST" }
-  end
-  
-  def create
-    @role = Role.create params[:role]
-    @unused_actions = AclAction.all - @role.acl_actions
-    render :action => "create.rjs", :status => @role.valid? ? 200 : 403
   end
   
   def edit
@@ -25,10 +20,8 @@ class RolesController < ApplicationController
     @role = Role.find params[:id]
     @role.update_attributes params[:role]
     @unused_actions = AclAction.all - @role.acl_actions
-    if @role.valid?
-      render :text => ""
-    else
-      render :text => "", :status => 403
-    end
+
+    current_user.role.reload
+    render :action => "update.rjs"
   end
 end

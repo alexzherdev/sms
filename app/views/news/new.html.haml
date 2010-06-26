@@ -1,0 +1,5 @@
+.news-container
+  %h2 Добавить новость
+  - form_for(@news, :html => { :multipart => true }) do |f|
+    = render :partial => "form"
+  

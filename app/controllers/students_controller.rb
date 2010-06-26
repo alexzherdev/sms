@@ -27,14 +27,13 @@ class StudentsController < ApplicationController
   end
   
   def destroy
-    @student = Student.find(params[:id])
+    @student = Student.find params[:id]
     @student.destroy
-    flash[:notice] = "Successfully destroyed student."
     redirect_to students_url
   end
   
   def import
-    importer = StudentsImporter.new(params[:file].read)
+    importer = StudentsImporter.new params[:file].read
     students = importer.parse
     Student.create students
     redirect_to students_url

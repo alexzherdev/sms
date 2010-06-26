@@ -14,9 +14,9 @@ class Subject < ActiveRecord::Base
   
   accepts_comma_separated_ids_for :teachers
   
-  define_index do
-    indexes name
-  end
+  #define_index do
+  #  indexes name
+  #end
   
   def <=>(subject)
     self.name <=> subject.name

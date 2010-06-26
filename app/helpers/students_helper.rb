@@ -1,5 +1,7 @@
+# coding: utf-8
+
 module StudentsHelper
-  STUDENT_METHOD_FIELDS = [:id, :last_name, :first_name, :patronymic, :birth_date, :parent_email, :parent1_id, :parent2_id, :home_address, :student_group_id, :full_name]
+  STUDENT_METHOD_FIELDS = [:id, :last_name, :first_name, :middle_name, :birth_date, :parent_email, :parent1_id, :parent2_id, :home_address, :student_group_id, :full_name]
   STUDENT_HELPER_FIELDS = [:student_group_name, :student_location]
   STUDENT_FIELDS = STUDENT_METHOD_FIELDS + STUDENT_HELPER_FIELDS
   def student_collection(students)

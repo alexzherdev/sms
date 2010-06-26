@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module NewsHelper
   NEWS_METHOD_FIELDS = [:id, :title, :content]
   NEWS_HELPER_FIELDS = [:truncated]
