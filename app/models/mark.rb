@@ -30,14 +30,22 @@ class Mark < ActiveRecord::Base
     self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
   end
 
-  #  Находит все оценки для страницы итоговых оценок (четвертных и годовых).
+  #  Находит все оценки студента за неделю для отчёта(дневника).
   #
-  #  * <tt>group</tt>:: Просматриваемый класс.
-  #  * <tt>subject</tt>:: Просматриваемый предмет.
-  #  * <tt>year</tt>:: Год.
+  #  * <tt>student</tt>:: Студент.
+  #  * <tt>date</tt>:: Любая дата в течение нужной недели.
   #
   def self.for_weekly_notification(student, date)
-    self.find(:all, :include => :schedule_item, :conditions => [ "schedule_items.student_group_id = ? and schedule_items.subject_id = ? and ((term_id in (?) and date is null) or (year_id = ?))", group.id, subject.id, year.term_ids, year.id ])
-    end
+    self.find(
+        :all,
+        :joins => [ { :schedule_item => :subject} ],
+        :conditions => {
+          :student_id => student.id,
+          :date => date.beginning_of_week..date.end_of_week,
+          'schedule_items.student_group_id' => student.student_group_id
+        },
+        :order => :week_day
+      )
+  end
 
 end
