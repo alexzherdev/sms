@@ -541,7 +541,7 @@ module ExtjsHelper
   def add_validation_errors(model_name, model_field, js_variable, options)
     model = instance_variable_get("@#{model_name}")
     return unless model
-    errors = model.errors.on(model_field).to_a
+    errors = model.errors[model_field].to_a
     return if errors.blank?
 
     text = ''

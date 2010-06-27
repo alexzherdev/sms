@@ -31,7 +31,7 @@
   });
 <% end %>
 <div class="form-container role-form-container">
-  <% remote_form_for @role,  
+  <% form_for @role,  
     :success => "Ext.MessageBox.alert('SMS', 'Данные роли сохранены.', function() {
       Global.fire('roleUpdated', Form.serialize($('role_form'), { hash: true }));              
       });",

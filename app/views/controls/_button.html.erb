@@ -1,5 +1,5 @@
 <div class="<%= options[:button_class] ? options.delete(:button_class) : "button-container" %>" id="<%= id %>"></div>
-<% javascript_tag do %>
+<%= javascript_tag do %>
 Ext.onReady(function() {
   <%= options[:js_variable] ? options.delete(:js_variable).to_s + " = " : "" %> new Ext.Toolbar.Button(<%= strip_hash_keys_for_json(options.merge({:renderTo => id})).to_json.html_safe %>);
 });

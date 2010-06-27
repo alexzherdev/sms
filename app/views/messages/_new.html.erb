@@ -2,7 +2,7 @@
 <iframe id='upload_iframe' name="upload_iframe" style="width:1px;height:1px;border:0px" src="about:blank"></iframe>
 
 <div id="new_message_form" class="x-hidden new-message-container">
-  <% form_for (@message, :url => mailbox_messages_url, :html => { :id => "message_form", :multipart => true, :target => 'upload_iframe' }) do |f| %>
+  <%= form_for (@message, :url => mailbox_messages_url, :html => { :id => "message_form", :multipart => true, :target => 'upload_iframe' }) do |f| %>
     <table>
       <tr>
         <td><%= link_to_function "Кому:", "Global.mailbox.showRecipientsPopup()" %></td>

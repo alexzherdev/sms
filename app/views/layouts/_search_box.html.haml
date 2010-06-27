@@ -1,0 +1,4 @@
+.search-box
+  = form_tag search_url, :method => :get do
+    = extjs_text_field_control "search", "query", :js_variable => "Global.search_field", :no_clearer => true, :value => @query
+    = extjs_button :text => "Найти", :handler => strip_in_json("function() { Global.search(); }")

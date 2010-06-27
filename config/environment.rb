@@ -4,4 +4,4 @@ require File.expand_path('../application', __FILE__)
 # Initialize the rails application
 Sms::Application.initialize!
 
-require 'active_support/all'
+require 'active_support/json'

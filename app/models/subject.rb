@@ -10,13 +10,18 @@ class Subject < ActiveRecord::Base
   validates_numericality_of :hours_per_week, :only_integer => true, :greater_than_or_equal_to => 1
   
   default_scope :include => [:class_rooms]
-  named_scope :by_year, lambda { |year| { :conditions => { :year => year} } }
   
   accepts_comma_separated_ids_for :teachers
   
   #define_index do
   #  indexes name
   #end
+  
+  class << self
+    def by_year(year)
+      where(:year => year)
+    end
+  end
   
   def <=>(subject)
     self.name <=> subject.name

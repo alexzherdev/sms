@@ -1,5 +1,5 @@
 module SearchHelper
-  class SearchLinkRenderer < WillPaginate::LinkRenderer
+  class SearchLinkRenderer < ::WillPaginate::ViewHelpers::LinkRenderer
     def prepare(collection, options, template)
       @remote = options.delete(:remote) || {}
       super

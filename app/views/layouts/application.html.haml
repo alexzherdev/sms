@@ -7,7 +7,7 @@
     = csrf_meta_tag
     %title Система администрирования школы
   %body
-    - javascript_tag do
+    = javascript_tag do
       Ext.Ajax.extraParams = { |
         "authenticity_token": '#{form_authenticity_token}' |
       }; |
@@ -25,16 +25,13 @@
         .x-box-ml
           .x-box-mr
             .x-box-mc
-              - link_to root_path, :class => "logo" do
+              = link_to root_path, :class => "logo" do
                 %span School Management System
               - if current_user
                 .top-links
                   %span#mailbox_link #{link_to_mailbox} | #{link_to "Выход", logout_path}
 
-                .search-box
-                  - form_tag search_url, :method => :get do
-                    = extjs_text_field_control "search", "query", :js_variable => "Global.search_field", :no_clearer => true, :value => @query
-                    = extjs_button :text => "Найти", :handler => strip_in_json("function() { Global.search(); }") 
+                = render :partial => "layouts/search_box"
               .clear
         .x-box-bl
           .x-box-br

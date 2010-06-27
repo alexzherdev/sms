@@ -18,7 +18,12 @@ module ApplicationHelper
   def collect_values(collection, methods)
     collection.collect do |obj|
       methods.collect do |meth|
-        obj.send(meth)
+        value = obj.send(meth)
+        # if value.is_a? String
+        #           value.html_safe
+        #         else
+        #           value
+        #         end
       end
     end
   end
@@ -68,8 +73,9 @@ module ApplicationHelper
     action_name = path.split("/")[1] || "index"
 
     if authorized?(controller_path, action_name)
-      html = capture(&block)
-      concat html
+      with_output_buffer(&block) 
+    else
+      ""
     end
   end
 end

@@ -5,7 +5,6 @@
   .x-box-ml
     .x-box-mr
       .x-box-mc
-        = strip_hash_keys_for_json({"a" => "x"}).to_json
         = form_for @user_session do |f|
           = f.error_messages unless @user_session.errors.on_base.blank?
 

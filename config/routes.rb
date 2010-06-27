@@ -53,6 +53,7 @@ Sms::Application.routes.draw do
   resources :roles
   resources :years
   resources :news
+  
   match '/search' => 'search#index', :as => :search
 
   match 'login' => 'user_sessions#new', :as => :login

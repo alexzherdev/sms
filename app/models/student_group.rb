@@ -3,9 +3,15 @@ class StudentGroup < ActiveRecord::Base
   belongs_to :group_teacher, :class_name => "Teacher"
   
   default_scope :order => "year ASC, letter ASC"
-  named_scope :by_year, lambda { |year| { :conditions => { :year => year } } }
   
   accepts_comma_separated_ids_for :students
+  
+  class << self
+    def by_year(year)
+      where(:year => year)
+    end
+  end
+  
   
   #define_index do 
   #  indexes [year, letter], :as => :full_name

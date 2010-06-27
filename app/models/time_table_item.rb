@@ -10,43 +10,47 @@ class TimeTableItem < ActiveRecord::Base
 
   default_scope :order => "start_time"
   
-  named_scope :lessons, :conditions => { :item_type => LESSON }
-  
-  #  Возвращает хэш с длительностями уроков и перемен.
-  #
-  def self.lengths
-    { LESSON => Settings["lesson_length"].to_i.minutes, SHORT_BREAK => Settings["short_break"].to_i.minutes, LONG_BREAK => Settings["long_break"].to_i.minutes }
-  end
-  
-  #  Добавляет айтем нужного типа в конец расписания звонков.
-  #
-  #  * <tt>item_type</tt>:: Тип айтема.
-  #
-  def self.add(item_type)
-    time_table_items = self.all
-    last = nil
-    if time_table_items.length > 0
-      last = time_table_items.last
-      start = last.end_time
-    else
-      start = Settings["lessons_start"]
+  class << self
+    def lessons
+      where(:item_type => LESSON)
     end
-    finish = lengths[item_type].since start
-    self.create :start_time => start, :end_time => finish, :item_type => item_type
-  end
+    
+    #  Возвращает хэш с длительностями уроков и перемен.
+    #
+    def self.lengths
+      { LESSON => Settings["lesson_length"].to_i.minutes, SHORT_BREAK => Settings["short_break"].to_i.minutes, LONG_BREAK => Settings["long_break"].to_i.minutes }
+    end
   
-  #  Пересчитывает времена начала и конца айтемов в расписании.
-  #
-  def self.recalculate_times
-    items = self.all
-    return if items.size == 0
-    current_time = Settings["lessons_start"]
+    #  Добавляет айтем нужного типа в конец расписания звонков.
+    #
+    #  * <tt>item_type</tt>:: Тип айтема.
+    #
+    def self.add(item_type)
+      time_table_items = self.all
+      last = nil
+      if time_table_items.length > 0
+        last = time_table_items.last
+        start = last.end_time
+      else
+        start = Settings["lessons_start"]
+      end
+      finish = lengths[item_type].since start
+      self.create :start_time => start, :end_time => finish, :item_type => item_type
+    end
+  
+    #  Пересчитывает времена начала и конца айтемов в расписании.
+    #
+    def self.recalculate_times
+      items = self.all
+      return if items.size == 0
+      current_time = Settings["lessons_start"]
 
-    items.each do |item|
-      item.start_time = current_time  
-      item.end_time = lengths[item.item_type].since item.start_time
-      current_time = item.end_time
-      item.save
+      items.each do |item|
+        item.start_time = current_time  
+        item.end_time = lengths[item.item_type].since item.start_time
+        current_time = item.end_time
+        item.save
+      end
     end
   end
   

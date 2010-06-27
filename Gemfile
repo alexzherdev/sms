@@ -8,7 +8,7 @@ gem 'rails', '3.0.0.beta4'
 gem 'authlogic'
 gem 'paperclip'
 
-gem 'will_paginate'
+gem 'will_paginate', '3.0.pre'
 
 #gem 'thinking-sphinx', '1.3.16', :require => 'thinking_sphinx'
 

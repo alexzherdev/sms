@@ -2,14 +2,14 @@
   - if current_user
     .x-box-tl
       .x-box-tr
-        .x-box-tc       
+        .x-box-tc
     .x-box-ml
       .x-box-mr
         .x-box-mc
           %ul.left-menu
             - menu_items.each do |item|
-              - acl_block(item.last) do
-                %li= link_or_bold item.first, item.last    
+              = acl_block(item.last) do
+                %li= link_or_bold item.first, item.last
     .x-box-bl
       .x-box-br
         .x-box-bc
