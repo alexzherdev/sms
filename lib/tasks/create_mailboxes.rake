@@ -22,7 +22,7 @@ namespace :sms do
   end
   
   def load_models
-    Dir.glob(File.join(RAILS_ROOT,'app','models','**','*.rb')).each do |file|
+    Dir.glob(File.join(Rails.root, 'app', 'models', '**', '*.rb')).each do |file|
       require_dependency file
     end
   end

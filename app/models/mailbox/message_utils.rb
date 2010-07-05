@@ -12,7 +12,7 @@ module Mailbox
     def uid
       "#{self.class.name}_#{id}"
     end
-    
+
     def format_subject(prefix, regex)
       re_index = self.subject.index(prefix)
       if re_index != 0

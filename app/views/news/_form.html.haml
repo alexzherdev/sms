@@ -17,7 +17,7 @@
     - @news.attachments.each do |att|
       %li{ :id => [ "attachment", att.id ] }
         = att.name
-        = link_to_remote "Удалить", { :url => { :action => "destroy_attachment", :id => att.id } }, { :class => "remove-file" } 
+        = link_to "Удалить", :action => "destroy_attachment", :id => att.id, { :remote => true, :class => "remove-file" } 
    
 - javascript_tag do
   var ms = new MultiSelector($('pending_files')); |

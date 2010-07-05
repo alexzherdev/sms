@@ -3,7 +3,7 @@
   %head
     %meta{ "http-equiv" => "Content-Type", "content" => "text/html; charset=utf-8" }
     = stylesheet_link_tag "ext-all", "MultiSelect", "xtheme-gray", "protoload", "default-style", :cache => "sms"
-    = javascript_include_tag "prototype", "effects", "dragdrop", "controls", "application", "ext-prototype-adapter#{ RAILS_ENV == 'development' ? '-debug' : ''}", "ext-all#{ RAILS_ENV == 'development' ? '-debug' : ''}", "ext-lang-ru", "sms-checkbox", "multifile", "protoload", "default", "mailbox", :cache => "sms"
+    = javascript_include_tag "prototype", "effects", "dragdrop", "controls", "application", "rails", "ext-prototype-adapter#{ Rails.env == 'development' ? '-debug' : ''}", "ext-all#{ Rails.env == 'development' ? '-debug' : ''}", "ext-lang-ru", "sms-checkbox", "multifile", "protoload", "default", "mailbox", :cache => "sms"
     = csrf_meta_tag
     %title Система администрирования школы
   %body
@@ -11,14 +11,6 @@
       Ext.Ajax.extraParams = { |
         "authenticity_token": '#{form_authenticity_token}' |
       }; |
-      Global.search = function() { |
-        var value = Global.search_field.getValue(); |
-        if (value.length == 0) { |
-          Ext.MessageBox.show({ title: 'SMS', msg: 'Введите строку поиска.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK }); |
-        } else { |
-          Global.submitForm(Global.search_field.getEl().dom); |
-        } |
-      } |
 
     #main_container
       .top

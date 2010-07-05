@@ -22,7 +22,7 @@ module MessagesHelper
       { :text => folder_text(current_user.mailbox.inbox), :url => mailbox_folder_path(:id => current_user.mailbox.inbox.id), :id => current_user.mailbox.inbox.id, :unread_count => current_user.mailbox.inbox.unread_count }.merge(common),
       { :text => current_user.mailbox.sent[:name], :url => mailbox_sent_path, :id => current_user.mailbox.sent[:id] }.merge(common),
       { :text => current_user.mailbox.trash[:name], :url => mailbox_trash_path, :id => current_user.mailbox.trash[:id] }.merge(common)
-    ]).to_json
+    ]).to_json.html_safe
   end
   
   def folder_text(folder)
@@ -30,6 +30,6 @@ module MessagesHelper
     if folder.unread_count > 0
       text = content_tag("b", "#{text} (#{folder.unread_count})")
     end
-    text
+    text.html_safe
   end
 end

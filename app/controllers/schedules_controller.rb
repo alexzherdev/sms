@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class SchedulesController < ApplicationController
   def show
     @schedule_items = ScheduleItem.all

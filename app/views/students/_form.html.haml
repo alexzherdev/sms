@@ -1,5 +1,5 @@
 .form-container.student-form-container
-  - remote_form_for @student, :url => url, :method => method, :success => "Ext.MessageBox.alert('SMS', 'Данные ученика сохранены.', function() { Global.fire('studentUpdated', Form.serialize($('student_form'), { hash: true })); });", :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "student_form" } do |f|
+  - form_for @student, :remote => true, :url => url, :method => method, :success => "Ext.MessageBox.alert('SMS', 'Данные ученика сохранены.', function() { Global.fire('studentUpdated', Form.serialize($('student_form'), { hash: true })); });", :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "student_form" } do |f|
     %table
       %tr
         %td= f.label :last_name, "Фамилия"

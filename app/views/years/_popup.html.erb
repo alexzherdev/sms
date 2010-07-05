@@ -1,7 +1,7 @@
 <div id="popup" class="x-hidden">
   <div class="x-window-header"></div>
   <div id="popup_main" class="term-popup">
-    <% form_remote_tag :url => { :action => "create_term" }, :method => "POST", :html => { :id => "term_form" } do %>
+    <%= form_tag({ :action => "create_term" }, { :remote => true, :method => "POST", :id => "term_form" }) do %>
       <table>
         <tr>
           <td>Начало</td>

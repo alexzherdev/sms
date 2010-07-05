@@ -28,7 +28,7 @@ module Mailbox
     end
     
     def trash_messages
-      (Message.find_all_by_mailbox_id_and_deleted(self.id, MessageUtils::TRASHED) + MessageCopy.find(:all, :conditions => ["deleted = ? and folder_id in (?)", MessageUtils::TRASHED, self.folder_ids])).sort_by { |m| -m.created_at.to_i }
+      (Message.where(:mailbox_id => self.id, :deleted => MessageUtils::TRASHED) + MessageCopy.where("deleted = ? and folder_id in (?)", MessageUtils::TRASHED, self.folder_ids)).sort_by { |m| -m.created_at.to_i }
     end
     
     protected

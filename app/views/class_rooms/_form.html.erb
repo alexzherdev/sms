@@ -32,11 +32,11 @@
 <% end %>
 
 <div class="form-container class-room-form-container">
-  <% remote_form_for @class_room, :url => url, :method => method, 
+  <%= form_for @class_room, :remote => true, :url => url, :method => method, 
       :success => "Ext.MessageBox.alert('SMS', 'Данные аудитории сохранены.', function() {
         Global.fire('classRoomUpdated', Form.serialize($('class_room_form'), { hash: true }));              
         });",
-      :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "class_room_form" } do |f| %>
+      :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :id => "class_room_form" do |f| %>
     <table>
       <tr>
         <td><%= f.label :number, "Номер" %></td>

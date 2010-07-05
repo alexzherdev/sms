@@ -33,7 +33,7 @@
     
     Global.subject_store = new Ext.data.GroupingStore({
       reader: reader,
-      data: <%= full_subject_collection(@subjects).to_json %>,
+      data: <%= full_subject_collection(@subjects).to_json.html_safe %>,
       sortInfo: { field: 'name', direction: "ASC" },
       groupField: 'year'
     });

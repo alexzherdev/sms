@@ -54,10 +54,9 @@ class MessagesController < ApplicationController
   def delete
     ids = params[:ids].split(",")
     if params[:copy] == "true"
-      messages = Mailbox::MessageCopy.find :all, :conditions => [ "id in (?) and recipient_id = ?" , ids, current_user.id ]
+      messages = Mailbox::MessageCopy.where("id in (?) and recipient_id = ?" , ids, current_user.id)
     else
-      messages = Mailbox::Message.find :all, 
-          :conditions => [ "id in (?) and mailbox_id = ?", ids, current_user.mailbox.id ]
+      messages = Mailbox::Message.where("id in (?) and mailbox_id = ?", ids, current_user.mailbox.id)
     end
     [messages].flatten.each(&:delete!)
     render :nothing => true
@@ -68,9 +67,9 @@ class MessagesController < ApplicationController
     copy = params[:copy].split(",")
     ids.each_with_index do |id, i|
       if copy[i] == "true"
-        message = Mailbox::MessageCopy.find_by_id_and_recipient_id id, current_user.id
+        message = Mailbox::MessageCopy.where(:id => params[:id], :recipient_id => current_user.id).first
       else
-        message = Mailbox::Message.find_by_id_and_mailbox_id id, current_user.mailbox.id  
+        message = Mailbox::Message.where(:id => params[:id], :mailbox_id => current_user.mailbox.id).first
       end
       message.restore!
     end
@@ -87,9 +86,9 @@ class MessagesController < ApplicationController
   
   def preload_message
     if params[:copy] == "true"
-      @message = Mailbox::MessageCopy.find_by_id_and_recipient_id params[:id], current_user.id
+      @message = Mailbox::MessageCopy.where(:id => params[:id], :recipient_id => current_user.id).first
     else
-      @message = Mailbox::Message.find_by_id_and_mailbox_id params[:id], current_user.mailbox.id  
+      @message = Mailbox::Message.where(:id => params[:id], :mailbox_id => current_user.mailbox.id).first
     end
   end
 

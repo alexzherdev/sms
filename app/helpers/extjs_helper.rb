@@ -230,7 +230,7 @@ module ExtjsHelper
     options[:value] ||= ""
 
     render :partial => "controls/html_editor.js.erb",
-           :locals => {:options => strip_hash_keys_for_json(options).to_json}
+           :locals => {:options => strip_hash_keys_for_json(options).to_json.html_safe }
   end
 
   #  Renders Extjs.DateField

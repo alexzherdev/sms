@@ -17,7 +17,7 @@ class TimeTableItem < ActiveRecord::Base
     
     #  Возвращает хэш с длительностями уроков и перемен.
     #
-    def self.lengths
+    def lengths
       { LESSON => Settings["lesson_length"].to_i.minutes, SHORT_BREAK => Settings["short_break"].to_i.minutes, LONG_BREAK => Settings["long_break"].to_i.minutes }
     end
   
@@ -25,7 +25,7 @@ class TimeTableItem < ActiveRecord::Base
     #
     #  * <tt>item_type</tt>:: Тип айтема.
     #
-    def self.add(item_type)
+    def add(item_type)
       time_table_items = self.all
       last = nil
       if time_table_items.length > 0
@@ -40,7 +40,7 @@ class TimeTableItem < ActiveRecord::Base
   
     #  Пересчитывает времена начала и конца айтемов в расписании.
     #
-    def self.recalculate_times
+    def recalculate_times
       items = self.all
       return if items.size == 0
       current_time = Settings["lessons_start"]
@@ -77,7 +77,7 @@ class TimeTableItem < ActiveRecord::Base
   #  Удаляет этот айтем из расписания и сдвигает по времени все последующие.
   #
   def destroy_and_shift
-    later_items = self.class.find(:all, :conditions => [ "start_time > ?", self.start_time ])
+    later_items = self.class.where("start_time > ?", self.start_time)
     delta = self.end_time - self.start_time
     self.destroy
     later_items.each do |item|

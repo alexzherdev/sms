@@ -128,6 +128,15 @@ Global.markInvalid = function(element, message) {
     	Ext.QuickTips.register({ target: element, text: element.dom.qtip, cls: "x-form-invalid-tip" });
     }  
 }
+
+Global.search = function() {
+  var value = Global.search_field.getValue();
+  if (value.length == 0) {
+    Ext.MessageBox.show({ title: 'SMS', msg: 'Введите строку поиска.', icon: Ext.MessageBox.INFO, buttons: Ext.MessageBox.OK });
+  } else {
+    Global.submitForm(Global.search_field.getEl().dom);
+  }
+}
 	
 Ext.QuickTips.init(false);
 

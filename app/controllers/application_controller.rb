@@ -96,13 +96,13 @@ class ApplicationController < ActionController::Base
       render :template => "errors/404", :layout => false 
     else
       @exception = exception
-      @show_backtrace = RAILS_ENV == "development"
+      @show_backtrace = Rails.env == "development"
       render :template => "errors/500"
     end    
   end
   
   def require_dependencies
-    Dir.glob(File.join(RAILS_ROOT,'app','models','**','*.rb')).each do |file|
+    Dir.glob(File.join(Rails.root, 'app', 'models', '**', '*.rb')).each do |file|
       require_dependency file
     end
   end

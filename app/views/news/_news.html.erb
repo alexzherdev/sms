@@ -29,7 +29,7 @@
 </div>
 
 <div class="comment-submit-form" id="div_submit_form_<%= uid %>">
-  <% remote_form_for Comment.new, :url => { :action => "add_comment" },
+  <%= form_for Comment.new, :remote => true, :url => { :action => "add_comment" },
     :success => "$('div_submit_form_#{ uid }').stopWaiting(); Ext.MessageBox.alert('SMS', 'Ваш комментарий успешно сохранён.');",
     :html => { :id => "comment_submit_form_#{uid}" } do %>
       <div id="html_area_<%= uid %>"></div><div style="height:6px;"></div>

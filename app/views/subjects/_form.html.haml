@@ -1,5 +1,5 @@
 .form-container.subject-form-container
-  - remote_form_for @subject, :url => url, :method => method, :success => "Ext.MessageBox.alert('SMS', 'Данные предмета сохранены.');", :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "subject_form" } do |f|
+  - form_for @subject, :remote => true, :url => url, :method => method, :success => "Ext.MessageBox.alert('SMS', 'Данные предмета сохранены.');", :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "subject_form" } do |f|
     %table
       - if @subject.new_record?
         %tr

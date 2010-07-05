@@ -31,7 +31,7 @@
   });
 <% end %>
 <div class="form-container group-form-container">
-  <% remote_form_for @student_group,  
+  <%= form_for @student_group, :remote => true,
     :success => "Ext.MessageBox.alert('SMS', 'Данные класса сохранены.');",
     :failure => "Ext.MessageBox.show({ title: 'SMS', msg: 'Введите корректные данные.', icon: Ext.MessageBox.ERROR, buttons: Ext.MessageBox.OK });", :html => { :id => "group_form" } do |f| %>
     <table>
